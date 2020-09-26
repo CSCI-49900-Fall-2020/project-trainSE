@@ -6,6 +6,7 @@
 - Ingmar Fjolla
 - Olenka Quispe Huanca
 - Ismail El Baghdadi
+- [Group Authored Details](https://github.com/CSCI-49900-Fall-2020/project-trainSE/wiki)
 
 ## Introduction
 - The internet has become the new repertoire of indispensable information and open source education. The “Google it” phrase is easily the most recurrent answer to virtually any question. And with a quick search, the webpage is teeming with links, videos, articles, and images related to your search request. Regardless of Google’s most advanced algorithms scavenging for information related to one’s query, too much resources can be a bad thing. The end user must excavate the depths of the internet, performing a trial and error of which resources are actually beneficial. This issue worsens in the tech community where merely learning a new framework can be overwhelming due to the overabundance of extraneous tutorials.
