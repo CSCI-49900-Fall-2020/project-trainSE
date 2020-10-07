@@ -1,7 +1,7 @@
+require("dotenv").config();
 const express = require("express"); // Including the express module in this file
 const mongoose = require("mongoose"); // For MongoDB
 const cors = require("cors");
-require("dotenv").config();
 
 // Set up express
 const app = express();
@@ -23,8 +23,8 @@ mongoose.connect(
 );
 
 // Setting up routes middleware
-const users = require("./routes/userRouter");
-app.use("/users", users);
+app.use("/api/users", require("./routes/api/userRouter"));
+app.use("/api/auth", require("./routes/api/auth"));
 
 // Port configuration
 const PORT = process.env.PORT || 5000;
