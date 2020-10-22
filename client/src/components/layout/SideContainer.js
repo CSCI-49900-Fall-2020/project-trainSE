@@ -4,7 +4,7 @@ import { Header, Segment, Container } from "semantic-ui-react";
 const sideContainer = () => {
   return (
     <Container>
-      <Header as="h4" attached="top" block color="blue">
+      <Header as="h4" attached="top" block color="teal">
       Lorem ipsum
       </Header>
       <Segment attached="bottom">

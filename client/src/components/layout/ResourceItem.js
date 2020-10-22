@@ -13,10 +13,10 @@ const ResourceItem = () => (
       </Card.Description> */}
     </Card.Content>
     <Card.Content extra>
-      <Label color="blue">
+      <Label color="teal">
         <Icon name="like" /> 23
       </Label>
-      <Label color="blue">
+      <Label color="teal">
         <Icon name="comments" /> 23
       </Label>
     

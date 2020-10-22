@@ -5,14 +5,13 @@ import Spinner from "../layout/Spinner";
 import {Link, useRouteMatch, Switch, Route} from "react-router-dom";
 // import { getCurrentProfile } from '../../actions/profile';
 
-import Repository from "../pages/Repository";
-
 const Dashboard = ({ auth: { user } }) => {
   let { path, url } = useRouteMatch();
   return (
     <>
       <Spinner />
       <h1 className="large text-primary">Welcome to the DashBoard!</h1>
+      {/* For testing  */}
       <div>
         <ul>
           <li>
@@ -26,15 +25,7 @@ const Dashboard = ({ auth: { user } }) => {
           </li>
           <li>
           <Link to={`${url}/java`}>Java</Link>
-          </li>
-          {/* routes */}
-          <div>
-          <Switch> 
-            <Route path={`${path}/Python`} component={Repository} />
-            <Route path={`${path}/C++`} component={Repository} />
-            <Route path={`${path}/C++`} component={Repository} />
-          </Switch>
-        </div>
+          </li>  
         </ul>
         
       </div>
