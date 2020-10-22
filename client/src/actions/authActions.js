@@ -13,7 +13,7 @@ import {
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 
-/* Actions are JS object (not an actual action verb) with a:
+/* Actions are JS objects (not an actual action verb) with a:
   type property - helps to determine the type of action to be carried out. The
   type property helps to switch between conditionals in the reducer files
   payload - the data that needs to be transmitted
@@ -112,7 +112,7 @@ export const register = ({
       // For each error
       // Use the message as a param for setAlert action creator
       // Return an object from the action creator to dispatch an action to its appropriate reducer
-      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "negative")));
     }
 
     // Dispatch an action of type REGISTER_FAIL to its reducer
@@ -157,7 +157,7 @@ export const login = (email, password) => async (dispatch) => {
       // For each error
       // Use the message as a param for setAlert action creator
       // Return an object from the action creator to dispatch an action to its appropriate reducer
-      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "negative")));
     }
 
     // Dispatch an action of type LOGIN_FAIL to its reducer

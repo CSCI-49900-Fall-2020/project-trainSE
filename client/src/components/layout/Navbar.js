@@ -3,91 +3,80 @@ import { connect } from "react-redux";
 import { logout } from "../../actions/authActions";
 import PropTypes from "prop-types";
 
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import { Menu, Dropdown, Container, Image, Button } from "semantic-ui-react";
 
 // https://stackoverflow.com/questions/55796665/react-material-ui-router-redirect-button
-
-// Material UI styling
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
 
 // The Navbar component as a functional component
 const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
   // auth prop is an alias for the auth global store
   // We want to destructure isAuthenticated and isLoading from the auth prop
   // logout refers to the action creator
-  const classes = useStyles();
 
   // Render this code of JSX/HTML if the user is logged in
   const authLinks = (
-    <Toolbar>
-      {/* Dashboard */}
-      <Typography variant="h6" color="inherit" className={classes.title}>
-        Dashboard
-      </Typography>
-      {/* Logout Buttons */}
-      <Button color="inherit" onClick={logout}>
-        Logout
-      </Button>
-    </Toolbar>
+    <>
+      <Menu.Item as="a">Home</Menu.Item>
+
+      <Dropdown item simple text="Dropdown">
+        <Dropdown.Menu>
+          <Dropdown.Item>List Item</Dropdown.Item>
+          <Dropdown.Item>List Item</Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Header>Header Item</Dropdown.Header>
+          <Dropdown.Item>
+            <i className="dropdown icon" />
+            <span className="text">Submenu</span>
+            <Dropdown.Menu>
+              <Dropdown.Item>List Item</Dropdown.Item>
+              <Dropdown.Item>List Item</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown.Item>
+          <Dropdown.Item>List Item</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+
+      <Menu.Item position="right">
+        <Button as="a" href="/logout">
+          Log Out
+        </Button>
+      </Menu.Item>
+    </>
   );
 
   // Render this code of JSX/HTML if the user is not logged in
   const guestLinks = (
-    <Toolbar>
-      {/* Menu button */}
-      <IconButton
-        edge="start"
-        className={classes.menuButton}
-        color="inherit"
-        aria-label="menu"
-      >
-        <MenuIcon />
-      </IconButton>
-      {/* News Header */}
-      <Typography variant="h6" className={classes.title}>
-        News
-      </Typography>
-      {/* Button */}
-      <Button color="inherit" href="/register">
+    <Menu.Item position="right">
+      <Button as="a" href="/login">
+        Log in
+      </Button>
+      <Button as="a" style={{ marginLeft: "0.5em" }} href="/register">
         Sign Up
       </Button>
-      <Button color="inherit" href="/login">
-        Login
-      </Button>
-    </Toolbar>
+    </Menu.Item>
   );
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
+    <Menu fixed="top" inverted>
+      <Container>
         {/* Logo */}
-        <Typography variant="title" color="inherit" className={classes.title}>
+        <Menu.Item as="a" header>
+          <Image
+            size="mini"
+            circular
+            src="https://image.freepik.com/free-vector/cute-robot-cartoon-vector-icon-illustration-techology-robot-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-1474.jpg"
+            style={{ marginRight: "1.5em" }}
+          />
           TrainSE
-        </Typography>
+        </Menu.Item>
         {/* Conditionally render parts of the navbar */}
         {!isLoading && <>{isAuthenticated ? authLinks : guestLinks}</>}
-      </AppBar>
-    </div>
+      </Container>
+    </Menu>
   );
 };
 
-// Prop validation for the NavBat component
+// Prop validation for the NavBar component
 NavBar.propTypes = {
   logout: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
@@ -100,4 +89,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
+// This Navbar component is connected to the Redux store through connect
+// mapStateToProps and logout action creator are tied to Redux, so connect() further ties this functionalty to the Navbar component
 export default connect(mapStateToProps, { logout })(NavBar);

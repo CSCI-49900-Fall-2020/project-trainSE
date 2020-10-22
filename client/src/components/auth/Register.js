@@ -1,52 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { register } from "../../actions/authActions";
 import { setAlert } from "../../actions/alertActions";
 import PropTypes from "prop-types";
 
 import { Redirect } from "react-router-dom";
-import Alert from "@material-ui/lab/Alert";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 
-// Material UI Styling
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Message,
+  Segment,
+} from "semantic-ui-react";
 
 // The Register component as a functional component
 function Register({ setAlert, register, isAuthenticated }) {
   // setAlert is referencinig the action creator
   // register is referencing the action creator
   // isAuthenticated prop is an alias for the global auth state in the Redux store
-
-  const classes = useStyles();
 
   // Maintain local state for user inputted register data
   // formData state is an object
@@ -78,11 +52,13 @@ function Register({ setAlert, register, isAuthenticated }) {
     // The entirety resolves to a final object that is set as the new formData state
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // When a user submits their form data
+  // When a user submits their form data, this function runs
   const onSubmit = async (e) => {
     e.preventDefault(); // This prevents the default behavior of a page re-load
 
+    // Do some prelimnary check if the passwords do not match
     if (password !== passwordCheck) {
+      // Call the setAlert action creator
       setAlert("Passwords do not match", "error");
     } else {
       register({
@@ -96,127 +72,103 @@ function Register({ setAlert, register, isAuthenticated }) {
     }
   };
 
+  // According to the global auth state, if the user isAuthenticated
   if (isAuthenticated) {
+    // Redirect them to their dashboard instead
     return <Redirect to="/dashboard" />;
   }
 
   // The actual HTML/JSX to return after a component is mounted
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
-          {/* First name */}
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                onChange={(e) => onChange(e)}
-              />
-            </Grid>
-            {/* Last name */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                onChange={(e) => onChange(e)}
-              />
-            </Grid>
-            {/* Username */}
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="username"
-                label="Username"
+    <>
+      {/* Grid houses the entirety of the JSX */}
+      <Grid
+        textAlign="center"
+        style={{ height: "90vh" }}
+        verticalAlign="middle"
+      >
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as="h2" color="teal" textAlign="center">
+            Register
+          </Header>
+          <Form size="large" onSubmit={(e) => onSubmit(e)}>
+            <Segment>
+              {/* First and Last Name Inputs */}
+              <Form.Group unstackable widths={2}>
+                {/* First name input */}
+                <Form.Input
+                  fluid
+                  textAlign="left"
+                  name="firstName"
+                  label="First Name"
+                  placeholder="First name"
+                  onChange={(e) => onChange(e)}
+                />
+                {/* Last name input */}
+                <Form.Input
+                  fluid
+                  name="lastName"
+                  label="Last Name"
+                  placeholder="Last name"
+                  onChange={(e) => onChange(e)}
+                />
+              </Form.Group>
+              {/* Username input */}
+              <Form.Input
+                fluid
+                icon="user"
+                iconPosition="left"
                 name="username"
-                autoComplete="username"
+                label="Username"
+                placeholder="Username"
+                textAlign="none"
                 onChange={(e) => onChange(e)}
               />
-            </Grid>
-            {/* Email address */}
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
+              {/* Email address input */}
+              <Form.Input
+                fluid
+                icon="mail"
+                iconPosition="left"
                 name="email"
-                autoComplete="email"
+                label="E-mail Address"
+                placeholder="E-mail Address"
                 onChange={(e) => onChange(e)}
               />
-            </Grid>
-            {/* Password */}
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+              {/* Password input */}
+              <Form.Input
+                fluid
+                icon="lock"
+                iconPosition="left"
                 name="password"
                 label="Password"
+                placeholder="Password"
                 type="password"
-                id="password"
-                autoComplete="current-password"
                 onChange={(e) => onChange(e)}
               />
-            </Grid>
-            {/* Confirm password */}
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+              {/* Confirm Password input */}
+              <Form.Input
+                fluid
+                icon="lock"
+                iconPosition="left"
                 name="passwordCheck"
                 label="Confirm Password"
+                placeholder="Confirm Password"
                 type="password"
-                id="passwordCheck"
-                autoComplete="current-password"
                 onChange={(e) => onChange(e)}
               />
-            </Grid>
-          </Grid>
 
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
+              <Button type="sumbit" color="teal" fluid size="large">
+                Register
+              </Button>
+            </Segment>
+          </Form>
 
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          <Message>
+            Already have an account? <a href="/login">Sign In</a>
+          </Message>
+        </Grid.Column>
+      </Grid>
+    </>
   );
 }
 
@@ -235,5 +187,5 @@ const mapStateToProps = (state) => ({
 });
 
 // This Register component is connected to the Redux store through connect
-// mapStateToProps and register action creator are tied to Redux, so connect() further ties this functionalty to the Register component
+// mapStateToProps, setAlert, and register action creator are tied to Redux, so connect() further ties this functionalty to the Register component
 export default connect(mapStateToProps, { setAlert, register })(Register);

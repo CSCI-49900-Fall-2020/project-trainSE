@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
+import { Message } from "semantic-ui-react";
 import { makeStyles } from "@material-ui/core/styles";
 
 // Material UI Styling
@@ -21,22 +22,39 @@ const AlertMsg = ({ alerts }) => {
 
   const classes = useStyles();
   // As long as alerts is not null and alerts is not an empty array
-  // Then, there are alerts to display. Render each alert using map and <Alert>
+  // Then, there are alerts to display. Render each alert using map and <Message>
   return (
-    <div className={classes.msgBox}>
+    <div
+      style={{
+        margin: "auto",
+        width: "400px",
+        marginTop: "20px",
+        paddingTop: "50px",
+      }}
+    >
       {alerts !== null &&
         alerts.length > 0 &&
         alerts.map((alert) => (
-          <Alert
-            className={classes.box}
-            key={alert.id}
-            severity={alert.alertType}
-          >
-            <AlertTitle>Error</AlertTitle>
+          <Message key={alert.id} negative>
+            <Message.Header>Error</Message.Header>
             {alert.msg}
-          </Alert>
+          </Message>
         ))}
     </div>
+    // <div className={classes.msgBox}>
+    // {alerts !== null &&
+    //   alerts.length > 0 &&
+    //   alerts.map((alert) => (
+    //     <Alert
+    //       className={classes.box}
+    //       key={alert.id}
+    //       severity={alert.alertType}
+    //     >
+    //       <AlertTitle>Error</AlertTitle>
+    //       {alert.msg}
+    //     </Alert>
+    //   ))}
+    // </div>
   );
 };
 

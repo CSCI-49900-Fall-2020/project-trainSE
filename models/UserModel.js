@@ -22,3 +22,13 @@ const userSchema = new Schema({
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
+
+/* Thread collection
+    Schema:
+        name: 
+        repository: python
+        level: intermediate
+
+    Thread.findbyCollection({repository: python})
+    Python.getAll();
+*/
