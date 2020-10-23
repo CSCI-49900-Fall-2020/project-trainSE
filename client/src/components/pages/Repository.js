@@ -1,10 +1,12 @@
 import React, {useState, useEffect}from "react";
+import axios from 'axios';
+import { connect } from "react-redux";
 import { Grid, Header, Container,Segment } from "semantic-ui-react";
 import {useParams} from "react-router-dom";
 import SideContainer from "../layout/SideContainer";
 import ThreadList from "../layout/ThreadList";
 
-const Repository = () => {
+const Repository = ({ auth: { user } }) => {
   const path = useParams();
 
   return (
@@ -13,23 +15,17 @@ const Repository = () => {
       <Grid columns={3} divided padded style={{ height: "100vh" }}>
         {/* side bar / drawer component */}
         <Grid.Column width={3} >
-        
-         
+        <h1>Sidebar</h1>  
         </Grid.Column>
 
         {/* main section */}
         <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}>
         {/* Main header */}
-        <Segment> 
+          <Container style={{ marginBottom: "3%"}}>
             <Header as={"h1"} color="grey">
               {path.repository}
             </Header>
-          </Segment>
-          {/* <Container style={{ marginBottom: "3%"}}>
-            <Header as={"h1"} color="grey">
-              {path.repository}
-            </Header>
-          </Container> */}
+          </Container>
 
           {/* List of levels   */}
           <Container>
@@ -47,4 +43,11 @@ const Repository = () => {
     </React.Fragment> 
   );
 };
-export default Repository;
+
+// export default Repository;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  //   profile: state.profile,
+});
+
+export default connect(mapStateToProps)(Repository);

@@ -90,66 +90,6 @@ function Login({ login, isAuthenticated }) {
         </Message>
       </Grid.Column>
     </Grid>
-    // <Container component="main" maxWidth="xs">
-    //   <CssBaseline />
-    //   <div className={classes.paper}>
-    //     {/* Avatar Icon */}
-    //     <Avatar className={classes.avatar}>
-    //       <LockOutlinedIcon />
-    //     </Avatar>
-    //     {/* Sign In Header */}
-    //     <Typography component="h1" variant="h5">
-    //       Sign in
-    //     </Typography>
-    //     <form className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
-    //       {/* Email Address */}
-    //       <TextField
-    //         variant="outlined"
-    //         margin="normal"
-    //         required
-    //         fullWidth
-    //         id="email"
-    //         label="Email Address"
-    //         name="email"
-    //         autoComplete="email"
-    //         autoFocus
-    //         onChange={(e) => onChange(e)}
-    //       />
-    //       {/* Password */}
-    //       <TextField
-    //         variant="outlined"
-    //         margin="normal"
-    //         required
-    //         fullWidth
-    //         name="password"
-    //         label="Password"
-    //         type="password"
-    //         id="password"
-    //         autoComplete="current-password"
-    //         onChange={(e) => onChange(e)}
-    //       />
-    //       {/* Submit button */}
-    //       <Button
-    //         type="submit"
-    //         fullWidth
-    //         variant="contained"
-    //         color="primary"
-    //         className={classes.submit}
-    //       >
-    //         Sign In
-    //       </Button>
-
-    //       <Grid container>
-    //         {/* Redirect to Register component */}
-    //         <Grid item>
-    //           <Link href="/register" variant="body2">
-    //             {"Don't have an account? Sign Up"}
-    //           </Link>
-    //         </Grid>
-    //       </Grid>
-    //     </form>
-    //   </div>
-    // </Container>
   );
 }
 

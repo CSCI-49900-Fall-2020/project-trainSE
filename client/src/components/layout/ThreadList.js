@@ -13,7 +13,7 @@ const ThreadList = (props) => {
   const level = props.level.toUpperCase();
   return (
     <Segment padded style={{ marginBottom: "2%" }}>
-      <Header as="h3" color="blue">
+      <Header as="h3" color="teal">
         {level}
       </Header>
 
