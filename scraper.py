@@ -7,7 +7,7 @@ import ssl; print(getattr(ssl, 'HAS_SNI', False))
 
 ##mongodb stuff##
 client = pymongo.MongoClient("mongodb+srv://admin-kareem:Hunter1000@cluster0-mkcpg.mongodb.net/trainSEDB?retryWrites=true&w=majority")
-mydb = client["trainSEDB"]
+mydb = client['trainSEDB']
 #print(mydb)
 #print(client.list_database_names())
 
@@ -28,11 +28,36 @@ def google_searcher(search_term,api_key,searchengine_id):
 
 
 #adds to mongodb 
-def add_to_db(listofitems,thread,repository,level):
+def add_to_db(listofitems,thread,repository,level,searchterm,collectionname):
     collist = mydb.list_collection_names()
-    if "Thread_Collection" not in collist:
-        mycol = mydb["Thread Collection"]
+    if collectionname in collist:
+        print(collist)
+        mycol = mydb[collectionname]
+
+
+    #BIG DEBUG LINE
+##    mycol.insert_one({
+##            'resourceTitle':'aye',  #literal title from google
+##            'thread':'' ,  #this is what u should change for each search
+##            'repository':'',  #this 
+##            'level':'',     #this
+##            'link':'',
+##            'rating':0,             
+##            'comments':[],
+##            'search term':''
+##        })
+    #BIG DEBUG LINE
+        
+    #current_collection = str(collectionname)
+    #print(collectionname)
+##    if "architectures" not in collist: 
+##        mycol = mydb["architectures"]
+##    else:
+##        mcol = mydb["architectures"]
+
+        
     empty_dict = {}
+    #mycol = mydb[str(current_collection)]
     for item in listofitems:
         empty_dict={
             'resourceTitle':item['title'],  #literal title from google
@@ -41,11 +66,13 @@ def add_to_db(listofitems,thread,repository,level):
             'level':level,     #this
             'link':item['link'],
             'rating':0,             
-            'comments':[]           
+            'comments':[],
+            'search term':searchterm
         }
-        result = mydb.Thread_Collection.insert_one(empty_dict)
+        #mcol = mydb["architectures"]
+        result = mycol.insert_one(empty_dict)
         print(result.inserted_id)
-        #print(item)
+##        #print(item)
 
         
 
@@ -59,14 +86,37 @@ def main():
     ##in front of u , comment this out and uncomment out one below##
 
     search_term = input("enter a search variable:  ")
-
+    collection_name= input("enter the discipline: ") #this will be theories, maths, etc 
     thread_name = input("enter a thread name (Python Functions, C++ OOP): ")
     difficulty_level = input("enter a difficulty level (Beginner,Intermediate,Expert): ")
     repository_name = input("enter a repository name (Python,C++): ")
 
+    #collection = mydb[collection_name]
+    #print(collection)
+    #print(str(collection_name))
     first_search = google_searcher(search_term,my_api_key,my_cse_id)
-    add_to_db(first_search,thread_name,difficulty_level,repository_name)
+    collist = mydb.list_collection_names()
+    if collection_name not in collist:
+        mydb[collection_name].insert_one({
+                'resourceTitle':'',  #literal title from google
+                'thread':'' ,  #this is what u should change for each search
+                'repository':'',  #this 
+                'level':'',     #this
+                'link':'',
+                'rating':0,             
+                'comments':[],
+                'search term':''
+            })
+    add_to_db(first_search,thread_name,repository_name,difficulty_level,search_term,collection_name)
 
+
+
+    #mydb[collection_name].insert_one({'yo': 'hello'})
+    #print(mydb.list_collection_names())
+
+
+
+    
 ##    x = 100
 ##    for i in range(100):
 ##        print("You have: ",x," searches left. Watch out for that search engine cap!")
@@ -85,51 +135,9 @@ def main():
 if __name__ == "__main__":
     main()
 
-#for item in guess_check:
-    #print(item['title'],item['link'])
-
-##empty_dict = {}
-##for item in guess_check:
-##    empty_dict+={
-##        'resourceTitle':item['title'],
-##        'thread': "Functions",
-##        'repository':"Python",
-##        'level':"Beginner",
-##        'link':item['link'],
-##        'rating':0,
-##        'comments':[]
-##    }
-##    print(item)
-##    
-##print(empty_dict)
-
-##resourceTitle: "Conditionals Tutorial"
-##thread: "Conditionals"
-##repository: "Python"
-##level: "Beginner"
-##link: something.url
-##rating: 4.0
-##comments: [ ]
 
 
-##
-##for item in guess_check['items']:
-##    print(item['title'],item['link'])
 
 
-##
-##def google_search(search_term, api_key, cse_id, **kwargs):
-##    service = build("customsearch", "v1", developerKey=api_key)
-##    res = service.cse().list(q=search_term, cx=cse_id, **kwargs).execute()
-##    return res
-##
-##result = google_search("Python functions tutorials", my_api_key, my_cse_id)
-##for x in result["url"]:
-##    print(x)
 
-    
-#pprint(result)
-##data = result.json()
-##for results in data['results']:
-##    print(results['url'])
 

@@ -7,6 +7,7 @@ import { Link, useRouteMatch, Switch, Route } from "react-router-dom";
 
 const Dashboard = ({ auth: { user } }) => {
   let { path, url } = useRouteMatch();
+
   return (
     <>
       <Spinner />
