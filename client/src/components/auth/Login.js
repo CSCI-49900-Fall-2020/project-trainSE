@@ -51,6 +51,7 @@ function Login({ login, isAuthenticated }) {
     return <Redirect to="/dashboard" />;
   }
 
+  // The actual HTML/JSX to return after a component is mounted
   return (
     <Grid textAlign="center" style={{ height: "80vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>

@@ -1,26 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Alert from "@material-ui/lab/Alert";
-import AlertTitle from "@material-ui/lab/AlertTitle";
 import { Message } from "semantic-ui-react";
-import { makeStyles } from "@material-ui/core/styles";
-
-// Material UI Styling
-const useStyles = makeStyles((theme) => ({
-  msgBox: {
-    margin: "auto",
-    width: "50%",
-  },
-  box: {
-    margin: "20px",
-  },
-}));
 
 const AlertMsg = ({ alerts }) => {
   // alerts prop is an alias for the global alert object in the global Redux store
 
-  const classes = useStyles();
   // As long as alerts is not null and alerts is not an empty array
   // Then, there are alerts to display. Render each alert using map and <Message>
   return (
@@ -41,20 +26,6 @@ const AlertMsg = ({ alerts }) => {
           </Message>
         ))}
     </div>
-    // <div className={classes.msgBox}>
-    // {alerts !== null &&
-    //   alerts.length > 0 &&
-    //   alerts.map((alert) => (
-    //     <Alert
-    //       className={classes.box}
-    //       key={alert.id}
-    //       severity={alert.alertType}
-    //     >
-    //       <AlertTitle>Error</AlertTitle>
-    //       {alert.msg}
-    //     </Alert>
-    //   ))}
-    // </div>
   );
 };
 

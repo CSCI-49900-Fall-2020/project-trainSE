@@ -37,7 +37,7 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
       </Dropdown>
 
       <Menu.Item position="right">
-        <Button as="a" href="/logout">
+        <Button as="a" onClick={logout}>
           Log Out
         </Button>
       </Menu.Item>
@@ -56,11 +56,14 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
     </Menu.Item>
   );
 
+  // Determine where the logo home button should redirect to based on authentication
+  const determineHome = isAuthenticated ? "/dashboard" : "/home";
+
   return (
     <Menu fixed="top" inverted>
       <Container>
         {/* Logo */}
-        <Menu.Item as="a" header>
+        <Menu.Item as="a" header href={determineHome}>
           <Image
             size="mini"
             circular
