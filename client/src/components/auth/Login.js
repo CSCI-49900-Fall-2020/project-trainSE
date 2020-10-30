@@ -4,46 +4,20 @@ import { login } from "../../actions/authActions";
 import PropTypes from "prop-types";
 
 import { Redirect } from "react-router-dom";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-
-// Material UI styling
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Message,
+  Segment,
+} from "semantic-ui-react";
 
 // The Login component as a functional component
 function Login({ login, isAuthenticated }) {
   // login is referencinig the action creator
   // isAuthenticated prop is an alias for the global auth state in the Redux store
-  const classes = useStyles();
 
   // Maintain local state for user inputted register data
   // formData state is an object of email and password
@@ -71,71 +45,52 @@ function Login({ login, isAuthenticated }) {
     login(email, password);
   };
 
+  // According to the global auth state, if the user isAuthenticated
   if (isAuthenticated) {
+    // Redirect them to their dashboard instead
     return <Redirect to="/dashboard" />;
   }
 
+  // The actual HTML/JSX to return after a component is mounted
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        {/* Avatar Icon */}
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        {/* Sign In Header */}
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
-          {/* Email Address */}
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={(e) => onChange(e)}
-          />
-          {/* Password */}
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={(e) => onChange(e)}
-          />
-          {/* Submit button */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-
-          <Grid container>
-            {/* Redirect to Register component */}
-            <Grid item>
-              <Link href="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+    <Grid textAlign="center" style={{ height: "80vh" }} verticalAlign="middle">
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Header as="h2" color="teal" textAlign="center">
+          Log-in to your account
+        </Header>
+        <Form size="large" onSubmit={(e) => onSubmit(e)}>
+          <Segment stacked>
+            {/* Email input */}
+            <Form.Input
+              fluid
+              icon="user"
+              iconPosition="left"
+              name="email"
+              placeholder="E-mail address"
+              onChange={(e) => onChange(e)}
+            />
+            {/* Password input */}
+            <Form.Input
+              fluid
+              icon="lock"
+              iconPosition="left"
+              name="password"
+              placeholder="Password"
+              type="password"
+              onChange={(e) => onChange(e)}
+            />
+            {/* Submit button */}
+            <Button type="submit" color="teal" fluid size="large">
+              Login
+            </Button>
+          </Segment>
+        </Form>
+        {/* Redirect to the register component */}
+        <Message>
+          New to us? <a href="/register">Sign Up</a>
+        </Message>
+      </Grid.Column>
+    </Grid>
   );
 }
 

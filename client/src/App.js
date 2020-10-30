@@ -20,14 +20,16 @@ function App() {
   }, []);
 
   return (
+    // Provider component globally "provides" the Redux store to all nested components
     <Provider store={store}>
       <BrowserRouter>
         <>
           <Navbar />
           <Switch>
+            {/* Home page user sees when not logged in */}
             <Route path="/" exact component={Home} />
+            {/* All other routes are modularized in the Routes component */}
             <Route component={Routes} />
-            {/* <Route path="/register" exact component={Register} /> */}
           </Switch>
         </>
       </BrowserRouter>
