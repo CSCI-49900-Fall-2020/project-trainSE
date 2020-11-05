@@ -14,6 +14,7 @@ const languageSchema = new Schema({
   rating: Number,
   likes: Number,
   comments: [],
+  searchTerm: String,
 });
 
 // On the model method of a mongoose object, pass in the parameter of:
