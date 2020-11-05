@@ -1,15 +1,23 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const domainSchema = new Schema({
-  discipline: String,
+const languageSchema = new Schema({
+  resourceTitle: String,
+  threadTitle: String,
+  threadLink: String,
+  repository: String,
+  repositoryLink: String,
+  difficultyLevel: String,
+  disciplineTitle: String,
   disciplineLink: String,
-  repositories: [],
+  rating: Number,
+  likes: Number,
+  comments: [],
 });
 
 // On the model method of a mongoose object, pass in the parameter of:
 // 1st param: which collection will be used in our database (recall that collections are lowercased and plural in MongoDB)
 // 2nd param: which schema will be used to insert objects into the aforementioned collection
-const Domain = mongoose.model("Domain", domainSchema);
+const Language = mongoose.model("language", languageSchema, "languages");
 
-module.exports = Domain;
+module.exports = Language;
