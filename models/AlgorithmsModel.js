@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const algorithmSchema = new Schema({
   resourceTitle: String,
+  resourceLink: String,
   threadTitle: String,
   threadLink: String,
   repository: String,

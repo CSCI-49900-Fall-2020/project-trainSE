@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const architectureSchema = new Schema({
   resourceTitle: String,
+  resourceLink: String,
   threadTitle: String,
   threadLink: String,
   repository: String,

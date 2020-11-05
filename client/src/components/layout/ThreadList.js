@@ -5,8 +5,8 @@ import { Link, useRouteMatch } from "react-router-dom";
 // The ThreadList component as a functional component
 const ThreadList = (props) => {
   const fakeData = [1, 2, 3, 4, 5, 6, 7];
-  let { url } = useRouteMatch();
-  console.log(url);
+  // let { url } = useRouteMatch();
+  // console.log(url);
 
   // creates the placebo list items
   // might need filter function to get all elements in an specific level
