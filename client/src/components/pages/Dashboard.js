@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
@@ -11,56 +12,70 @@ const Dashboard = ({ auth: { user } }) => {
   // From the auth global state, extract the user property
 
   // Initial placebo data for Dashboard's local state
-  const [sectionData, setSection] = useState([
-    {
-      discipline: "Languages",
-      repositories: [
-        "Python",
-        "JavaScript",
-        "C++",
-        "Java",
-        "HTML/CSS",
-        "Swift",
-      ],
-    },
-    {
-      discipline: "Mathematics",
-      repositories: [
-        "Calculus I",
-        "Calculus II",
-        "Linear Algebra",
-        "Statistics",
-        "Discrete Structures",
-        "Number Theory",
-      ],
-    },
-    {
-      discipline: "Databases",
-      repositories: ["MySQL", "MongoDB", "PostgreSQL"],
-    },
-    {
-      discipline: "Architecture",
-      repositories: ["MIPS", "x86", "Operating Systems"],
-    },
-    {
-      discipline: "Algorithms and Data Structures",
-      repositories: [
-        "Searching",
-        "Sorting",
-        "Linked Lists",
-        "Stacks",
-        "Queues",
-        "Trees",
-        "Hash Tables",
-        "Graphs",
-        "Dynamic Programming",
-      ],
-    },
-    {
-      discipline: "Artifical Intelligence",
-      repositories: ["Natural Language Processing"],
-    },
+  const [sectionData, setSectionData] = useState([
+    // {
+    //   discipline: "Languages",
+    //   repositories: [
+    //     "Python",
+    //     "JavaScript",
+    //     "C++",
+    //     "Java",
+    //     "HTML/CSS",
+    //     "Swift",
+    //   ],
+    // },
+    // {
+    //   discipline: "Mathematics",
+    //   repositories: [
+    //     "Calculus I",
+    //     "Calculus II",
+    //     "Linear Algebra",
+    //     "Statistics",
+    //     "Discrete Structures",
+    //     "Number Theory",
+    //   ],
+    // },
+    // {
+    //   discipline: "Databases",
+    //   repositories: ["MySQL", "MongoDB", "PostgreSQL"],
+    // },
+    // {
+    //   discipline: "Architecture",
+    //   repositories: ["MIPS", "x86", "Operating Systems"],
+    // },
+    // {
+    //   discipline: "Algorithms and Data Structures",
+    //   repositories: [
+    //     "Searching",
+    //     "Sorting",
+    //     "Linked Lists",
+    //     "Stacks",
+    //     "Queues",
+    //     "Trees",
+    //     "Hash Tables",
+    //     "Graphs",
+    //     "Dynamic Programming",
+    //   ],
+    // },
+    // {
+    //   discipline: "Artifical Intelligence",
+    //   repositories: ["Natural Language Processing"],
+    // },
   ]);
+
+  // Making side effect Axios call to retrieve the domain names
+  useEffect(() => {
+    async function fetchDomains() {
+      const res = await Axios.get("/api/domain/domainFields", {
+        headers: { "x-auth-token": localStorage.getItem("token") },
+      });
+
+      setSectionData(res.data.domains);
+      //   console.log(res.data);
+    }
+
+    fetchDomains();
+  }, []);
 
   // Auxiliary helper data about routing
   let { path, url } = useRouteMatch();
@@ -144,9 +159,9 @@ const Dashboard = ({ auth: { user } }) => {
                   return (
                     <Card raised style={{ padding: "25px" }} color="teal">
                       {/* Each repository will render its own card */}
-                      <Link to={`repository/python`}>
+                      <Link to={`repository/${repository.repoLink}`}>
                         <Header textAlign="center" as="h1" color="teal">
-                          {repository}
+                          {repository.repository}
                         </Header>{" "}
                       </Link>
                     </Card>

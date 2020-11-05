@@ -17,7 +17,9 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
   const authLinks = (
     <>
       <Menu.Item as="a">Home</Menu.Item>
-
+      {/* For Narvisha */}
+      <Menu.Item as="a">Submit A Resource</Menu.Item>
+      {/* For Narvisha */}
       <Dropdown item simple text="Dropdown">
         <Dropdown.Menu>
           <Dropdown.Item>List Item</Dropdown.Item>
