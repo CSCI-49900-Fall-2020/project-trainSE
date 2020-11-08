@@ -5,14 +5,17 @@ import { Link, useRouteMatch } from "react-router-dom";
 // The ThreadList component as a functional component
 const ThreadList = (props) => {
   const fakeData = [1, 2, 3, 4, 5, 6, 7];
-  // let { url } = useRouteMatch();
-  // console.log(url);
+  let { url } = useRouteMatch();
+  console.log(url);
+  console.log(props);
 
   // creates the placebo list items
   // might need filter function to get all elements in an specific level
   const itemList = props.threads.map((thread, index) => (
     <List.Item key={index} as="a" color="black">
-      <Link to={`${url}/thread/functions`}>{thread.thread}</Link>
+      <Link to={`${url}/thread/${thread.replace(/\s+/g, "-").toLowerCase()}`}>
+        {thread}
+      </Link>
     </List.Item>
   ));
   const level = props.level.toUpperCase();

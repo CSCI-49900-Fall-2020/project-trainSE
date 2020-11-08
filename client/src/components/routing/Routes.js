@@ -25,12 +25,12 @@ const Routes = () => {
           component={Repository}
         />
         <PrivateRoute
-          path="/repository/:discipline/:topic/thread/:listThread"
+          path="/repository/:discipline/:topic/thread/:listOfResources"
           exact
           component={ThreadPage}
         />
         <PrivateRoute
-          path="/repository/:discipline/:topic/thread/:listThread/resource"
+          path="/repository/:discipline/:topic/thread/:listOfResources/resource/:resourceId"
           exact
           component={ResourcePage}
         />

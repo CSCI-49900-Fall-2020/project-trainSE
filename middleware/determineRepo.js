@@ -4,17 +4,12 @@ const Architecture = require("../models/ArchitectureModel");
 const Database = require("../models/DatabaseModel");
 const Language = require("../models/LanguageModel");
 const Mathematics = require("../models/MathematicsModel");
+const Thread = require("../models/ThreadModel");
 
 const fetchThreads = async (discipline, repository) => {
-  switch (discipline) {
-    case "languages":
-      await Language.find({ repositoryLink: repository });
-    case "architecture":
-      await Architecture.find();
-  }
+  const repoThreads = await Thread.find({ repositoryLink: repository });
 
-  console.log(discipline, repository);
-  return "hello";
+  return repoThreads;
 };
 
 module.exports = fetchThreads;

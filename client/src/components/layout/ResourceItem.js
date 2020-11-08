@@ -3,10 +3,11 @@ import { Card, Label, Icon } from "semantic-ui-react";
 import { Link, useRouteMatch } from "react-router-dom";
 
 // The ResourceItem component as a functional component
-const ResourceItem = () => {
+const ResourceItem = (props) => {
   // Auxiliary data to help with routing
   let { url } = useRouteMatch();
-  console.log(url);
+  console.log("Resource Item: ", props);
+  console.log("Resource Item: ", url);
 
   // The actual HTML/JSX to return after a component is mounted
   return (
@@ -15,7 +16,7 @@ const ResourceItem = () => {
         {/* <Label as="a" color="red" ribbon>
         Overview
       </Label> */}
-        <Card.Header color="black">Resource Title</Card.Header>
+        <Card.Header color="black">{props.resource.resourceTitle}</Card.Header>
         <Card.Meta>
           Posted by <strong>TrainSE</strong> 20 min ago
         </Card.Meta>
@@ -30,7 +31,7 @@ const ResourceItem = () => {
         <Label color="teal">
           <Icon name="comments" /> 23
         </Label>
-        <Link to={`${url}/resource`}>
+        <Link to={`${url}/resource/${props.resource._id}`}>
           <Label color="teal">
             <Icon name="mouse pointer" /> View
           </Label>

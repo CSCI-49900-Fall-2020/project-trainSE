@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, Redirect, useRouteMatch } from "react-router-dom";
+import Axios from "axios";
 import {
   Grid,
   Container,
@@ -23,9 +25,46 @@ const ResourcePage = () => {
         Still have to make API calls and backend routes
     */
 
+  const [resource, setResource] = useState({});
+
+  // Auxiliary helper data about routing
+  let { path, url } = useRouteMatch();
+  let routing_params = url.split("/");
+  let discipline = routing_params[2];
+  let repository = routing_params[3];
+  let thread = routing_params[5];
+  let id = routing_params[7];
+  console.log(id);
+
+  // Making side effect Axios call to retrieve the resources belonging to the thread specified in the url
+  useEffect(() => {
+    async function fetchResource() {
+      // Make an asynchronous axios call to the specified backend API route
+      const res = await Axios.get(
+        `/api/domain/fetchOneResource/${discipline}/${repository}/${thread}/${id}`,
+        {
+          headers: { "x-auth-token": localStorage.getItem("token") },
+        }
+      );
+      console.log(res.data);
+      setResource(res.data.resource);
+
+      // Update the state accordingly
+      // console.log(res.data);
+      //   setDifficulty(res.data.resources[0].difficultyLevel);
+      //   setThreadTitle(res.data.resources[0].threadTitle);
+      //   setRepositoryTitle(res.data.resources[0].repository);
+      //   setResources(res.data.resources);
+    }
+
+    // Call the asynchronous function
+    fetchResource();
+  }, []);
+
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
+      {console.log(resource)}
       <Grid columns={3} divided style={{ height: "100vh" }}>
         {/* side bar / drawer component */}
         <Grid.Column width={3} style={{ paddingLeft: "25px" }}>
@@ -49,16 +88,13 @@ const ResourcePage = () => {
           <Container>
             <Segment padded>
               {/* Resource title */}
-              <Header as={"h3"}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor
-              </Header>
+              <Header as={"h3"}>{resource.resourceTitle}</Header>
               <Header.Subheader style={{ color: "grey" }}>
                 Posted by <strong>TrainSE</strong> . 20 min ago
               </Header.Subheader>
               <Container style={{ margin: "2%" }}>
                 <Icon name="linkify" />
-                <a href="http://www.resource-link.com">semantic-ui.com</a>
+                <a href={resource.resourceLink}>Go to Website</a>
               </Container>
               <Container style={{ margin: "2%" }}>
                 {/*might need to add event listener to get the button working   */}
