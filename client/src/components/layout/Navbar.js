@@ -18,7 +18,7 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
     <>
       <Menu.Item as="a">Home</Menu.Item>
       {/* For Narvisha */}
-      <Menu.Item as="a">Submit A Resource</Menu.Item>
+      <Menu.Item as="a" href = "">Submit A Resource</Menu.Item>
       {/* For Narvisha */}
       <Dropdown item simple text="Dropdown">
         <Dropdown.Menu>

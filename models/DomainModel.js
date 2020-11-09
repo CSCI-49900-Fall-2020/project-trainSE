@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const domainSchema = new Schema({
   discipline: String,
+  disciplineLink: String,
   repositories: [],
 });
 

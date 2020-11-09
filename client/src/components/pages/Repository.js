@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import Axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, Header, Container, Segment } from "semantic-ui-react";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams, Redirect, useRouteMatch } from "react-router-dom";
 import SideContainer from "../layout/SideContainer";
 import ThreadList from "../layout/ThreadList";
 
@@ -45,7 +45,34 @@ const Repository = ({ auth: { user } }) => {
     { thread: "Cython", level: "Advanced" },
   ]);
 
-  const path = useParams();
+  // const path = useParams();
+
+  // Auxiliary helper data about routing
+  let { path, url } = useRouteMatch();
+  let routing_params = url.split("/");
+  let discipline = routing_params[2];
+  let repository = routing_params[3];
+
+  // Making side effect Axios call to retrieve the domain names
+  useEffect(() => {
+    async function fetchRepoThreads() {
+      // Make an asynchronous axios call to the specified backend API route
+      const res = await Axios.get(
+        `/api/domain/fetchThreads/${discipline}/${repository}`,
+        {
+          headers: { "x-auth-token": localStorage.getItem("token") },
+        }
+      );
+
+      // Extract the domain array and use the array to uupdate the state
+      // Domain array has indicies of objects where each object represents a domain in CS and its relevant repositories
+      // setSectionData(res.data.domains);
+      console.log(res);
+    }
+
+    // Call the asynchronous function
+    fetchRepoThreads();
+  }, []);
 
   // Filter through the threads array to place data in its own array based on level
   const beginnerThreads = threads.filter(

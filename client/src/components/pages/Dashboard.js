@@ -66,14 +66,17 @@ const Dashboard = ({ auth: { user } }) => {
   // Making side effect Axios call to retrieve the domain names
   useEffect(() => {
     async function fetchDomains() {
+      // Make an asynchronous axios call to the specified backend API route
       const res = await Axios.get("/api/domain/domainFields", {
         headers: { "x-auth-token": localStorage.getItem("token") },
       });
 
+      // Extract the domain array and use the array to uupdate the state
+      // Domain array has indicies of objects where each object represents a domain in CS and its relevant repositories
       setSectionData(res.data.domains);
-      //   console.log(res.data);
     }
 
+    // Call the asynchronous function
     fetchDomains();
   }, []);
 
@@ -155,13 +158,15 @@ const Dashboard = ({ auth: { user } }) => {
             <div>
               <Card.Group itemsPerRow={4}>
                 {/* specificSection.repositories is an array, map through each string aka repository name in the array */}
-                {specificSection.repositories.map((repository) => {
+                {specificSection.repositories.map((repo) => {
                   return (
                     <Card raised style={{ padding: "25px" }} color="teal">
                       {/* Each repository will render its own card */}
-                      <Link to={`repository/${repository.repoLink}`}>
+                      <Link
+                        to={`repository/${specificSection.disciplineLink}/${repo.repoLink}`}
+                      >
                         <Header textAlign="center" as="h1" color="teal">
-                          {repository.repository}
+                          {repo.repository}
                         </Header>{" "}
                       </Link>
                     </Card>

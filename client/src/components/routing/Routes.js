@@ -19,14 +19,18 @@ const Routes = () => {
         <Route path="/register" exact component={Register} />
         <Route path="/login" exact component={Login} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />
-        <PrivateRoute path="/repository/:topic" exact component={Repository} />
         <PrivateRoute
-          path="/repository/:topic/thread/:listThread"
+          path="/repository/:discipline/:topic"
+          exact
+          component={Repository}
+        />
+        <PrivateRoute
+          path="/repository/:discipline/:topic/thread/:listThread"
           exact
           component={ThreadPage}
         />
         <PrivateRoute
-          path="/repository/:topic/thread/:listThread/resource"
+          path="/repository/:discipline/:topic/thread/:listThread/resource"
           exact
           component={ResourcePage}
         />
