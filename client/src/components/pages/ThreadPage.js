@@ -1,5 +1,14 @@
-import React from "react";
-import { Grid, Container, Header, Card, Segment } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import {
+  Grid,
+  Container,
+  Header,
+  Card,
+  Segment,
+  Label,
+} from "semantic-ui-react";
+import { useParams, Redirect, useRouteMatch } from "react-router-dom";
+import Axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -8,25 +17,79 @@ import ResourceItem from "../layout/ResourceItem";
 
 // The ThreadPage component as a functional component
 const ThreadPage = ({ auth: { user } }) => {
-  // Placebo data
-  const fakeData = [1, 2, 3, 4, 5, 6, 7, 8];
-  const resourceList = fakeData.map(() => <ResourceItem />);
+  const [resources, setResources] = useState([]);
+  const [difficulty, setDifficulty] = useState("");
+  const [threadTitle, setThreadTitle] = useState("");
+  const [repositoryTitle, setRepositoryTitle] = useState("");
+
+  // Auxiliary helper data about routing
+  let { path, url } = useRouteMatch();
+  let routing_params = url.split("/");
+  let discipline = routing_params[2];
+  let repository = routing_params[3];
+  let thread = routing_params[5];
+
+  // Making side effect Axios call to retrieve the resources belonging to the thread specified in the url
+  useEffect(() => {
+    async function fetchThreads() {
+      // Make an asynchronous axios call to the specified backend API route
+      const res = await Axios.get(
+        `/api/domain/fetchResources/${discipline}/${repository}/${thread}`,
+        {
+          headers: { "x-auth-token": localStorage.getItem("token") },
+        }
+      );
+
+      // Update the state accordingly
+      // console.log(res.data);
+      setDifficulty(res.data.resources[0].difficultyLevel);
+      setThreadTitle(res.data.resources[0].threadTitle);
+      setRepositoryTitle(res.data.resources[0].repository);
+      setResources(res.data.resources);
+    }
+
+    // Call the asynchronous function
+    fetchThreads();
+  }, []);
+
+  const resourceList = resources.map((resource) => (
+    <ResourceItem resource={resource} />
+  ));
+
+  let determineColor = (difficulty) => {
+    if (difficulty === "Beginner") return "green";
+    else if (difficulty === "Intermediate") return "yellow";
+    else if (difficulty === "Advanced") return "red";
+    else return "orange";
+  };
 
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
+      {console.log("Resources after api call: ", resources)}
       <Grid columns={3} divided padded style={{ height: "100vh" }}>
         {/* sidebar / drawer component */}
         <Grid.Column width={3}>
-          <h1>Sidebar</h1>
+          <h1>Any ideas for what could be here?</h1>
         </Grid.Column>
 
         {/* main section */}
         <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}>
           <Container style={{ marginBottom: "3%" }}>
-            <Header as={"h1"} color="grey">
-              Python: Functions Thread
-            </Header>
+            {/* Specify the repository this thread belongs to */}
+            {/* The main header thread title */}
+            <span>
+              <Header as={"h1"} color="grey" style={{ marginBottom: "10px" }}>
+                {threadTitle} Thread
+              </Header>
+            </span>
+            {/* Specify the difficulty level of this thread */}
+            <Label color="blue" size="large">
+              {repositoryTitle}
+            </Label>{" "}
+            <Label color={determineColor(difficulty)} size="large">
+              {difficulty}
+            </Label>
           </Container>
 
           {/* resources */}

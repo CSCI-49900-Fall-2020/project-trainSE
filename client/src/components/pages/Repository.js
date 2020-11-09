@@ -13,37 +13,44 @@ const Repository = ({ auth: { user } }) => {
 
   // Initial placebo data for Dashboard's local state
   const [threads, setThread] = useState([
-    { thread: "Variables", level: "Beginner" },
-    { thread: "Conditions", level: "Beginner" },
-    { thread: "Chained Conditionals", level: "Beginner" },
-    { thread: "Operators", level: "Beginner" },
-    { thread: "Control Flow", level: "Beginner" },
-    { thread: "Loops and Iterables", level: "Beginner" },
-    { thread: "Basic Data Structures", level: "Beginner" },
-    { thread: "Functions", level: "Beginner" },
-    { thread: "Mutable vs Immutable", level: "Beginner" },
-    { thread: "Common Methods", level: "Beginner" },
-    { thread: "File IO", level: "Beginner" },
-    { thread: "Object Oriented Programming", level: "Intermediate" },
-    { thread: "Data Structures", level: "Intermediate" },
-    { thread: "Comprehensions", level: "Intermediate" },
-    { thread: "Lambda Functions", level: "Intermediate" },
-    { thread: "Map and Filter", level: "Intermediate" },
-    { thread: "Collections", level: "Intermediate" },
-    { thread: "*args & **kwargs", level: "Intermediate" },
-    { thread: "Inheritance", level: "Intermediate" },
-    { thread: "Dunder Methods", level: "Intermediate" },
-    { thread: "PIP", level: "Intermediate" },
-    { thread: "Decorators", level: "Advanced" },
-    { thread: "Generators", level: "Advanced" },
-    { thread: "Context Managers", level: "Advanced" },
-    { thread: "Metaclasses", level: "Advanced" },
-    { thread: "Concurrency", level: "Advanced" },
-    { thread: "Parallelism", level: "Advanced" },
-    { thread: "Testing", level: "Advanced" },
-    { thread: "Packages", level: "Advanced" },
-    { thread: "Cython", level: "Advanced" },
+    {
+      beginnerThreads: [],
+      intermediateThreads: [],
+      advancedThreads: [],
+      repository: "",
+    },
   ]);
+  // { thread: "Variables", level: "Beginner" },
+  // { thread: "Conditions", level: "Beginner" },
+  // { thread: "Chained Conditionals", level: "Beginner" },
+  // { thread: "Operators", level: "Beginner" },
+  // { thread: "Control Flow", level: "Beginner" },
+  // { thread: "Loops and Iterables", level: "Beginner" },
+  // { thread: "Basic Data Structures", level: "Beginner" },
+  // { thread: "Functions", level: "Beginner" },
+  // { thread: "Mutable vs Immutable", level: "Beginner" },
+  // { thread: "Common Methods", level: "Beginner" },
+  // { thread: "File IO", level: "Beginner" },
+  // { thread: "Object Oriented Programming", level: "Intermediate" },
+  // { thread: "Data Structures", level: "Intermediate" },
+  // { thread: "Comprehensions", level: "Intermediate" },
+  // { thread: "Lambda Functions", level: "Intermediate" },
+  // { thread: "Map and Filter", level: "Intermediate" },
+  // { thread: "Collections", level: "Intermediate" },
+  // { thread: "*args & **kwargs", level: "Intermediate" },
+  // { thread: "Inheritance", level: "Intermediate" },
+  // { thread: "Dunder Methods", level: "Intermediate" },
+  // { thread: "PIP", level: "Intermediate" },
+  // { thread: "Decorators", level: "Advanced" },
+  // { thread: "Generators", level: "Advanced" },
+  // { thread: "Context Managers", level: "Advanced" },
+  // { thread: "Metaclasses", level: "Advanced" },
+  // { thread: "Concurrency", level: "Advanced" },
+  // { thread: "Parallelism", level: "Advanced" },
+  // { thread: "Testing", level: "Advanced" },
+  // { thread: "Packages", level: "Advanced" },
+  // { thread: "Cython", level: "Advanced" },
+  // });
 
   // const path = useParams();
 
@@ -63,11 +70,10 @@ const Repository = ({ auth: { user } }) => {
           headers: { "x-auth-token": localStorage.getItem("token") },
         }
       );
-
-      // Extract the domain array and use the array to uupdate the state
-      // Domain array has indicies of objects where each object represents a domain in CS and its relevant repositories
+      console.log(res.data.threads);
       // setSectionData(res.data.domains);
-      console.log(res);
+      // console.log(res.data.beginnerThreads);
+      setThread(res.data.threads);
     }
 
     // Call the asynchronous function
@@ -75,15 +81,18 @@ const Repository = ({ auth: { user } }) => {
   }, []);
 
   // Filter through the threads array to place data in its own array based on level
-  const beginnerThreads = threads.filter(
-    (thread) => thread.level === "Beginner"
-  );
-  const intermediateThreads = threads.filter(
-    (thread) => thread.level === "Intermediate"
-  );
-  const advancedThreads = threads.filter(
-    (thread) => thread.level === "Advanced"
-  );
+  // const beginnerThreads = threads.filter(
+  //   (thread) => thread.level === "Beginner"
+  // );
+  // const intermediateThreads = threads.filter(
+  //   (thread) => thread.level === "Intermediate"
+  // );
+  // const advancedThreads = threads.filter(
+  //   (thread) => thread.level === "Advanced"
+  // );
+  // const beginnerThreads = threads.beginnerThreads;
+  // const intermediateThreads = threads.intermediateThreads;
+  // const advancedThreads = threads.advancedThreads;
 
   // The actual HTML/JSX to return after a component is mounted
   return (
@@ -100,16 +109,19 @@ const Repository = ({ auth: { user } }) => {
           {/* Main header */}
           <Container style={{ marginBottom: "3%" }}>
             <Header as={"h1"} color="grey">
-              Python Repository
+              {threads[0].repository} Repository
               {/* {path.repository} */}
             </Header>
           </Container>
 
           {/* List of levels   */}
           <Container>
-            <ThreadList level="Beginner" threads={beginnerThreads} />
-            <ThreadList level="Intermediate" threads={intermediateThreads} />
-            <ThreadList level="Advanced" threads={advancedThreads} />
+            <ThreadList level="Beginner" threads={threads[0].beginnerThreads} />
+            <ThreadList
+              level="Intermediate"
+              threads={threads[0].intermediateThreads}
+            />
+            <ThreadList level="Advanced" threads={threads[0].advancedThreads} />
           </Container>
         </Grid.Column>
 
