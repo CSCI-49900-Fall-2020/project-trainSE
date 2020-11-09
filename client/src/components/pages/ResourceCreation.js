@@ -55,7 +55,6 @@ const threads = [
                                 label='Repository'
                                 options={repositories}
                                 placeholder='Respository'
-                                disabled
                             />
                             <Form.Select
                                 fluid

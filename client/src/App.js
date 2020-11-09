@@ -29,7 +29,7 @@ function App() {
           <Navbar />
           <Switch>
             {/* Home page user sees when not logged in */}
-            <Route path="/" exact component={ResourceCreation} />
+            <Route path="/" exact component={Home} />
             {/* All other routes are modularized in the Routes component */}
             <Route component={Routes} />
           </Switch>
