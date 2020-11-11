@@ -96,7 +96,7 @@ const Dashboard = ({ auth: { user } }) => {
           style={{ paddingTop: "35px" }}
           textAlign="center"
         >
-          <Icon
+          {/* <Icon
             size="huge"
             name="code"
             style={{ margin: "auto 20px auto 20px" }}
@@ -110,7 +110,7 @@ const Dashboard = ({ auth: { user } }) => {
             size="huge"
             name="microchip"
             style={{ margin: "auto 20px auto 20px" }}
-          />
+          /> */}
         </Grid.Column>
 
         {/* Second column dealing with the greeting message */}
@@ -129,7 +129,7 @@ const Dashboard = ({ auth: { user } }) => {
           style={{ paddingTop: "35px" }}
           textAlign="center"
         >
-          <Icon
+          {/* <Icon
             size="huge"
             name="keyboard"
             style={{ margin: "auto 20px auto 20px" }}
@@ -143,7 +143,7 @@ const Dashboard = ({ auth: { user } }) => {
             size="huge"
             name="terminal"
             style={{ margin: "auto 20px auto 20px" }}
-          />
+          /> */}
         </Grid.Column>
       </Grid>
 
@@ -151,7 +151,7 @@ const Dashboard = ({ auth: { user } }) => {
       {/* sectionData is an array, map through each object in the array */}
       {sectionData.map((specificSection) => {
         return (
-          <Container style={{ marginTop: "40px" }}>
+          <Container style={{ margin: "40px" }}>
             {/* Render the discipline as its own section */}
             <Header as="h1">{specificSection.discipline}</Header>
             {/* All the repositories associated with its discipline */}

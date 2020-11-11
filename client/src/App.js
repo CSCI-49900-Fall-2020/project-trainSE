@@ -8,6 +8,7 @@ import { loadUser } from "./actions/authActions";
 import Routes from "./components/routing/Routes";
 import Home from "./components/pages/Home";
 import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
 
 import ResourceCreation from "./components/pages/ResourceCreation";
 
@@ -33,6 +34,7 @@ function App() {
             {/* All other routes are modularized in the Routes component */}
             <Route component={Routes} />
           </Switch>
+          <Footer />
         </>
       </BrowserRouter>
     </Provider>

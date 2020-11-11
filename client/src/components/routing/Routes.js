@@ -8,6 +8,7 @@ import PrivateRoute from "../routing/PrivateRoutes";
 import Repository from "../pages/Repository";
 import ThreadPage from "../pages/ThreadPage";
 import ResourcePage from "../pages/ResourcePage";
+import ResourceCreation from "../pages/ResourceCreation";
 
 const repository = ["python", "c++", "java"];
 
@@ -33,6 +34,11 @@ const Routes = () => {
           path="/repository/:discipline/:topic/thread/:listOfResources/resource/:resourceId"
           exact
           component={ResourcePage}
+        />
+        <PrivateRoute
+          path="/createResource"
+          exact
+          component={ResourceCreation}
         />
       </Switch>
       {/*just for testing */}

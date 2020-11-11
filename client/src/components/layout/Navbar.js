@@ -2,8 +2,16 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { logout } from "../../actions/authActions";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-import { Menu, Dropdown, Container, Image, Button } from "semantic-ui-react";
+import {
+  Menu,
+  Dropdown,
+  Container,
+  Image,
+  Button,
+  Icon,
+} from "semantic-ui-react";
 
 // https://stackoverflow.com/questions/55796665/react-material-ui-router-redirect-button
 
@@ -16,14 +24,20 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
   // Render this code of JSX/HTML if the user is logged in
   const authLinks = (
     <>
-      <Menu.Item as="a">Home</Menu.Item>
       {/* For Narvisha */}
-      <Menu.Item as="a" href = "">Submit A Resource</Menu.Item>
+      {/* <Menu.Item as="a">
+        <Link to="/createResource">Submit A Resource</Link>
+      </Menu.Item> */}
       {/* For Narvisha */}
-      <Dropdown item simple text="Dropdown">
+      <Dropdown item simple text="Contribute">
         <Dropdown.Menu>
-          <Dropdown.Item>List Item</Dropdown.Item>
-          <Dropdown.Item>List Item</Dropdown.Item>
+          <Dropdown.Item as="a">
+            <Link to="/createResource" style={{ color: "black" }}>
+              Submit a Resource
+            </Link>
+          </Dropdown.Item>
+
+          <Dropdown.Item>Open a Thread</Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Header>Header Item</Dropdown.Header>
           <Dropdown.Item>
@@ -39,6 +53,12 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
       </Dropdown>
 
       <Menu.Item position="right">
+        <Menu.Item>
+          <Button as="a" color="teal">
+            <Icon name="user" />
+            Profile
+          </Button>
+        </Menu.Item>
         <Button as="a" onClick={logout}>
           Log Out
         </Button>
@@ -59,7 +79,7 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
   );
 
   // Determine where the logo home button should redirect to based on authentication
-  const determineHome = isAuthenticated ? "/dashboard" : "/home";
+  const determineHome = isAuthenticated ? "/dashboard" : "/";
 
   return (
     <Menu fixed="top" inverted>
