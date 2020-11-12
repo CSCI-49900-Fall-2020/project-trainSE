@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Grid, Header, Container, Segment } from "semantic-ui-react";
+import { Grid, Header, Container, Segment, Button } from "semantic-ui-react";
 import { useParams, Redirect, useRouteMatch } from "react-router-dom";
 import SideContainer from "../layout/SideContainer";
 import ThreadList from "../layout/ThreadList";
@@ -112,6 +112,9 @@ const Repository = ({ auth: { user } }) => {
               {threads[0].repository} Repository
               {/* {path.repository} */}
             </Header>
+            <Button color="teal" fluid>
+              Open a New Thread?
+            </Button>
           </Container>
 
           {/* List of levels   */}

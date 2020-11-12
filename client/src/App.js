@@ -10,8 +10,6 @@ import Home from "./components/pages/Home";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 
-import ResourceCreation from "./components/pages/ResourceCreation";
-
 // React router (helpful): https://rapidapi.com/blog/react-multi-page-app/
 
 function App() {
@@ -34,7 +32,7 @@ function App() {
             {/* All other routes are modularized in the Routes component */}
             <Route component={Routes} />
           </Switch>
-          <Footer />
+          {/* <Footer /> */}
         </>
       </BrowserRouter>
     </Provider>

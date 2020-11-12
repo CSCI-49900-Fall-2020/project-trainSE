@@ -5,11 +5,11 @@ import {
   Grid,
   Header,
   Image,
-  Message,
   Segment,
+  Icon,
 } from "semantic-ui-react";
 
-const topics = [
+const disciplines = [
   { key: "l", text: "Languages", value: "languages" },
   { key: "m", text: "Mathematics", value: "mathematics" },
   { key: "d", text: "Databases", value: "databases" },
@@ -37,36 +37,103 @@ const threads = [
   { key: "o", text: "Other", value: "other" },
 ];
 
+const difficulty = [
+  { key: "b", text: "Beginner", value: "beginner" },
+  { key: "m", text: "Intermediate", value: "intermediate" },
+  { key: "d", text: "Advanced", value: "advanced" },
+];
+
+const typeOfResource = [
+  { key: "a", text: "Article", value: "article" },
+  { key: "v", text: "Video", value: "video" },
+];
+
 const LoginForm = () => (
   <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
-    <Grid.Column style={{ maxWidth: 450 }}>
+    <Grid.Column style={{ maxWidth: 700 }}>
       <Header as="h2" color="teal" textAlign="center">
-        <Image src="/logo.png" /> Log-in to your account
+        <Icon name="upload" /> Contribute a Resource
       </Header>
       <Form size="large">
         <Segment stacked>
           <Form.Input
             fluid
-            icon="user"
+            icon="edit"
             iconPosition="left"
-            placeholder="E-mail address"
+            label="Resource Title"
+            labelPosition="left"
+            placeholder="Resource Title"
+          />
+          <Form.Input
+            fluid
+            icon="linkify"
+            iconPosition="left"
+            label="Link to Resource"
+            placeholder="URL"
+            // type="password"
+          />
+
+          <Form.Group widths="equal">
+            <Form.Select
+              fluid
+              options={disciplines}
+              label="Which Discipline It Belongs To?"
+              placeholder="Discipline"
+            />
+            <Form.Select
+              fluid
+              options={repositories}
+              label="Which Repository It Belongs To?"
+              placeholder="Repository"
+            />
+            <Form.Select
+              fluid
+              options={threads}
+              label="Which Thread It Belongs To?"
+              placeholder="Thread"
+            />
+          </Form.Group>
+          {/* <Form.Input
+            fluid
+            icon="lock"
+            iconPosition="left"
+            label="Which Discipline It Belongs To?"
+            placeholder="Discipline"
           />
           <Form.Input
             fluid
             icon="lock"
             iconPosition="left"
-            placeholder="Password"
-            type="password"
+            label="Which Repository It Belongs To?"
+            placeholder="Repository"
           />
+          <Form.Input
+            fluid
+            icon="lock"
+            iconPosition="left"
+            label="Which Thread It Belongs To?"
+            placeholder="Thread"
+          /> */}
+          <Form.Group widths="equal">
+            <Form.Select
+              fluid
+              options={difficulty}
+              label="Difficulty Level"
+              placeholder="Level"
+            />
+            <Form.Select
+              fluid
+              options={typeOfResource}
+              label="Type Of Resource"
+              placeholder="Type"
+            />
+          </Form.Group>
 
           <Button color="teal" fluid size="large">
-            Login
+            Submit Your Resource
           </Button>
         </Segment>
       </Form>
-      <Message>
-        New to us? <a href="#">Sign Up</a>
-      </Message>
     </Grid.Column>
   </Grid>
 );
