@@ -12,6 +12,7 @@ router.get("/domainFields", auth, async (req, res) => {
 
 router.get("/fetchThreads/:discipline/:repository", auth, async (req, res) => {
   const { discipline, repository } = req.params;
+  // console.log("fetch threads: ", repository);
   const threads = await fetchThreads(discipline, repository);
   //   const beginnerThreads = threads[0].beginnerThreads;
   //   const intermediateThreads = threads[0].intermediateThreads;

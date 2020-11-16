@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const mathematicsSchema = new Schema({
   resourceTitle: String,
   resourceLink: String,
+  resourceType: String,
   threadTitle: String,
   threadLink: String,
   repository: String,

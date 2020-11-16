@@ -12,13 +12,12 @@ const ThreadList = (props) => {
   // creates the placebo list items
   // might need filter function to get all elements in an specific level
   const itemList = props.threads.map((thread, index) => (
-    
     <List.Item key={index} as="a" color="black">
       <Link to={`${url}/thread/${thread.replace(/\s+/g, "-").toLowerCase()}`}>
         {thread}
       </Link>
     </List.Item>
-  )); 
+  ));
   const level = props.level.toUpperCase();
 
   // The actual HTML/JSX to return after a component is mounted
