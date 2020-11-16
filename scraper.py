@@ -20,53 +20,43 @@ my_cse_id = "6748c9bbbc3e0e2da"
 def google_searcher(search_term,api_key,searchengine_id):
     first_results = build("customsearch", "v1", developerKey=api_key).cse()
     returnme=[]
-    for i in range(1,20,10):
+    for i in range(1,10,10):
         results = first_results.list(q=search_term,cx=searchengine_id,start=i).execute()
         returnme+=results['items']
     return returnme ##returns array with returnme['title']['link']
 
+def fixformat(item):
+    return item.replace(' ', '-').lower()
 
+def linktype(links):
+    if "youtube" in links:
+        return "Video"
+    return "Article"
 
 #adds to mongodb 
-def add_to_db(listofitems,thread,repository,level,searchterm,collectionname):
+def add_to_db(listofitems,thread,repository,level,searchterm,collectionname,real_title):
     collist = mydb.list_collection_names()
     if collectionname in collist:
         print(collist)
         mycol = mydb[collectionname]
-
-
-    #BIG DEBUG LINE
-##    mycol.insert_one({
-##            'resourceTitle':'aye',  #literal title from google
-##            'thread':'' ,  #this is what u should change for each search
-##            'repository':'',  #this 
-##            'level':'',     #this
-##            'link':'',
-##            'rating':0,             
-##            'comments':[],
-##            'search term':''
-##        })
-    #BIG DEBUG LINE
-        
-    #current_collection = str(collectionname)
-    #print(collectionname)
-##    if "architectures" not in collist: 
-##        mycol = mydb["architectures"]
-##    else:
-##        mcol = mydb["architectures"]
-
         
     empty_dict = {}
     #mycol = mydb[str(current_collection)]
     for item in listofitems:
         empty_dict={
             'resourceTitle':item['title'],  #literal title from google
-            'thread': thread,  #this is what u should change for each search
+            'resourceLink':item['link'],
+            'threadTitle': thread,  #this is what u should change for each search
+            'threadLink':fixformat(thread) ,
             'repository':repository,  #this 
-            'level':level,     #this
-            'link':item['link'],
-            'rating':0,             
+            'repositoryLink':fixformat(repository),
+            'difficultyLevel':level,     #this
+            'disciplineTitle': real_title,
+            'disciplineLink':fixformat(real_title),
+            'rating':0,
+            'likes':0,
             'comments':[],
+            'linkType':linktype(item['link']),
             'search term':searchterm
         }
         #mcol = mydb["architectures"]
@@ -78,7 +68,11 @@ def add_to_db(listofitems,thread,repository,level,searchterm,collectionname):
 
 def main():
     print(mydb) #just check if its connected
+    #mydb.algorithmanddatastructures.delete_many({})
     #returns an array with a dictionary inside
+    #mydb.architectures.delete_many({})
+    #mydb.databases.delete_many({})
+    #mydb.languages.delete_many({})
 
     ###
     #Depending how many search terms we have available, we can use this one or the one below
@@ -86,10 +80,11 @@ def main():
     ##in front of u , comment this out and uncomment out one below##
 
     search_term = input("enter a search variable:  ")
-    collection_name= input("enter the discipline: ") #this will be theories, maths, etc 
-    thread_name = input("enter a thread name (Python Functions, C++ OOP): ")
+    collection_name= input("enter the discipline(algorithmanddatastructures,architectures,databases,languages,mathematics: ") #this will be theories, maths, etc 
+    thread_name = input("enter a thread name (Functions, OOP, conditionals): ")
     difficulty_level = input("enter a difficulty level (Beginner,Intermediate,Expert): ")
     repository_name = input("enter a repository name (Python,C++): ")
+    discipline_title = input("enter the disciple title")
 
     #collection = mydb[collection_name]
     #print(collection)
@@ -99,21 +94,27 @@ def main():
     if collection_name not in collist:
         mydb[collection_name].insert_one({
                 'resourceTitle':'',  #literal title from google
-                'thread':'' ,  #this is what u should change for each search
+                'resourceLink':'',
+                'threadTitle':'' ,  #this is what u should change for each search
+                'threadLink':'' ,
                 'repository':'',  #this 
-                'level':'',     #this
-                'link':'',
-                'rating':0,             
+                'repositoryLink':'',
+                'difficultylevel':'',     #this
+                'disciplineTitle':'',
+                'disciplineLink':'',
+                'rating':0,
+                'likes':0,
                 'comments':[],
-                'search term':''
+                'linkType':'',
+                'search term':'',
+                
             })
-    add_to_db(first_search,thread_name,repository_name,difficulty_level,search_term,collection_name)
+    add_to_db(first_search,thread_name,repository_name,difficulty_level,search_term,collection_name,discipline_title)
 
 
 
     #mydb[collection_name].insert_one({'yo': 'hello'})
     #print(mydb.list_collection_names())
-
 
 
     
@@ -131,9 +132,10 @@ def main():
         
 
      
-
-if __name__ == "__main__":
-    main()
+while True:
+        
+    if __name__ == "__main__":
+        main()
 
 
 
