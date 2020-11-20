@@ -83,5 +83,59 @@ router.post("/resource", auth, async (req, res) => {
 
   return res.json({ response: "From backend to frontend" });
 });
+/***************Comment form route ********************/
+router.post("/resource/comment/:discipline/:id", auth, async (req, res) => {
+
+  // helper function that obtains comment data and time as a strinh
+  function getTimeStamp() {
+    const monthArr = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"];
+    const d = new Date();
+    const currDate = d.getDate();
+    const currMonthNum = d.getMonth();
+    const currYear = d.getFullYear();
+    const currTime = d.toLocaleString("en-US", {
+       hour: "numeric",
+       minute: "numeric",
+       hour12: true
+       });
+    const dateString = monthArr[currMonthNum] +" " +currDate +", " + currYear +" at " + currTime;
+    return dateString;
+  }
+  
+  const newComment = {
+    author: req.body.author,
+    text: req.body.text,
+    timeStamp: getTimeStamp()
+  }
+// finds the domain
+  let whichDomain = "";
+
+  switch (req.params.discipline) {
+    case "languages":
+      whichDomain = Language;
+      break;
+    case "mathematics":
+      whichDomain = Mathematics;
+      break;
+    case "databases":
+      whichDomain = Database;
+      break;
+    case "architecture":
+      whichDomain = Architecture;
+      break;
+    case "algorithms-and-data-structures":
+      whichDomain = Algorithm;
+      break;
+    default:
+  }
+  console.log("Resource domain: ", whichDomain);
+  // push flag allows to add the object to the array of comments 
+  const result = await whichDomain.findByIdAndUpdate({ _id: req.params.id },{ $push: { comments: [newComment] }}, {useFindAndModify: false});
+ console.log("this is the result from backend:  ");
+  console.log(result);
+
+
+  return res.json({respose:"From backend to frontend"});
+});
 
 module.exports = router;

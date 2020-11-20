@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { useParams, Redirect, useRouteMatch } from "react-router-dom";
 import Axios from "axios";
 import {
@@ -14,11 +16,14 @@ import {
   Button,
   Comment,
   Rating,
+  FeedUser,
 } from "semantic-ui-react";
 import SideContainer from "../layout/SideContainer";
-
+import CommentList from "../layout/CommentList";
+import CommentForm from "../layout/CommentForm";
+import { set } from "mongoose";
 // The ResourcePage component as a functional component
-const ResourcePage = () => {
+const ResourcePage = ({ auth: { user } })  => {
   /* IMPORTANT EDIT: this component would've been given a prop.
         This page would dynamically update based on the resource and the
         thread it belonged to.
@@ -26,6 +31,7 @@ const ResourcePage = () => {
     */
 
   const [resource, setResource] = useState({});
+  // const [isNewCommentAdded, setIsNewCommentAdded] = useState(false);
 
   // Auxiliary helper data about routing
   let { path, url } = useRouteMatch();
@@ -36,6 +42,9 @@ const ResourcePage = () => {
   let id = routing_params[7];
   console.log(id);
 
+  // const handleNewComment= () => {
+  //   setIsNewCommentAdded(true);
+  // }
   // Making side effect Axios call to retrieve the resources belonging to the thread specified in the url
   useEffect(() => {
     async function fetchResource() {
@@ -48,7 +57,7 @@ const ResourcePage = () => {
       );
       console.log(res.data);
       setResource(res.data.resource);
-
+      
       // Update the state accordingly
       // console.log(res.data);
       //   setDifficulty(res.data.resources[0].difficultyLevel);
@@ -59,8 +68,11 @@ const ResourcePage = () => {
 
     // Call the asynchronous function
     fetchResource();
+  
   }, []);
+//   console.log("resource: ", resource);
 
+  
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
@@ -100,7 +112,8 @@ const ResourcePage = () => {
                 {/*might need to add event listener to get the button working   */}
                 <Label style={{ backgroundColor: "white" }} size="large">
                   <Icon link name="comments" color="teal" />
-                  23
+                  {resource.comments ? resource.comments.length: "loading..." }
+
                 </Label>
                 {/* <Segment basic>
                   <Icon link name="comments" color="teal" /> 23
@@ -110,69 +123,26 @@ const ResourcePage = () => {
                 </Segment> */}
                 <Label style={{ backgroundColor: "white" }} size="large">
                   <Icon link name="like" color="teal" />
-                  23
+                  {resource.likes ? resource.likes: "loading..." }
+             
                 </Label>
                 {/* <Segment basic> */}
-                <Rating defaultRating={4} maxRating={5} disabled />
+                {/* <Rating defaultRating={4} maxRating={5} disabled /> */}
                 {/* </Segment> */}
               </Container>
-
+              
+              {/* comment section */}
               <Comment.Group>
-                <Header as="h3" dividing>
+               <Header as="h3" dividing>
                   Comments
-                </Header>
+              </Header>
+              {/* {listOfComments} */}
+               <CommentList comments={resource.comments} />
+               {/* <CommentList/> */}
+               <CommentForm userName={user.username} />
+              {/* <CommentForm userName={user.username} onHandleNewComment ={handleNewComment}/> */}
+            </Comment.Group>
 
-                <Comment>
-                  <Comment.Avatar
-                    src={<Icon name="user circle" size="big" color="teal" />}
-                  />
-                  {/* <Comment.Avatar src="/images/avatar/small/matt.jpg" /> */}
-                  <Comment.Content>
-                    <Comment.Author as="a">Matt</Comment.Author>
-                    <Comment.Metadata>
-                      <div>Today at 5:42PM</div>
-                    </Comment.Metadata>
-                    <Comment.Text>How artistic!</Comment.Text>
-                    <Comment.Actions>
-                      <Comment.Action>Reply</Comment.Action>
-                    </Comment.Actions>
-                  </Comment.Content>
-                </Comment>
-
-                <Comment>
-                  <Comment.Avatar
-                    src={<Icon name="user circle" size="big" color="teal" />}
-                  />
-                  {/* <Comment.Avatar>
-                    <Icon name="user" />
-                  </Comment.Avatar> */}
-                  <Comment.Content>
-                    <Comment.Author as="a">Elliot Fu</Comment.Author>
-                    <Comment.Metadata>
-                      <div>Yesterday at 12:30AM</div>
-                    </Comment.Metadata>
-                    <Comment.Text>
-                      <p>
-                        This has been very useful for my research. Thanks as
-                        well!
-                      </p>
-                    </Comment.Text>
-                    <Comment.Actions>
-                      <Comment.Action>Reply</Comment.Action>
-                    </Comment.Actions>
-                  </Comment.Content>
-                </Comment>
-
-                <Form reply>
-                  <Form.TextArea />
-                  <Button
-                    content="Add Reply"
-                    labelPosition="left"
-                    icon="edit"
-                    primary
-                  />
-                </Form>
-              </Comment.Group>
             </Segment>
           </Container>
         </Grid.Column>
@@ -186,4 +156,16 @@ const ResourcePage = () => {
   );
 };
 
-export default ResourcePage;
+ResourcePage.propTypes = {
+  //   getCurrentProfile: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  //   profile: PropTypes.object.isRequired,
+};
+const mapStateToProps = (state) => ({
+  // Our root reducer in reducer/index.js uses auth
+  // We map the auth global state to a prop called auth
+  // Now, we can use auth in this component
+  auth: state.auth,
+});
+export default connect(mapStateToProps)(ResourcePage);
+// export default ResourcePage;
