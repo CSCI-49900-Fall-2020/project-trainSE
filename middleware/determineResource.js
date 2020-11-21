@@ -1,4 +1,3 @@
-const User = require("../models/UserModel");
 const Algorithm = require("../models/AlgorithmsModel");
 const Architecture = require("../models/ArchitectureModel");
 const Database = require("../models/DatabaseModel");

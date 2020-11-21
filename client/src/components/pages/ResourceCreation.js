@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import { Redirect } from "react-router-dom";
 import {
   Button,
   Form,
   Grid,
   Header,
-  Image,
   Segment,
   Icon,
   Step,
@@ -66,6 +66,8 @@ function CreateResource() {
     resourceType: "",
   });
 
+  const [redirect, setRedirect] = useState(false);
+
   // Everytime a change is detected with user input
   const onChange = (e) =>
     // Take the event that triggered the change
@@ -100,11 +102,24 @@ function CreateResource() {
       });
       //   Console log the data recieved from the backend
       console.log("Data received from the backend: ", res);
+
+      //   If the response back was 200 okay
+      if (res.status == 200) {
+        //   Redirect the user to the dashboard
+        // Set the state to redirecting
+        setRedirect(true);
+      }
     }
 
     // Make the backend call
     submitResource();
   };
+
+  // If the redirect state is true
+  if (redirect) {
+    // Redirect the user to the dashboard
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <>

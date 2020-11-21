@@ -14,6 +14,9 @@ const architectureSchema = new Schema({
   disciplineLink: String,
   rating: Number,
   likes: Number,
+  submittedWhen: String,
+  submittedBy: String,
+  likedBy: [],
   comments: [],
   searchTerm: String,
 });

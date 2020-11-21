@@ -14,6 +14,11 @@ const userSchema = new Schema({
 
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+
+  favoredRepositories: [],
+  ribbons: [],
+  likedResources: [],
+  briefDescription: String,
 });
 
 // On the model method of a mongoose object, pass in the parameter of:

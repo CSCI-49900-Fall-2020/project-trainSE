@@ -9,11 +9,18 @@ import {
   Grid,
   Icon,
   Container,
+  Label,
 } from "semantic-ui-react";
 // import Footer from "../layout/Footer";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import "./Home.css";
 
-export default function Home() {
+function Home({ isAuthenticated }) {
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
     <>
       <HeroSection />
@@ -24,22 +31,34 @@ export default function Home() {
           <Grid.Row>
             <Grid.Column width={8}>
               <Header as="h3" color="teal" style={{ fontSize: "2em" }}>
-                Explain TrainSE's purpose and mission statement
+                Our Story
               </Header>
               <p style={{ fontSize: "1.33em" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                Do you want to explore a new topic? Someone would've already
+                told you to "Google It." Don't get us wrong, Google's advocacy
+                for open source education has drastically changed the way we've
+                learned in the last two decades. Regardless, one must excavate
+                the depths of the internet and perform a trial and error to find
+                what they're actually looking for. The first search result is
+                sometimes a dense reosurce bogged down by jargon and complex
+                phrasing that intimidates beginners. This issue worsens in the
+                tech where merely learning a new framework can be overwhelming
+                due to extraneous tutorials that all teach the same thing. Which
+                one is best?
               </p>
               <Header as="h3" color="teal" style={{ fontSize: "2em" }}>
-                Maybe a statistic here
+                Let's Streamline Computer Science
               </Header>
               <p style={{ fontSize: "1.33em" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                We want all backgrounds (whether it be from school, bootcamps,
+                or self-taught) to have a clear, concise, and friendly
+                introduction to some of Computer Science's most puzzling topics.
+                With your help (and the community at large), we can monitor,
+                maintain, and share the best resources that make Computer
+                Science more approachable and less daunting. We strive to
+                demystify the verbose until you're ready to face more dense
+                resources. In short, let's have more accountability in the
+                creation of materials and escape the cycle of useless tutorials.
               </p>
             </Grid.Column>
             <Grid.Column floated="right" width={6}>
@@ -65,10 +84,10 @@ export default function Home() {
                 Learn CS through resources
               </Header>
               <p style={{ fontSize: "1.33em" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                When learning a new topic, you want to incrementally gain an
+                understanding through smaller modules. Instead of reading
+                through large textbooks, learn a topic through articles, videos,
+                and concise material.
               </p>
             </Grid.Column>
             {/* Second colymn */}
@@ -78,10 +97,10 @@ export default function Home() {
                 Community approved materials
               </Header>
               <p style={{ fontSize: "1.33em" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                The tech community is in charge here - not Google's searching
+                algorithms. We aim for our resources to contain minimal jargon,
+                presents visual aids, makes real world analogies, etc. And we
+                will protect this standard.
               </p>
             </Grid.Column>
             {/* Third column */}
@@ -91,10 +110,11 @@ export default function Home() {
                 Save time from googling
               </Header>
               <p style={{ fontSize: "1.33em" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                Scavenging the webpage for that hidden gem? Not sure if you're
+                using the right keywords to best describe your query?
+                Drastically reduce your research time by quickly finding a
+                resource through our convenient UI indexed by topic and
+                experience level.
               </p>
             </Grid.Column>
           </Grid.Row>
@@ -105,8 +125,10 @@ export default function Home() {
       <Segment style={{ padding: "8em 0em" }} vertical>
         <Container text>
           <Header as="h3" style={{ fontSize: "2em" }}>
-            Explain the rules of the website or the CS domains we support
+            We Support the Following Domains of Computer Science
+            <Label color="teal">More to Come!</Label>
           </Header>
+
           <p style={{ fontSize: "1.33em" }}>
             Instead of focusing on content creation and hard work, we have
             learned how to master the art of doing nothing by providing massive
@@ -122,3 +144,14 @@ export default function Home() {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  // Our root reducer in reducer/index.js uses auth
+  // We map the auth global state to a prop called isAuthenticated
+  // Now, we can use isAuthenticated as a prop in this component
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+// This Login component is connected to the Redux store through connect
+// mapStateToProps and login action creator are tied to Redux, so connect() further ties this functionalty to the Login component
+export default connect(mapStateToProps)(Home);

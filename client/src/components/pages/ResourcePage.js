@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { useParams, Redirect, useRouteMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import Axios from "axios";
 import {
   Grid,
@@ -9,29 +9,17 @@ import {
   Header,
   Segment,
   Label,
-  Card,
-  List,
   Icon,
-  Form,
-  Button,
   Comment,
-  Rating,
-  FeedUser,
 } from "semantic-ui-react";
 import SideContainer from "../layout/SideContainer";
 import CommentList from "../layout/CommentList";
 import CommentForm from "../layout/CommentForm";
-import { set } from "mongoose";
-// The ResourcePage component as a functional component
-const ResourcePage = ({ auth: { user } })  => {
-  /* IMPORTANT EDIT: this component would've been given a prop.
-        This page would dynamically update based on the resource and the
-        thread it belonged to.
-        Still have to make API calls and backend routes
-    */
 
-  const [resource, setResource] = useState({});
-  // const [isNewCommentAdded, setIsNewCommentAdded] = useState(false);
+// The ResourcePage component as a functional component
+const ResourcePage = ({ auth: { user } }) => {
+  const [resource, setResource] = useState({}); // State to manage an entire resource
+  const [comments, setComments] = useState([{}]); // State to manage the comments of a resource
 
   // Auxiliary helper data about routing
   let { path, url } = useRouteMatch();
@@ -42,41 +30,35 @@ const ResourcePage = ({ auth: { user } })  => {
   let id = routing_params[7];
   console.log(id);
 
-  // const handleNewComment= () => {
-  //   setIsNewCommentAdded(true);
-  // }
-  // Making side effect Axios call to retrieve the resources belonging to the thread specified in the url
+  // Making side effect Axios call to retrieve a resource belonging to the discipline, repository, thread specified in the url
   useEffect(() => {
     async function fetchResource() {
       // Make an asynchronous axios call to the specified backend API route
+      // Important to pass along the id of that resource
       const res = await Axios.get(
         `/api/domain/fetchOneResource/${discipline}/${repository}/${thread}/${id}`,
         {
           headers: { "x-auth-token": localStorage.getItem("token") },
         }
       );
-      console.log(res.data);
+
+      // Testing things
+      // console.log("This is res.data: ", res.data);
+      // console.log("This is res.data.resource: ", res.data.resource);
+
+      // Set resource's state to res.data.resource
       setResource(res.data.resource);
-      
-      // Update the state accordingly
-      // console.log(res.data);
-      //   setDifficulty(res.data.resources[0].difficultyLevel);
-      //   setThreadTitle(res.data.resources[0].threadTitle);
-      //   setRepositoryTitle(res.data.resources[0].repository);
-      //   setResources(res.data.resources);
+      // Set comments's state to res.data.resource.comments
+      setComments(res.data.resource.comments);
     }
 
     // Call the asynchronous function
     fetchResource();
-  
   }, []);
-//   console.log("resource: ", resource);
 
-  
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
-      {console.log(resource)}
       <Grid columns={3} divided style={{ height: "100vh" }}>
         {/* side bar / drawer component */}
         <Grid.Column width={3} style={{ paddingLeft: "25px" }}>
@@ -90,59 +72,51 @@ const ResourcePage = ({ auth: { user } })  => {
 
         {/* main section */}
         <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}>
-          {/* <Container style={{ marginBottom: "3%" }}>
-            <Header as={"h1"} color="grey">
-              Header
-            </Header>
-          </Container> */}
-          {/* resource info */}
-
           <Container>
             <Segment padded>
               {/* Resource title */}
               <Header as={"h3"}>{resource.resourceTitle}</Header>
+              {/* Meta data about how long the resource was posted */}
               <Header.Subheader style={{ color: "grey" }}>
                 Posted by <strong>TrainSE</strong> . 20 min ago
               </Header.Subheader>
+              {/* Link to the resource */}
               <Container style={{ margin: "2%" }}>
                 <Icon name="linkify" />
                 <a href={resource.resourceLink}>Go to Website</a>
               </Container>
+              {/* Icons indicatingg comment and like count */}
               <Container style={{ margin: "2%" }}>
                 {/*might need to add event listener to get the button working   */}
+                {/* Comment count */}
                 <Label style={{ backgroundColor: "white" }} size="large">
                   <Icon link name="comments" color="teal" />
-                  {resource.comments ? resource.comments.length: "loading..." }
-
+                  {resource.comments ? resource.comments.length : 0}
                 </Label>
-                {/* <Segment basic>
-                  <Icon link name="comments" color="teal" /> 23
-                </Segment>
-                <Segment basic>
-                  <Icon link name="comments" color="teal" /> 23
-                </Segment> */}
+                {/* Like count */}
                 <Label style={{ backgroundColor: "white" }} size="large">
                   <Icon link name="like" color="teal" />
-                  {resource.likes ? resource.likes: "loading..." }
-             
+                  {resource.likes ? resource.likes : 0}
                 </Label>
-                {/* <Segment basic> */}
-                {/* <Rating defaultRating={4} maxRating={5} disabled /> */}
-                {/* </Segment> */}
               </Container>
-              
-              {/* comment section */}
-              <Comment.Group>
-               <Header as="h3" dividing>
-                  Comments
-              </Header>
-              {/* {listOfComments} */}
-               <CommentList comments={resource.comments} />
-               {/* <CommentList/> */}
-               <CommentForm userName={user.username} />
-              {/* <CommentForm userName={user.username} onHandleNewComment ={handleNewComment}/> */}
-            </Comment.Group>
 
+              {/* The actual comment section */}
+              <Comment.Group>
+                <Header as="h3" dividing>
+                  Comments
+                </Header>
+                {/* Component to render all comments */}
+                {/* comments state is passed to CommentList as prop */}
+                <CommentList comments={comments} />
+                {/* Component to submit a new comment */}
+                {/* Important to pass comments and setComments as props */}
+                {/* setComments will update the state of comments, which in turns updates CommentList and dynamically adds a new comment to the UI */}
+                <CommentForm
+                  comments={comments}
+                  setComments={setComments}
+                  userName={user.username}
+                />
+              </Comment.Group>
             </Segment>
           </Container>
         </Grid.Column>
@@ -168,4 +142,3 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 export default connect(mapStateToProps)(ResourcePage);
-// export default ResourcePage;

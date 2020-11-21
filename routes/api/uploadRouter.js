@@ -1,12 +1,18 @@
 const router = require("express").Router();
 const auth = require("../../middleware/auth");
-const { lowercaseDashify } = require("../../middleware/helperFunctions");
+const {
+  lowercaseDashify,
+  getTimeStamp,
+} = require("../../middleware/helperFunctions");
 const Algorithm = require("../../models/AlgorithmsModel");
 const Architecture = require("../../models/ArchitectureModel");
 const Database = require("../../models/DatabaseModel");
 const Language = require("../../models/LanguageModel");
 const Mathematics = require("../../models/MathematicsModel");
 
+// @route    POST api/upload/resource
+// @desc     Upload a resource to MongoDB (resource sent from ResouceCreation.js)
+// @access   Private
 router.post("/resource", auth, async (req, res) => {
   // When submitting a resource
   // const algorithmSchema = new Schema({
@@ -25,6 +31,7 @@ router.post("/resource", auth, async (req, res) => {
   //     comments: [],
   //     searchTerm: String,
   //   });
+  // Destructure the form submitted data from req.body
   let {
     resourceTitle,
     resourceLink,
@@ -34,12 +41,15 @@ router.post("/resource", auth, async (req, res) => {
     difficultyLevel,
     disciplineTitle,
   } = req.body;
+  // Reformat the data to be ready for backend submission
   const threadLink = lowercaseDashify(threadTitle);
   const repositoryLink = lowercaseDashify(repository);
   const disciplineLink = lowercaseDashify(disciplineTitle);
 
   console.log(threadLink, repositoryLink, disciplineLink);
 
+  // Determine which domain this resource belongs to
+  // This will determine which collection to add our resource in
   let whichDomain = "";
   switch (disciplineLink) {
     case "languages":
@@ -60,6 +70,7 @@ router.post("/resource", auth, async (req, res) => {
     default:
   }
 
+  // Create a new resource using a schema
   const newResource = new whichDomain({
     resourceTitle: resourceTitle,
     resourceLink: resourceLink,
@@ -81,35 +92,24 @@ router.post("/resource", auth, async (req, res) => {
   //   const savedResource = await newResource.save();
   //   console.log(savedResource);
 
+  // Send a success response to the frontend
   return res.json({ response: "From backend to frontend" });
 });
-/***************Comment form route ********************/
-router.post("/resource/comment/:discipline/:id", auth, async (req, res) => {
 
-  // helper function that obtains comment data and time as a strinh
-  function getTimeStamp() {
-    const monthArr = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"];
-    const d = new Date();
-    const currDate = d.getDate();
-    const currMonthNum = d.getMonth();
-    const currYear = d.getFullYear();
-    const currTime = d.toLocaleString("en-US", {
-       hour: "numeric",
-       minute: "numeric",
-       hour12: true
-       });
-    const dateString = monthArr[currMonthNum] +" " +currDate +", " + currYear +" at " + currTime;
-    return dateString;
-  }
-  
+// @route    GET api/upload/resource/comment/:discipline/:id
+// @desc     Push a comment to a resource on the backend (sent from ResourcePage.js/CommentForm.js)
+// @access   Private
+router.post("/resource/comment/:discipline/:id", auth, async (req, res) => {
+  // Create a new comment object to push on a resource's comment array
   const newComment = {
     author: req.body.author,
     text: req.body.text,
-    timeStamp: getTimeStamp()
-  }
-// finds the domain
-  let whichDomain = "";
+    timeStamp: getTimeStamp(),
+  };
 
+  // Determine which domain this resource belongs to
+  // This will determine which collection to add our resource in
+  let whichDomain = "";
   switch (req.params.discipline) {
     case "languages":
       whichDomain = Language;
@@ -128,14 +128,18 @@ router.post("/resource/comment/:discipline/:id", auth, async (req, res) => {
       break;
     default:
   }
-  console.log("Resource domain: ", whichDomain);
-  // push flag allows to add the object to the array of comments 
-  const result = await whichDomain.findByIdAndUpdate({ _id: req.params.id },{ $push: { comments: [newComment] }}, {useFindAndModify: false});
- console.log("this is the result from backend:  ");
-  console.log(result);
+  // console.log("Resource domain: ", whichDomain);
+  // push flag allows to add the object to the array of comments
+  const result = await whichDomain.findByIdAndUpdate(
+    { _id: req.params.id },
+    { $push: { comments: [newComment] } },
+    { useFindAndModify: false }
+  );
+  //   console.log("this is the result from backend:  ");
+  //   console.log(result);
 
-
-  return res.json({respose:"From backend to frontend"});
+  // Send the comment (that was just inserted to the comments array) to the frontend
+  return res.json({ response: newComment });
 });
 
 module.exports = router;

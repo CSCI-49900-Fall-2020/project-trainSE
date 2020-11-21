@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Grid, Header, Icon, Segment, Button } from "semantic-ui-react";
-import { useParams, Redirect, useRouteMatch } from "react-router-dom";
-import SideContainer from "../layout/SideContainer";
+import { Grid, Segment, Button } from "semantic-ui-react";
+import { useRouteMatch } from "react-router-dom";
+// import SideContainer from "../layout/SideContainer";
 import ThreadList from "../layout/ThreadList";
 
 // The Repository component as a functional component
@@ -79,20 +79,6 @@ const Repository = ({ auth: { user } }) => {
     // Call the asynchronous function
     fetchRepoThreads();
   }, []);
-
-  // Filter through the threads array to place data in its own array based on level
-  // const beginnerThreads = threads.filter(
-  //   (thread) => thread.level === "Beginner"
-  // );
-  // const intermediateThreads = threads.filter(
-  //   (thread) => thread.level === "Intermediate"
-  // );
-  // const advancedThreads = threads.filter(
-  //   (thread) => thread.level === "Advanced"
-  // );
-  // const beginnerThreads = threads.beginnerThreads;
-  // const intermediateThreads = threads.intermediateThreads;
-  // const advancedThreads = threads.advancedThreads;
 
   // The actual HTML/JSX to return after a component is mounted
   return (

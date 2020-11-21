@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Register from "../auth/Register";
 import AlertMsg from "../layout/AlertMsg";
 import Login from "../auth/Login";
