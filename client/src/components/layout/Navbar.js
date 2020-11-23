@@ -54,10 +54,12 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
 
       <Menu.Item position="right">
         <Menu.Item>
-          <Button as="a" color="teal">
+        <Link to="/profile">
+          <Button as="a" color="teal" >
             <Icon name="user" />
             Profile
           </Button>
+        </Link>
         </Menu.Item>
         <Button as="a" onClick={logout}>
           Log Out

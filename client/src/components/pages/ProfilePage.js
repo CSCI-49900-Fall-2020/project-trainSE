@@ -1,5 +1,5 @@
 import React from "react";
-import "../../App.js";
+// import "../../App.js";
 import {
   Segment,
   Button,
@@ -11,11 +11,11 @@ import {
   Container,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import "./Home.css";
+// import { Redirect } from "react-router-dom";
+// import "./Home.css";
 
 function ProfilePage({ isAuthenticated }) {
-  
+
     return (
         
         <React.Fragment>
