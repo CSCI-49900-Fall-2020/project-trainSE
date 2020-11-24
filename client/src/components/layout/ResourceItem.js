@@ -26,10 +26,10 @@ const ResourceItem = (props) => {
       </Card.Content>
       <Card.Content extra>
         <Label color="teal">
-          <Icon name="like" /> 23
+          <Icon name="like" color="red" /> {props.resource.likes}
         </Label>
         <Label color="teal">
-          <Icon name="comments" /> 23
+          <Icon name="comments" /> {props.resource.comments.length}
         </Label>
         <Link to={`${url}/resource/${props.resource._id}`}>
           <Label color="teal">
