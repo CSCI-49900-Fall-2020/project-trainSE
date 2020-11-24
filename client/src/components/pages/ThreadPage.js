@@ -14,7 +14,7 @@ import Axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import SideContainer from "../layout/SideContainer";
+// import SideContainer from "../layout/SideContainer";
 import ResourceItem from "../layout/ResourceItem";
 
 // The ThreadPage component as a functional component
@@ -96,9 +96,11 @@ const ThreadPage = ({ auth: { user } }) => {
 
   // Render this JSX/HTML if resources exist for this thread
   const populateResources = (
-    <Card.Group itemsPerRow={3} stackable>
-      {resourceList}
-    </Card.Group>
+    <Container>
+      <Card.Group itemsPerRow={3} stackable>
+        {resourceList}
+      </Card.Group>
+    </Container>
   );
 
   // Render this JSX/HTML if resources do not exist for this thread
@@ -118,21 +120,17 @@ const ThreadPage = ({ auth: { user } }) => {
   return (
     <React.Fragment>
       {/* {console.log("Resources after api call: ", resources)} */}
-      <Grid columns={3} divided padded style={{ height: "100vh" }}>
-        {/* sidebar / drawer component */}
-        <Grid.Column width={3}>
-          <h1>Any ideas for what could be here?</h1>
-        </Grid.Column>
-
         {/* Main Section */}
-        <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}>
-          <Container style={{ marginBottom: "3%" }}>
+          <Container >
             {/* The main header thread title */}
+            <Grid style={{ backgroundColor: "teal", padding: "45px 0 25px 0" }}>
             <span>
-              <Header as={"h1"} color="grey" style={{ marginBottom: "10px" }}>
+              <Header as="h1" textAlign="center" inverted>
                 {threadTitle} Thread
               </Header>
             </span>
+            </Grid>
+            <Grid style={{ padding: "1% 0 2% 1%" }}>
             {/* Specify the repository this thread belongs to */}
             <Label color="blue" size="large">
               {repositoryTitle}
@@ -141,18 +139,12 @@ const ThreadPage = ({ auth: { user } }) => {
             <Label color={determineColor(difficulty)} size="large">
               {difficulty}
             </Label>
+            </Grid>
           </Container>
 
           {/* Rendering the actual resources */}
           {/* Conditionally rendering if the reso */}
           {emptyResources ? loading : populateResources}
-        </Grid.Column>
-
-        {/* left section */}
-        <Grid.Column width={4} s>
-          <SideContainer />
-        </Grid.Column>
-      </Grid>
     </React.Fragment>
   );
 };

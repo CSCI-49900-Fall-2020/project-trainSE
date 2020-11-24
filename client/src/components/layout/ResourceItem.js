@@ -11,15 +11,22 @@ const ResourceItem = (props) => {
 
   // The actual HTML/JSX to return after a component is mounted
   return (
-    <Card raised>
+    <Card raised color="teal">
       <Card.Content textAlign={"left"}>
         {/* <Label as="a" color="red" ribbon>
         Overview
       </Label> */}
         <Card.Header color="black">{props.resource.resourceTitle}</Card.Header>
         <Card.Meta>
-          Posted by <strong>TrainSE</strong> 20 min ago
+          {/* Posted by <strong>TrainSE</strong> 20 min ago */}
+          Posted by <strong>TrainSE</strong> 
         </Card.Meta>
+        <Card.Meta style={{padding:"1%"}}>
+        <Icon disable name="tags" />
+        {props.resource.linkType === "Video"?  <Icon color="red" name="youtube" /> : <Icon color="blue" name="file alternate" /> }
+       
+        </Card.Meta>
+        
         {/* <Card.Description>
         Nullam quis risus eget urna mollis ornare vel eu leo.
       </Card.Description> */}
