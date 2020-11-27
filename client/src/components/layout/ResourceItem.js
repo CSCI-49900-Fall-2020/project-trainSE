@@ -8,6 +8,10 @@ const ResourceItem = (props) => {
   let { url } = useRouteMatch();
   console.log("Resource Item: ", props);
   console.log("Resource Item: ", url);
+  // 
+  //
+
+  //
 
   // The actual HTML/JSX to return after a component is mounted
   return (

@@ -11,6 +11,7 @@ import {
   Label,
   Icon,
   Comment,
+  Button,
 } from "semantic-ui-react";
 import SideContainer from "../layout/SideContainer";
 import CommentList from "../layout/CommentList";
@@ -20,6 +21,8 @@ import CommentForm from "../layout/CommentForm";
 const ResourcePage = ({ auth: { user } }) => {
   const [resource, setResource] = useState({}); // State to manage an entire resource
   const [comments, setComments] = useState([{}]); // State to manage the comments of a resource
+
+  const [likes, setLikes] = useState([{}]); //state to manage the likes of a resource
 
   // Auxiliary helper data about routing
   let { path, url } = useRouteMatch();
@@ -50,12 +53,28 @@ const ResourcePage = ({ auth: { user } }) => {
       setResource(res.data.resource);
       // Set comments's state to res.data.resource.comments
       setComments(res.data.resource.comments);
+      setLikes(res.data.likes);
     }
 
     // Call the asynchronous function
     fetchResource();
   }, []);
 
+  const increaseLikes = (username) => {
+    //current_user =user.username;
+    //const res = await axios.get(`/api/resource/likeresource/${discipline}/${id}/${username}`);
+    let liked_already;
+    const addLike = async () => {
+    const res = await Axios.get(`/api/resource/likeresource/${discipline}/${id}/${username}`);
+    liked_already = res.data.result;
+    console.log(liked_already);
+    if(liked_already === false){
+      setLikes(likes+1);
+    }
+    };
+    addLike();
+    console.log(likes)
+};
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
@@ -98,6 +117,26 @@ const ResourcePage = ({ auth: { user } }) => {
                   <Icon link name="like" color="teal" />
                   {resource.likes ? resource.likes : 0}
                 </Label>
+                <div>
+                <Button as='div' labelPosition='right'>
+                  <Button color='red'>
+                    <Icon name='heart' />
+                    Likes:
+                  </Button>
+                  <Label as='a' basic color='red' pointing='left' onClick={() => increaseLikes(user.username)}>
+                  {resource.likes ? resource.likes : 0}
+                  </Label>
+                </Button>
+                <Button as='div' labelPosition='right'>
+                  <Button basic color='blue'>
+                    <Icon name='comments' />
+                    Comments
+                  </Button>
+                  <Label as='a' basic color='blue' pointing='left'>
+                  {resource.comments ? resource.comments.length : 0}
+                  </Label>
+                </Button>
+              </div>
               </Container>
 
               {/* The actual comment section */}
