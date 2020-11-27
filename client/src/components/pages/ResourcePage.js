@@ -12,6 +12,7 @@ import {
   Icon,
   Comment,
   Button,
+  Popup
 } from "semantic-ui-react";
 import CommentList from "../layout/CommentList";
 import CommentForm from "../layout/CommentForm";
@@ -73,8 +74,32 @@ const ResourcePage = ({ auth: { user } }) => {
       if (liked_already === false) {
         setLikes(likeAmount + 1);
       }
+      else{
+        setLikes(likeAmount)
+      }
     };
     addLike();
+    console.log(likeAmount);
+  };
+  const decreaseLikes = (username) => {
+    //current_user =user.username;
+    //const res = await axios.get(`/api/resource/likeresource/${discipline}/${id}/${username}`);
+    let liked_already;
+    const subtractLike = async () => {
+      const res = await Axios.get(
+        `/api/upload/resource/unlikeResource/${discipline}/${id}/${username}`
+      );
+      console.log(res);
+      liked_already = res.data.result;
+      console.log(liked_already);
+      if (liked_already === false) {
+        setLikes(likeAmount - 1);
+      }
+      else{
+        setLikes(likeAmount)
+      }
+    };
+    subtractLike();
     console.log(likeAmount);
   };
   // The actual HTML/JSX to return after a component is mounted
@@ -132,6 +157,14 @@ const ResourcePage = ({ auth: { user } }) => {
                   {likeAmount}
                 </Label>
               </Button>
+                
+              <Button
+                  color="gray"
+                  onClick={() => decreaseLikes(user.username)}
+                >
+                  <Icon name="thumbs down" />
+              </Button>
+
               <Button as="div" labelPosition="right">
                 <Button basic color="blue">
                   <Icon name="comments" />

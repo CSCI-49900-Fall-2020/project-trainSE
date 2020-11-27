@@ -46,6 +46,7 @@ def add_to_db(listofitems,thread,repository,level,searchterm,collectionname,real
         empty_dict={
             'resourceTitle':item['title'],  #literal title from google
             'resourceLink':item['link'],
+            'resourceType':linktype(item['link']),
             'threadTitle': thread,  #this is what u should change for each search
             'threadLink':fixformat(thread) ,
             'repository':repository,  #this 
@@ -55,8 +56,10 @@ def add_to_db(listofitems,thread,repository,level,searchterm,collectionname,real
             'disciplineLink':fixformat(real_title),
             'rating':0,
             'likes':0,
+            'submittedWhen':"November 26 2020 at 9:58",
+            'submittedBy':"Open REsource",
+            'likedBy':[],
             'comments':[],
-            'linkType':linktype(item['link']),
             'search term':searchterm
         }
         #mcol = mydb["architectures"]
@@ -70,9 +73,13 @@ def main():
     print(mydb) #just check if its connected
     #mydb.algorithmanddatastructures.delete_many({})
     #returns an array with a dictionary inside
-    #mydb.architectures.delete_many({})
-    #mydb.databases.delete_many({})
-    #mydb.languages.delete_many({})
+##    mydb.architectures.delete_many({})
+##    mydb.databases.delete_many({})
+##    mydb.languages.delete_many({})
+   ## mydb.algorithmanddatastructures.delete_many({})
+   ## mydb.artificalintelligences.delete_many({})
+##    mydb.mathematics.delete_many({})
+##    
 
     ###
     #Depending how many search terms we have available, we can use this one or the one below
@@ -80,12 +87,18 @@ def main():
     ##in front of u , comment this out and uncomment out one below##
 
     search_term = input("enter a search variable:  ")
-    collection_name= input("enter the discipline(algorithmanddatastructures,architectures,databases,languages,mathematics: ") #this will be theories, maths, etc 
+    #collection_name= input("enter the discipline(algorithmanddatastructures,architectures,databases,languages,mathematics: ") #this will be theories, maths, etc 
     thread_name = input("enter a thread name (Functions, OOP, conditionals): ")
-    difficulty_level = input("enter a difficulty level (Beginner,Intermediate,Expert): ")
-    repository_name = input("enter a repository name (Python,C++): ")
-    discipline_title = input("enter the disciple title")
+    #difficulty_level = input("enter a difficulty level (Beginner,Intermediate,Expert): ")
+    #repository_name = input("enter a repository name (Python,C++): ")
+    #discipline_title = input("enter the disciple title")
 
+    
+    collection_name= "languages"
+    difficulty_level = "Beginner"
+    repository_name = "Python"
+    discipline_title = "Languages"
+    
     #collection = mydb[collection_name]
     #print(collection)
     #print(str(collection_name))
@@ -95,6 +108,7 @@ def main():
         mydb[collection_name].insert_one({
                 'resourceTitle':'',  #literal title from google
                 'resourceLink':'',
+                'resourceType':'',
                 'threadTitle':'' ,  #this is what u should change for each search
                 'threadLink':'' ,
                 'repository':'',  #this 
@@ -104,8 +118,10 @@ def main():
                 'disciplineLink':'',
                 'rating':0,
                 'likes':0,
+                'submittedWhen':'',
+                'submittedBy':'',
+                'likedBy':[],
                 'comments':[],
-                'linkType':'',
                 'search term':'',
                 
             })

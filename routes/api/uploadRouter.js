@@ -178,11 +178,12 @@ router.get(
     }
     // console.log("Resource domain: ", whichDomain);
     // push flag allows to add the object to the array of comments
+    console.log(req.params.username)
     const result = await whichDomain.findByIdAndUpdate(
       { _id: req.params.id },
-      //{ $push: { likedby: [username] } },
-      { $inc: { likes: 1 } },
-      { useFindAndModify: false }
+      { $push: { likedBy: req.params.username } }, 
+      { $inc: { likes: 1 } }
+      //{ useFindAndModify: false }
     );
     // If a movie's likeCount was modified/incremented, that means the user never liked it before
     if (result.nModified > 0) {
@@ -193,7 +194,67 @@ router.get(
     else {
       return res.status(200).send({ result: true });
     }
-    console.log(result);
+    //console.log(result);
+    //   console.log("this is the result from backend:  ");
+    //   console.log(result);
+
+    // Send the comment (that was just inserted to the comments array) to the frontend
+    //return res.json({ response: newComment });
+  }
+);
+router.get(
+  "/resource/unlikeResource/:discipline/:id/:username",
+  auth,
+  async (req, res) => {
+    // update likes
+    // const newComment = {
+    //   author: req.body.author,
+    //   //text: req.body.text,
+    //   //timeStamp: getTimeStamp(),
+    // };
+    //const author = req.body.author
+
+    // Determine which domain this resource belongs to
+    // This will determine which collection to add our resource in
+    console.log("here");
+    let whichDomain = "";
+    switch (req.params.discipline) {
+      case "languages":
+        whichDomain = Language;
+        break;
+      case "mathematics":
+        whichDomain = Mathematics;
+        break;
+      case "databases":
+        whichDomain = Database;
+        break;
+      case "architecture":
+        whichDomain = Architecture;
+        break;
+      case "algorithms-and-data-structures":
+        whichDomain = Algorithm;
+        break;
+      default:
+    }
+    // console.log("Resource domain: ", whichDomain);
+    // push flag allows to add the object to the array of comments
+    console.log(req.params.username)
+    const result = await whichDomain.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $pull: { likedBy: req.params.username } }, 
+      { $inc: { likes: -1 } }
+      //{ useFindAndModify: false }
+    );
+    // If a movie's likeCount was modified/incremented, that means the user never liked it before
+    if (result.nModified > 0) {
+      return res.status(200).send({ result: false });
+    }
+
+    // If a movie's likeCount was not modified/incremented, that means the user liked it before and should not spam
+    else {
+      return res.status(200).send({ result: true });
+    }
+    //console.log(result);
     //   console.log("this is the result from backend:  ");
     //   console.log(result);
 
