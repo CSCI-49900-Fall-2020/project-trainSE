@@ -21,7 +21,7 @@ const ResourcePage = ({ auth: { user } }) => {
   const [resource, setResource] = useState({}); // State to manage an entire resource
   const [comments, setComments] = useState([{}]); // State to manage the comments of a resource
 
-  const [likes, setLikes] = useState([{}]); //state to manage the likes of a resource
+  const [likeAmount, setLikes] = useState(0); //state to manage the likes of a resource
 
   // Auxiliary helper data about routing
   let { path, url } = useRouteMatch();
@@ -30,7 +30,7 @@ const ResourcePage = ({ auth: { user } }) => {
   let repository = routing_params[3];
   let thread = routing_params[5];
   let id = routing_params[7];
-  console.log(id);
+  //   console.log(id);
 
   // Making side effect Axios call to retrieve a resource belonging to the discipline, repository, thread specified in the url
   useEffect(() => {
@@ -52,7 +52,7 @@ const ResourcePage = ({ auth: { user } }) => {
       setResource(res.data.resource);
       // Set comments's state to res.data.resource.comments
       setComments(res.data.resource.comments);
-      setLikes(res.data.likes);
+      setLikes(res.data.resource.likes);
     }
 
     // Call the asynchronous function
@@ -64,96 +64,104 @@ const ResourcePage = ({ auth: { user } }) => {
     //const res = await axios.get(`/api/resource/likeresource/${discipline}/${id}/${username}`);
     let liked_already;
     const addLike = async () => {
-    const res = await Axios.get(`/api/resource/likeresource/${discipline}/${id}/${username}`);
-    liked_already = res.data.result;
-    console.log(liked_already);
-    if(liked_already === false){
-      setLikes(likes+1);
-    }
+      const res = await Axios.get(
+        `/api/upload/resource/likeResource/${discipline}/${id}/${username}`
+      );
+      console.log(res);
+      liked_already = res.data.result;
+      console.log(liked_already);
+      if (liked_already === false) {
+        setLikes(likeAmount + 1);
+      }
     };
     addLike();
-    console.log(likes)
-};
+    console.log(likeAmount);
+  };
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
-        {/* main section */}
-        {/* <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}> */}
-          <Container>
-            <Segment padded style={{paddingTop:"4%"}}>
-              {/* Resource title */}
-              <Header as={"h3"}>{resource.resourceTitle}</Header>
-              {/* Meta data about how long the resource was posted */}
-              <Header.Subheader style={{ color: "grey" }}>
-                {/* Posted by <strong>TrainSE</strong> . 20 min ago */}
-                Posted by <strong>TrainSE</strong> 
-              </Header.Subheader>
-              <Header.Subheader style={{ paddingTop: "1%" }}>
-              <Icon disable name="tags" color="grey" />
-                 {resource.linkType === "Video"?  <Icon color="red" name="youtube" /> : <Icon color="blue" name="file alternate" /> }
-              </Header.Subheader>
-          
-              {/* Link to the resource */}
-              <Container style={{ margin: "1%" }}>
-                <Icon name="linkify" />
-                <a href={resource.resourceLink}>Go to Website</a>
-              </Container>
-              {/* Icons indicatingg comment and like count */}
-              {/* <Container style={{ margin: "2%" }}> */}
-              <Container >
-                {/*might need to add event listener to get the button working   */}
-                {/* Comment count */}
-                <Label style={{ backgroundColor: "white" }} size="large">
-                  <Icon link name="comments" color="teal" />
-                  {resource.comments ? resource.comments.length : 0}
-                </Label>
-                {/* Like count */}
-                <Label style={{ backgroundColor: "white" }} size="large">
-                  <Icon link name="like" color="teal" />
-                  {resource.likes ? resource.likes : 0}
-                </Label>
-                <div>
-                <Button as='div' labelPosition='right'>
-                  <Button color='red'>
-                    <Icon name='heart' />
-                    Likes:
-                  </Button>
-                  <Label as='a' basic color='red' pointing='left' onClick={() => increaseLikes(user.username)}>
-                  {resource.likes ? resource.likes : 0}
-                  </Label>
-                </Button>
-                <Button as='div' labelPosition='right'>
-                  <Button basic color='blue'>
-                    <Icon name='comments' />
-                    Comments
-                  </Button>
-                  <Label as='a' basic color='blue' pointing='left'>
-                  {resource.comments ? resource.comments.length : 0}
-                  </Label>
-                </Button>
-              </div>
-              </Container>
+      {/* main section */}
+      {/* <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}> */}
+      <Container>
+        <Segment padded style={{ paddingTop: "4%" }}>
+          {/* Resource title */}
+          <Header as={"h3"}>{resource.resourceTitle}</Header>
+          {/* Meta data about how long the resource was posted */}
+          <Header.Subheader style={{ color: "grey" }}>
+            {/* Posted by <strong>TrainSE</strong> . 20 min ago */}
+            Posted by <strong>TrainSE</strong>
+          </Header.Subheader>
+          <Header.Subheader style={{ paddingTop: "1%" }}>
+            <Icon disable name="tags" color="grey" />
+            {resource.linkType === "Video" ? (
+              <Icon color="red" name="youtube" />
+            ) : (
+              <Icon color="blue" name="file alternate" />
+            )}
+          </Header.Subheader>
 
-              {/* The actual comment section */}
-              <Comment.Group>
-                {/* <Header as="h3" dividing> */}
-                <Header as="h3" >
-                  Comments
-                </Header>
-                {/* Component to render all comments */}
-                {/* comments state is passed to CommentList as prop */}
-                <CommentList comments={comments} />
-                {/* Component to submit a new comment */}
-                {/* Important to pass comments and setComments as props */}
-                {/* setComments will update the state of comments, which in turns updates CommentList and dynamically adds a new comment to the UI */}
-                <CommentForm
-                  comments={comments}
-                  setComments={setComments}
-                  userName={user.username}
-                />
-              </Comment.Group>
-            </Segment>
+          {/* Link to the resource */}
+          <Container style={{ margin: "1%" }}>
+            <Icon name="linkify" />
+            <a href={resource.resourceLink}>Go to Website</a>
           </Container>
+          {/* Icons indicatingg comment and like count */}
+          {/* <Container style={{ margin: "2%" }}> */}
+          <Container>
+            {/*might need to add event listener to get the button working   */}
+            {/* Comment count */}
+            <Label style={{ backgroundColor: "white" }} size="large">
+              <Icon link name="comments" color="teal" />
+              {resource.comments ? resource.comments.length : 0}
+            </Label>
+            {/* Like count */}
+            <Label style={{ backgroundColor: "white" }} size="large">
+              <Icon link name="like" color="teal" />
+              {resource.likes ? resource.likes : 0}
+            </Label>
+            <div>
+              <Button as="div" labelPosition="right">
+                <Button
+                  color="red"
+                  onClick={() => increaseLikes(user.username)}
+                >
+                  <Icon name="heart" />
+                  Likes:
+                </Button>
+                <Label as="a" basic color="red" pointing="left">
+                  {likeAmount}
+                </Label>
+              </Button>
+              <Button as="div" labelPosition="right">
+                <Button basic color="blue">
+                  <Icon name="comments" />
+                  Comments
+                </Button>
+                <Label as="a" basic color="blue" pointing="left">
+                  {resource.comments ? resource.comments.length : 0}
+                </Label>
+              </Button>
+            </div>
+          </Container>
+
+          {/* The actual comment section */}
+          <Comment.Group>
+            {/* <Header as="h3" dividing> */}
+            <Header as="h3">Comments</Header>
+            {/* Component to render all comments */}
+            {/* comments state is passed to CommentList as prop */}
+            <CommentList comments={comments} />
+            {/* Component to submit a new comment */}
+            {/* Important to pass comments and setComments as props */}
+            {/* setComments will update the state of comments, which in turns updates CommentList and dynamically adds a new comment to the UI */}
+            <CommentForm
+              comments={comments}
+              setComments={setComments}
+              userName={user.username}
+            />
+          </Comment.Group>
+        </Segment>
+      </Container>
     </React.Fragment>
   );
 };
