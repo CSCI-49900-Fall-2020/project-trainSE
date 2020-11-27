@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
 import Axios from "axios";
 import {
-  Grid,
+  Divider,
   Container,
   Header,
   Segment,
@@ -13,7 +13,6 @@ import {
   Comment,
   Button,
 } from "semantic-ui-react";
-import SideContainer from "../layout/SideContainer";
 import CommentList from "../layout/CommentList";
 import CommentForm from "../layout/CommentForm";
 
@@ -78,34 +77,30 @@ const ResourcePage = ({ auth: { user } }) => {
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
-      <Grid columns={3} divided style={{ height: "100vh" }}>
-        {/* side bar / drawer component */}
-        <Grid.Column width={3} style={{ paddingLeft: "25px" }}>
-          <h1>Side Bar</h1>
-          <p>
-            Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis
-            natoque penatibus et magnis dis parturient montes, nascetur
-            ridiculus mus. Nullam id dolor id nibh ultricies vehicula.
-          </p>
-        </Grid.Column>
-
         {/* main section */}
-        <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}>
+        {/* <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}> */}
           <Container>
-            <Segment padded>
+            <Segment padded style={{paddingTop:"4%"}}>
               {/* Resource title */}
               <Header as={"h3"}>{resource.resourceTitle}</Header>
               {/* Meta data about how long the resource was posted */}
               <Header.Subheader style={{ color: "grey" }}>
-                Posted by <strong>TrainSE</strong> . 20 min ago
+                {/* Posted by <strong>TrainSE</strong> . 20 min ago */}
+                Posted by <strong>TrainSE</strong> 
               </Header.Subheader>
+              <Header.Subheader style={{ paddingTop: "1%" }}>
+              <Icon disable name="tags" color="grey" />
+                 {resource.linkType === "Video"?  <Icon color="red" name="youtube" /> : <Icon color="blue" name="file alternate" /> }
+              </Header.Subheader>
+          
               {/* Link to the resource */}
-              <Container style={{ margin: "2%" }}>
+              <Container style={{ margin: "1%" }}>
                 <Icon name="linkify" />
                 <a href={resource.resourceLink}>Go to Website</a>
               </Container>
               {/* Icons indicatingg comment and like count */}
-              <Container style={{ margin: "2%" }}>
+              {/* <Container style={{ margin: "2%" }}> */}
+              <Container >
                 {/*might need to add event listener to get the button working   */}
                 {/* Comment count */}
                 <Label style={{ backgroundColor: "white" }} size="large">
@@ -141,7 +136,8 @@ const ResourcePage = ({ auth: { user } }) => {
 
               {/* The actual comment section */}
               <Comment.Group>
-                <Header as="h3" dividing>
+                {/* <Header as="h3" dividing> */}
+                <Header as="h3" >
                   Comments
                 </Header>
                 {/* Component to render all comments */}
@@ -158,13 +154,6 @@ const ResourcePage = ({ auth: { user } }) => {
               </Comment.Group>
             </Segment>
           </Container>
-        </Grid.Column>
-
-        {/* left section */}
-        <Grid.Column width={4} style={{ paddingRight: "25px" }}>
-          <SideContainer />
-        </Grid.Column>
-      </Grid>
     </React.Fragment>
   );
 };
