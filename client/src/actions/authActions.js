@@ -75,6 +75,7 @@ export const register = ({
   email,
   password,
   passwordCheck,
+  description,
 }) => async (dispatch) => {
   // Set up a config object to configure the POST request
   const config = {
@@ -91,6 +92,7 @@ export const register = ({
     email,
     password,
     passwordCheck,
+    description,
   });
 
   try {

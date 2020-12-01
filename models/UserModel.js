@@ -19,6 +19,8 @@ const userSchema = new Schema({
   ribbons: [],
   likedResources: [],
   briefDescription: String,
+  contributedResources: [],
+  openThreads: [],
 });
 
 // On the model method of a mongoose object, pass in the parameter of:

@@ -10,52 +10,11 @@ import {
   Icon,
   Step,
 } from "semantic-ui-react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-// const disciplines = [
-//   { key: "l", text: "Languages", value: "Languages" },
-//   { key: "m", text: "Mathematics", value: "Mathematics" },
-//   { key: "d", text: "Databases", value: "Databases" },
-//   { key: "ar", text: "Architecture", value: "Architecture" },
-//   {
-//     key: "ad",
-//     text: "Algorithms and Data Structures",
-//     value: "Algorithms and Data structures",
-//   },
-//   {
-//     key: "ai",
-//     text: "Artifical Intelligence",
-//     value: "Artifical Intelligence",
-//   },
-// ];
-
-// const repositories = [
-//   { key: "p", text: "Python", value: "python" },
-//   { key: "jc", text: "JavaScript", value: "javascript" },
-//   { key: "c", text: "C++", value: "c++" },
-//   { key: "j", text: "Java", value: "java" },
-//   { key: "h", text: "HTML/CSS", value: "htmlcss" },
-//   { key: "s", text: "Swift", value: "swift" },
-// ];
-
-// const threads = [
-//   { key: "c", text: "Comprehension", value: "comprehension" },
-//   { key: "s", text: "Syntax", value: "syntax" },
-//   { key: "l", text: "Libraries", value: "libraries" },
-//   { key: "o", text: "Other", value: "other" },
-// ];
-
-// const difficulty = [
-//   { key: "b", text: "Beginner", value: "Beginner" },
-//   { key: "m", text: "Intermediate", value: "Intermediate" },
-//   { key: "d", text: "Advanced", value: "Advanced" },
-// ];
-
-// const typeOfResource = [
-//   { key: "a", text: "Article", value: "Article" },
-//   { key: "v", text: "Video", value: "Video" },
-// ];
-
-function CreateResource() {
+function CreateResource({ auth: { user } }) {
+  // From the auth global state, extract the user property
   const [resource, setResource] = useState({
     resourceTitle: "",
     resourceLink: "",
@@ -64,6 +23,7 @@ function CreateResource() {
     threadTitle: "",
     difficultyLevel: "",
     resourceType: "",
+    submittedBy: user.username,
   });
 
   const [redirect, setRedirect] = useState(false);
@@ -105,7 +65,7 @@ function CreateResource() {
 
       //   If the response back was 200 okay
       if (res.status == 200) {
-        //   Redirect the user to the dashboard
+        // Redirect the user to the dashboard
         // Set the state to redirecting
         setRedirect(true);
       }
@@ -250,4 +210,16 @@ function CreateResource() {
   );
 }
 
-export default CreateResource;
+CreateResource.propTypes = {
+  //   getCurrentProfile: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  //   profile: PropTypes.object.isRequired,
+};
+const mapStateToProps = (state) => ({
+  // Our root reducer in reducer/index.js uses auth
+  // We map the auth global state to a prop called auth
+  // Now, we can use auth in this component
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(CreateResource);

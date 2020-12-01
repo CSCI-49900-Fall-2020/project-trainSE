@@ -4,25 +4,24 @@ import { connect } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
 import Axios from "axios";
 import {
-  Divider,
   Container,
   Header,
   Segment,
-  Label,
   Icon,
   Comment,
   Button,
-  Popup
 } from "semantic-ui-react";
 import CommentList from "../layout/CommentList";
 import CommentForm from "../layout/CommentForm";
 
 // The ResourcePage component as a functional component
 const ResourcePage = ({ auth: { user } }) => {
+  // From the auth global state, extract the user property
   const [resource, setResource] = useState({}); // State to manage an entire resource
   const [comments, setComments] = useState([{}]); // State to manage the comments of a resource
-
-  const [likeAmount, setLikes] = useState(0); //state to manage the likes of a resource
+  const [likeAmount, setLikes] = useState(0); // State to manage the likes of a resource
+  const [indicateLiked, setIndicateLiked] = useState("thumbs up outline"); // State to indicate a resource is liked by a filled icon
+  const [indicatedAdded, setIndicatedAdded] = useState("plus");
 
   // Auxiliary helper data about routing
   let { path, url } = useRouteMatch();
@@ -33,6 +32,7 @@ const ResourcePage = ({ auth: { user } }) => {
   let id = routing_params[7];
   //   console.log(id);
 
+  // -------------------------------------------------------------------------------------------------
   // Making side effect Axios call to retrieve a resource belonging to the discipline, repository, thread specified in the url
   useEffect(() => {
     async function fetchResource() {
@@ -46,141 +46,185 @@ const ResourcePage = ({ auth: { user } }) => {
       );
 
       // Testing things
-      // console.log("This is res.data: ", res.data);
-      // console.log("This is res.data.resource: ", res.data.resource);
+      console.log("This is res.data: ", res.data);
+      console.log("This is res.data.resource: ", res.data.resource);
 
-      // Set resource's state to res.data.resource
       setResource(res.data.resource);
-      // Set comments's state to res.data.resource.comments
       setComments(res.data.resource.comments);
       setLikes(res.data.resource.likes);
+      setIndicateLiked(
+        res.data.resource.likedBy.includes(user.username)
+          ? "thumbs up"
+          : "thumbs up outline"
+      );
     }
 
     // Call the asynchronous function
     fetchResource();
   }, []);
+  // ----------------------------------------------------------------------------------------------------
 
+  // When a user wants to increase the like count of a resource (under the impression) they haven't liked before
+  // Update the amount of likes on the backend
+  // Update the React state to reflect this state change of increased likes
   const increaseLikes = (username) => {
-    //current_user =user.username;
-    //const res = await axios.get(`/api/resource/likeresource/${discipline}/${id}/${username}`);
+    // Boolean to prevent a user from spamming likes
     let liked_already;
+
+    // Create an outer asynchronous function to thus make an inner asynchronous axios call
     const addLike = async () => {
-      const res = await Axios.get(
-        `/api/upload/resource/likeResource/${discipline}/${id}/${username}`
+      // Make a POST request to update the like count
+      const res = await Axios.post(
+        `/api/upload/resource/likeResource/${discipline}/${id}/${username}`,
+        null,
+        {
+          headers: { "x-auth-token": localStorage.getItem("token") },
+        }
       );
+      // Console log the response
       console.log(res);
-      liked_already = res.data.result;
-      console.log(liked_already);
+      // Determine if the user already liked the resource before
+      liked_already = res.data.likedBefore;
+      console.log("Did the user like this resource before: ", liked_already);
       if (liked_already === false) {
         setLikes(likeAmount + 1);
-      }
-      else{
-        setLikes(likeAmount)
+        setIndicateLiked("thumbs up");
+      } else {
+        setLikes(likeAmount);
       }
     };
     addLike();
-    console.log(likeAmount);
+    // console.log(likeAmount);
   };
+  // ----------------------------------------------------------------------------------------------------
+
+  // When a user wants to decrease the like count of a resource (under the impression) they have liked before
+  // Decrement the amount of likes on the backend
+  // Update the React state to reflect this state change of decreased likes
   const decreaseLikes = (username) => {
-    //current_user =user.username;
-    //const res = await axios.get(`/api/resource/likeresource/${discipline}/${id}/${username}`);
-    let liked_already;
-    const subtractLike = async () => {
-      const res = await Axios.get(
-        `/api/upload/resource/unlikeResource/${discipline}/${id}/${username}`
+    // No negative likeAmount
+    if (likeAmount > 0) {
+      // Boolean to prevent a user from spamming dislikes
+      let disliked;
+      // Create an outer asynchronous function to thus make an inner asynchronous axios call
+      const subtractLike = async () => {
+        // Make a POST request to update the like count
+        const res = await Axios.post(
+          `/api/upload/resource/unlikeResource/${discipline}/${id}/${username}`,
+          null,
+          {
+            headers: { "x-auth-token": localStorage.getItem("token") },
+          }
+        );
+        console.log(res);
+        disliked = res.data.ableToDislike;
+        if (disliked === true) {
+          setLikes(likeAmount - 1);
+          setIndicateLiked("thumbs up outline");
+        } else {
+          setLikes(likeAmount);
+        }
+      };
+      subtractLike();
+      // console.log(likeAmount);
+    }
+  };
+  // ----------------------------------------------------------------------------------------------------
+
+  const addToMyRepository = (username) => {
+    // Create an outer asynchronous function to thus make an inner asynchronous axios call
+    const addToProfileRepo = async () => {
+      // Make a POST request to add to my repo
+      const res = await Axios.post(
+        `/api/upload/resource/addToProfile/${discipline}/${id}/${username}`,
+        null,
+        {
+          headers: { "x-auth-token": localStorage.getItem("token") },
+        }
       );
-      console.log(res);
-      liked_already = res.data.result;
-      console.log(liked_already);
-      if (liked_already === false) {
-        setLikes(likeAmount - 1);
-      }
-      else{
-        setLikes(likeAmount)
+
+      if (res.status === 200) {
+        setIndicatedAdded("check");
       }
     };
-    subtractLike();
-    console.log(likeAmount);
+
+    addToProfileRepo();
   };
+  // ----------------------------------------------------------------------------------------------------
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
       {/* main section */}
       {/* <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}> */}
-      <Container>
-        <Segment padded style={{ paddingTop: "4%" }}>
+      <Container style={{ paddingTop: "10px" }}>
+        <Segment padded style={{ paddingTop: "20px" }}>
           {/* Resource title */}
-          <Header as={"h3"}>{resource.resourceTitle}</Header>
-          {/* Meta data about how long the resource was posted */}
-          <Header.Subheader style={{ color: "grey" }}>
-            {/* Posted by <strong>TrainSE</strong> . 20 min ago */}
-            Posted by <strong>TrainSE</strong>
-          </Header.Subheader>
-          <Header.Subheader style={{ paddingTop: "1%" }}>
-            <Icon disable name="tags" color="grey" />
+          <Header as="h1" dividing>
+            {resource.resourceTitle}{" "}
             {resource.linkType === "Video" ? (
               <Icon color="red" name="youtube" />
             ) : (
               <Icon color="blue" name="file alternate" />
             )}
+          </Header>
+          {/* Meta data about how long the resource was posted */}
+          <Header.Subheader style={{ color: "grey" }}>
+            Posted by <strong>{resource.submittedBy}</strong> on{" "}
+            {resource.submittedWhen}
           </Header.Subheader>
+          {/* Meta data about resource type icon */}
+          <Header.Subheader style={{ paddingTop: "1%" }}></Header.Subheader>
 
           {/* Link to the resource */}
           <Container style={{ margin: "1%" }}>
             <Icon name="linkify" />
-            <a href={resource.resourceLink}>Go to Website</a>
+            <a href={resource.resourceLink} target="_blank">
+              Go to Website
+            </a>
           </Container>
-          {/* Icons indicatingg comment and like count */}
-          {/* <Container style={{ margin: "2%" }}> */}
-          <Container>
-            {/*might need to add event listener to get the button working   */}
-            {/* Comment count */}
-            <Label style={{ backgroundColor: "white" }} size="large">
-              <Icon link name="comments" color="teal" />
-              {resource.comments ? resource.comments.length : 0}
-            </Label>
-            {/* Like count */}
-            <Label style={{ backgroundColor: "white" }} size="large">
-              <Icon link name="like" color="teal" />
-              {resource.likes ? resource.likes : 0}
-            </Label>
-            <div>
-              <Button as="div" labelPosition="right">
-                <Button
-                  color="red"
-                  onClick={() => increaseLikes(user.username)}
-                >
-                  <Icon name="heart" />
-                  Likes:
-                </Button>
-                <Label as="a" basic color="red" pointing="left">
-                  {likeAmount}
-                </Label>
-              </Button>
-                
-              <Button
-                  color="gray"
-                  onClick={() => decreaseLikes(user.username)}
-                >
-                  <Icon name="thumbs down" />
-              </Button>
 
-              <Button as="div" labelPosition="right">
-                <Button basic color="blue">
-                  <Icon name="comments" />
-                  Comments
-                </Button>
-                <Label as="a" basic color="blue" pointing="left">
-                  {resource.comments ? resource.comments.length : 0}
-                </Label>
+          {/* Icons indicating like buttons and comment section */}
+          <Container>
+            {/* Button group dealing with likes and dislikes */}
+            <Button.Group style={{ paddingRight: "10px" }}>
+              {/* Thumps ub button to increase likes */}
+              <Button
+                color="green"
+                onClick={() => increaseLikes(user.username)}
+              >
+                <Icon name={indicateLiked} />
+                {likeAmount}
               </Button>
-            </div>
+              {/* Or divider */}
+              <Button.Or />
+              {/* Thumbs down button to decrease likes */}
+              <Button
+                icon
+                color="red"
+                onClick={() => decreaseLikes(user.username)}
+              >
+                <Icon name="thumbs down outline" />
+              </Button>
+            </Button.Group>
+
+            {/* Add to favorites button */}
+            <Button
+              color="teal"
+              icon
+              labelPosition="right"
+              onClick={() => addToMyRepository(user.username)}
+            >
+              Add to Favorites
+              <Icon name={indicatedAdded} />
+            </Button>
           </Container>
 
           {/* The actual comment section */}
           <Comment.Group>
             {/* <Header as="h3" dividing> */}
-            <Header as="h3">Comments</Header>
+            <Header as="h3">
+              Comments ({resource.comments ? resource.comments.length : 0})
+            </Header>
             {/* Component to render all comments */}
             {/* comments state is passed to CommentList as prop */}
             <CommentList comments={comments} />

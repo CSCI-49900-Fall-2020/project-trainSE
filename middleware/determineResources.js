@@ -3,6 +3,7 @@ const Architecture = require("../models/ArchitectureModel");
 const Database = require("../models/DatabaseModel");
 const Language = require("../models/LanguageModel");
 const Mathematics = require("../models/MathematicsModel");
+const Ai = require("../models/AIModel");
 
 const fetchResources = async (discipline, repository, thread) => {
   console.log(discipline, repository, thread);
@@ -24,6 +25,9 @@ const fetchResources = async (discipline, repository, thread) => {
       break;
     case "algorithms-and-data-structures":
       whichDomain = Algorithm;
+      break;
+    case "artificial-intelligence":
+      whichDomain = Ai;
       break;
     default:
   }

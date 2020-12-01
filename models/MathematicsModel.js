@@ -14,9 +14,11 @@ const mathematicsSchema = new Schema({
   disciplineLink: String,
   rating: Number,
   likes: Number,
-  submittedBy: String,
+  // dislikes: Number,
   submittedWhen: String,
+  submittedBy: String,
   likedBy: [],
+  // dislikedBy: [],
   comments: [],
   searchTerm: String,
 });

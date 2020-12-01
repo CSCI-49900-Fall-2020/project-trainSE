@@ -30,6 +30,7 @@ function Register({ setAlert, register, isAuthenticated }) {
     username: "",
     password: "",
     passwordCheck: "",
+    description: "",
   });
 
   // Destructure the formData state
@@ -40,6 +41,7 @@ function Register({ setAlert, register, isAuthenticated }) {
     username,
     password,
     passwordCheck,
+    description,
   } = formData;
 
   // Everytime a change is detected with user input
@@ -67,6 +69,7 @@ function Register({ setAlert, register, isAuthenticated }) {
         email,
         password,
         passwordCheck,
+        description,
       });
     }
   };
@@ -133,6 +136,15 @@ function Register({ setAlert, register, isAuthenticated }) {
                 placeholder="E-mail Address"
                 onChange={(e) => onChange(e)}
               />
+              {/* Description input */}
+              <Form.TextArea
+                fluid
+                name="description"
+                label="Brief Desciption"
+                placeholder="Tell us about yourself (favorite domains of comp sci, hobbies, specialize in any niches, etc."
+                onChange={(e) => onChange(e)}
+              />
+
               {/* Password input */}
               <Form.Input
                 fluid

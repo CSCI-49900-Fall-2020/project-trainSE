@@ -2,13 +2,14 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/UserModel");
+const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
 router.get("/", (req, res) => {
   return res.send("hello");
 });
 
-// @route POST /users/register
+// @route POST /api/users/register
 // @desc Register user onto MongoDB database
 // @access Public
 router.post(
@@ -39,6 +40,7 @@ router.post(
         username,
         password,
         passwordCheck,
+        description,
       } = req.body;
 
       // Validation code -----------------------------------------------------------------
@@ -49,7 +51,8 @@ router.post(
         !passwordCheck ||
         !username ||
         !firstName ||
-        !lastName
+        !lastName ||
+        !description
       ) {
         // The res object will have a status of 400
         // .json() serilazies the object passed into JSON and sends it in the HTTP
@@ -87,6 +90,7 @@ router.post(
         username: username,
         firstName: firstName,
         lastName: lastName,
+        briefDescription: description,
       });
       // Save the new user on the database
       const savedUser = await newUser.save();
@@ -124,5 +128,55 @@ router.post(
     }
   }
 );
+
+router.get("/getUser/:userid", auth, async (req, res) => {
+  let { userid } = req.params;
+
+  console.log(userid);
+  let foundUser = await User.findById({ _id: userid });
+  console.log(foundUser);
+  return res.status(200).json({ foundUser: foundUser });
+});
+
+// @route    POST api/users/deleteResource/:userid/:resourceid
+// @desc     Decrement the like count of a resource on the backend (sent from ResourcePage.js)
+// @access   Private
+router.post("/deleteResource/:username/:resourceid", auth, async (req, res) => {
+  let { username, resourceid } = req.params;
+  // console.log(req.params);
+  // console.log(req.body);
+
+  User.findOne({ username: username }, async function (err, foundUser) {
+    // Document was not found
+    if (err) {
+      console.log(err);
+    }
+    // Document was found
+    else {
+      // console.log(foundUser);
+
+      let wasThereSomethingToRemove = false; // Keep track if a user can actually remove something
+      // Loop through a user's likes array to find the song object in their array they want to remove (query the song object with its _id)
+      for (let i = 0; i < foundUser.likedResources.length; i++) {
+        // If the song the user wants to remove is also a song in their likes array
+        if (foundUser.likedResources[i]._id == resourceid) {
+          // Take the last element, replace it with the element we want to remove
+          foundUser.likedResources[i] =
+            foundUser.likedResources[foundUser.likedResources.length - 1];
+          foundUser.likedResources.pop(); // Remove last element
+          wasThereSomethingToRemove = true; // There was something to actually remove
+        }
+      }
+
+      console.log(resourceid + " was removed");
+      // The user's like array was altered by removing a song, so save the new changes
+      let result = await foundUser.save();
+      // Send an OK response back to the client, and also whether there was something to remove or not
+      return res.status(200).send({ result: wasThereSomethingToRemove });
+    }
+  });
+
+  // return res.status(200).json({ data: "successfully connected" });
+});
 
 module.exports = router;

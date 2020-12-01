@@ -4,34 +4,37 @@ const {
   lowercaseDashify,
   getTimeStamp,
 } = require("../../middleware/helperFunctions");
+const User = require("../../models/UserModel");
 const Algorithm = require("../../models/AlgorithmsModel");
 const Architecture = require("../../models/ArchitectureModel");
 const Database = require("../../models/DatabaseModel");
 const Language = require("../../models/LanguageModel");
 const Mathematics = require("../../models/MathematicsModel");
+const Ai = require("../../models/AIModel");
 
 // @route    POST api/upload/resource
 // @desc     Upload a resource to MongoDB (resource sent from ResouceCreation.js)
 // @access   Private
 router.post("/resource", auth, async (req, res) => {
-  // When submitting a resource
-  // const algorithmSchema = new Schema({
-  //     resourceTitle: String,
-  //     resourceLink: String,
-  //     resourceType: String,
-  //     threadTitle: String,
-  //     threadLink: String,
-  //     repository: String,
-  //     repositoryLink: String,
-  //     difficultyLevel: String,
-  //     disciplineTitle: String,
-  //     disciplineLink: String,
-  //     rating: Number,
-  //     likes: Number,
-  //     comments: [],
-  //     searchTerm: String,
-  //   });
-  // Destructure the form submitted data from req.body
+  // resourceTitle: String,
+  // resourceLink: String,
+  // resourceType: String,
+  // threadTitle: String,
+  // threadLink: String,
+  // repository: String,
+  // repositoryLink: String,
+  // difficultyLevel: String,
+  // disciplineTitle: String,
+  // disciplineLink: String,
+  // rating: Number,
+  // likes: Number,
+  // dislikes: Number,
+  // submittedWhen: String,
+  // submittedBy: String,
+  // likedBy: [],
+  // dislikedBy: [],
+  // comments: [],
+  // searchTerm: String,
   let {
     resourceTitle,
     resourceLink,
@@ -40,6 +43,7 @@ router.post("/resource", auth, async (req, res) => {
     repository,
     difficultyLevel,
     disciplineTitle,
+    submittedBy,
   } = req.body;
   // Reformat the data to be ready for backend submission
   const threadLink = lowercaseDashify(threadTitle);
@@ -67,6 +71,9 @@ router.post("/resource", auth, async (req, res) => {
     case "algorithms-and-data-structures":
       whichDomain = Algorithm;
       break;
+    case "artificial-intelligence":
+      whichDomain = Ai;
+      break;
     default:
   }
 
@@ -84,13 +91,25 @@ router.post("/resource", auth, async (req, res) => {
     disciplineLink: disciplineLink,
     rating: 0,
     likes: 0,
+    submittedWhen: getTimeStamp(),
+    submittedBy: submittedBy,
+    likedBy: [],
     comments: [],
     searchTerm: "",
   });
 
   console.log(newResource);
-  //   const savedResource = await newResource.save();
-  //   console.log(savedResource);
+  // Save the resource onto MongoDB
+  const savedResource = await newResource.save();
+  console.log(savedResource);
+
+  // Credit the user who saved the resource
+  const creditUser = await User.findOneAndUpdate(
+    { username: submittedBy },
+    { $push: { contributedResources: savedResource } },
+    { useFindAndModify: false }
+  );
+  console.log(creditUser);
 
   // Send a success response to the frontend
   return res.json({ response: "From backend to frontend" });
@@ -126,9 +145,13 @@ router.post("/resource/comment/:discipline/:id", auth, async (req, res) => {
     case "algorithms-and-data-structures":
       whichDomain = Algorithm;
       break;
+    case "artificial-intelligence":
+      whichDomain = Ai;
+      break;
     default:
   }
   // console.log("Resource domain: ", whichDomain);
+
   // push flag allows to add the object to the array of comments
   const result = await whichDomain.findByIdAndUpdate(
     { _id: req.params.id },
@@ -142,23 +165,19 @@ router.post("/resource/comment/:discipline/:id", auth, async (req, res) => {
   return res.json({ response: newComment });
 });
 
-router.get(
+// @route    POST api/upload/likeResource/:discipline/:id/:username
+// @desc     Decrement the like count of a resource on the backend (sent from ResourcePage.js)
+// @access   Private
+router.post(
   "/resource/likeResource/:discipline/:id/:username",
   auth,
   async (req, res) => {
-    // update likes
-    // const newComment = {
-    //   author: req.body.author,
-    //   //text: req.body.text,
-    //   //timeStamp: getTimeStamp(),
-    // };
-    //const author = req.body.author
-
+    let { discipline, id, username } = req.params;
+    console.log("----------In the likeResource route-----------------");
     // Determine which domain this resource belongs to
     // This will determine which collection to add our resource in
-    console.log("here");
     let whichDomain = "";
-    switch (req.params.discipline) {
+    switch (discipline) {
       case "languages":
         whichDomain = Language;
         break;
@@ -174,51 +193,53 @@ router.get(
       case "algorithms-and-data-structures":
         whichDomain = Algorithm;
         break;
+      case "artificial-intelligence":
+        whichDomain = Ai;
+        break;
       default:
     }
-    // console.log("Resource domain: ", whichDomain);
-    // push flag allows to add the object to the array of comments
-    console.log(req.params.username)
-    const result = await whichDomain.findByIdAndUpdate(
-      { _id: req.params.id },
-      { $push: { likedBy: req.params.username } }, 
-      { $inc: { likes: 1 } }
-      //{ useFindAndModify: false }
+    console.log("Resource domain: ", whichDomain);
+
+    // updateOne first parameter is document we want to find, second parameter is the changes we want to make
+    let result = await whichDomain.updateOne(
+      // $ne means if the username is not equal to any element in likedBy
+      { _id: id, likedBy: { $ne: username } }, // Query: find the document in the database with the id and username the client provided
+      { $inc: { likes: 1 }, $push: { likedBy: username } }
+    ); // Change: change that found resource document's total likes and push the username to the array of users who liked the resource
+
+    // Seeing if anything was found AND modified
+    console.log("Number of documents matched: " + result.n);
+    console.log("Number of documents modified: " + result.nModified);
+    console.log(
+      "-------------------------------------------------------------------"
     );
-    // If a movie's likeCount was modified/incremented, that means the user never liked it before
+
+    // If a resource's likes was modified/incremented, that means the user never liked it before
     if (result.nModified > 0) {
-      return res.status(200).send({ result: false });
+      // Send to the frontend that the user never liked it before
+      return res.status(200).send({ likedBefore: false });
     }
 
-    // If a movie's likeCount was not modified/incremented, that means the user liked it before and should not spam
+    // If a song's likeCount was not modified/incremented, that means the user liked it before and should not spam
     else {
-      return res.status(200).send({ result: true });
+      return res.status(200).send({ likedBefore: true });
     }
-    //console.log(result);
-    //   console.log("this is the result from backend:  ");
-    //   console.log(result);
-
-    // Send the comment (that was just inserted to the comments array) to the frontend
-    //return res.json({ response: newComment });
   }
 );
-router.get(
+
+// @route    POST api/upload/resource/unlikeResource/:discipline/:id/:username
+// @desc     Decrement the like count of a resource on the backend (sent from ResourcePage.js)
+// @access   Private
+router.post(
   "/resource/unlikeResource/:discipline/:id/:username",
   auth,
   async (req, res) => {
-    // update likes
-    // const newComment = {
-    //   author: req.body.author,
-    //   //text: req.body.text,
-    //   //timeStamp: getTimeStamp(),
-    // };
-    //const author = req.body.author
+    const { discipline, id, username } = req.params;
 
     // Determine which domain this resource belongs to
     // This will determine which collection to add our resource in
-    console.log("here");
     let whichDomain = "";
-    switch (req.params.discipline) {
+    switch (discipline) {
       case "languages":
         whichDomain = Language;
         break;
@@ -234,32 +255,77 @@ router.get(
       case "algorithms-and-data-structures":
         whichDomain = Algorithm;
         break;
+      case "artificial-intelligence":
+        whichDomain = Ai;
+        break;
       default:
     }
     // console.log("Resource domain: ", whichDomain);
-    // push flag allows to add the object to the array of comments
-    console.log(req.params.username)
-    const result = await whichDomain.findByIdAndUpdate(
-      { _id: req.params.id },
-      { $pull: { likedBy: req.params.username } }, 
-      { $inc: { likes: -1 } }
-      //{ useFindAndModify: false }
+
+    // updateOne first parameter is document we want to find, second parameter is the changes we want to make
+    console.log(req.params.username);
+    const result = await whichDomain.updateOne(
+      // Query the resource by utilizing the id as an identifier and making sure the user is in likedBy
+      { _id: id, likedBy: username },
+      // pull a username out of the likedBy array and decrement the likes by -1
+      { $pull: { likedBy: username }, $inc: { likes: -1 } }
     );
-    // If a movie's likeCount was modified/incremented, that means the user never liked it before
+
+    // If a resource's likes was modified/decremented, that means the user liked it before
     if (result.nModified > 0) {
-      return res.status(200).send({ result: false });
+      return res.status(200).send({ ableToDislike: true });
     }
 
-    // If a movie's likeCount was not modified/incremented, that means the user liked it before and should not spam
+    // If a resource's likes was not modified/decremented, that means the user never liked it in the first place
     else {
-      return res.status(200).send({ result: true });
+      return res.status(200).send({ ableToDislike: false });
     }
-    //console.log(result);
-    //   console.log("this is the result from backend:  ");
-    //   console.log(result);
+  }
+);
 
-    // Send the comment (that was just inserted to the comments array) to the frontend
-    //return res.json({ response: newComment });
+// @route    POST api/upload/resource/addToProfile/:discipline/:id/:username
+// @desc     Decrement the like count of a resource on the backend (sent from ResourcePage.js)
+// @access   Private
+router.post(
+  "/resource/addToProfile/:discipline/:id/:username",
+  auth,
+  async (req, res) => {
+    const { discipline, id, username } = req.params;
+
+    // Determine which domain this resource belongs to
+    // This will determine which collection to add our resource in
+    let whichDomain = "";
+    switch (discipline) {
+      case "languages":
+        whichDomain = Language;
+        break;
+      case "mathematics":
+        whichDomain = Mathematics;
+        break;
+      case "databases":
+        whichDomain = Database;
+        break;
+      case "architecture":
+        whichDomain = Architecture;
+        break;
+      case "algorithms-and-data-structures":
+        whichDomain = Algorithm;
+        break;
+      case "artificial-intelligence":
+        whichDomain = Ai;
+        break;
+      default:
+    }
+
+    let savedResource = await whichDomain.findOne({ _id: id });
+
+    let result = await User.findOneAndUpdate(
+      { username: username, likedResources: { $ne: savedResource } },
+      { $push: { likedResources: savedResource } },
+      { useFindAndModify: false }
+    );
+    console.log(result);
+    return res.status(200).json({ data: "Added to your repository" });
   }
 );
 

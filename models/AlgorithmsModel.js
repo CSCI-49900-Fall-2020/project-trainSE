@@ -14,9 +14,11 @@ const algorithmSchema = new Schema({
   disciplineLink: String,
   rating: Number,
   likes: Number,
+  // dislikes: Number,
   submittedWhen: String,
   submittedBy: String,
   likedBy: [],
+  // dislikedBy: [],
   comments: [],
   searchTerm: String,
 });
