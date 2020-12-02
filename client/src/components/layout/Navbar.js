@@ -36,19 +36,22 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
               Submit a Resource
             </Link>
           </Dropdown.Item>
-
-          <Dropdown.Item>Open a Thread</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Header>Header Item</Dropdown.Header>
           <Dropdown.Item>
+            <Link to="/createThread" style={{ color: "black" }}>
+            Open a Thread
+            </Link>
+          </Dropdown.Item>
+          {/* <Dropdown.Divider /> */}
+          {/* <Dropdown.Header>Header Item</Dropdown.Header> */}
+          {/* <Dropdown.Item>
             <i className="dropdown icon" />
             <span className="text">Submenu</span>
             <Dropdown.Menu>
               <Dropdown.Item>List Item</Dropdown.Item>
               <Dropdown.Item>List Item</Dropdown.Item>
             </Dropdown.Menu>
-          </Dropdown.Item>
-          <Dropdown.Item>List Item</Dropdown.Item>
+          </Dropdown.Item> */}
+          {/* <Dropdown.Item>List Item</Dropdown.Item> */}
         </Dropdown.Menu>
       </Dropdown>
 

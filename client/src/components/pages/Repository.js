@@ -3,7 +3,7 @@ import Axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, Segment, Button } from "semantic-ui-react";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, Link } from "react-router-dom";
 // import SideContainer from "../layout/SideContainer";
 import ThreadList from "../layout/ThreadList";
 
@@ -94,7 +94,9 @@ const Repository = ({ auth: { user } }) => {
       >
         {threads[0].repository} Repository
         <Button fluid compact style={{ marginTop: "10px" }}>
+          <Link to="/createThread" style={{ color: "black" }}>
           Open A New Thread?
+          </Link>
         </Button>
       </Segment>
 

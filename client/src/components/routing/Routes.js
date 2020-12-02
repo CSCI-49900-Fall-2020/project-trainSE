@@ -9,7 +9,8 @@ import Repository from "../pages/Repository";
 import ThreadPage from "../pages/ThreadPage";
 import ResourcePage from "../pages/ResourcePage";
 import ResourceCreation from "../pages/ResourceCreation";
-import ProfilePage from "../pages/ProfilePage"
+import ProfilePage from "../pages/ProfilePage";
+import ThreadCreation from "../pages/ThreadCreation";
 
 const repository = ["python", "c++", "java"];
 
@@ -45,6 +46,11 @@ const Routes = () => {
           path="/profile"
           exact
           component={ProfilePage}
+        />
+         <PrivateRoute
+          path="/createThread"
+          exact
+          component={ThreadCreation}
         />
       </Switch>
       {/*just for testing */}
