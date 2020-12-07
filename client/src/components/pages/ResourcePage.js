@@ -102,32 +102,29 @@ const ResourcePage = ({ auth: { user } }) => {
   // Decrement the amount of likes on the backend
   // Update the React state to reflect this state change of decreased likes
   const decreaseLikes = (username) => {
-    // No negative likeAmount
-    if (likeAmount > 0) {
-      // Boolean to prevent a user from spamming dislikes
-      let disliked;
-      // Create an outer asynchronous function to thus make an inner asynchronous axios call
-      const subtractLike = async () => {
-        // Make a POST request to update the like count
-        const res = await Axios.post(
-          `/api/upload/resource/unlikeResource/${discipline}/${id}/${username}`,
-          null,
-          {
-            headers: { "x-auth-token": localStorage.getItem("token") },
-          }
-        );
-        console.log(res);
-        disliked = res.data.ableToDislike;
-        if (disliked === true) {
-          setLikes(likeAmount - 1);
-          setIndicateLiked("thumbs up outline");
-        } else {
-          setLikes(likeAmount);
+    // Boolean to prevent a user from spamming dislikes
+    let disliked;
+    // Create an outer asynchronous function to thus make an inner asynchronous axios call
+    const subtractLike = async () => {
+      // Make a POST request to update the like count
+      const res = await Axios.post(
+        `/api/upload/resource/unlikeResource/${discipline}/${id}/${username}`,
+        null,
+        {
+          headers: { "x-auth-token": localStorage.getItem("token") },
         }
-      };
-      subtractLike();
-      // console.log(likeAmount);
-    }
+      );
+      console.log(res);
+      disliked = res.data.ableToDislike;
+      if (disliked === true) {
+        setLikes(likeAmount - 1);
+        setIndicateLiked("thumbs up outline");
+      } else {
+        setLikes(likeAmount);
+      }
+    };
+    subtractLike();
+    // console.log(likeAmount);
   };
   // ----------------------------------------------------------------------------------------------------
 
