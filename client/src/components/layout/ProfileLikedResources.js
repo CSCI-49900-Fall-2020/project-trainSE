@@ -21,7 +21,7 @@ function ProfileLikedResources(props) {
             <Label color={determineColor(props.resource.difficultyLevel)}>
               {props.resource.difficultyLevel}
             </Label>
-            {props.resource.linkType === "Video" ? (
+            {props.resource.resourceType === "Video" ? (
               <Icon color="red" name="youtube" />
             ) : (
               <Icon color="blue" name="file alternate" />
@@ -34,15 +34,11 @@ function ProfileLikedResources(props) {
             href={props.resource.resourceLink}
             style={{ margin: "10px 0px 10px 0px" }}
             color="blue"
+            size="mini"
           >
             Website
             <Icon name="world" />
-          </Button>
-        </Card.Content>
-        <Card.Content extra>
-          <Label color="teal">{props.resource.disciplineTitle}</Label>
-          <Label color="teal">{props.resource.repository}</Label>
-          <Label color="teal">{props.resource.threadTitle}</Label>
+          </Button>{" "}
           <Button
             color="red"
             icon
@@ -51,6 +47,11 @@ function ProfileLikedResources(props) {
           >
             <Icon name="trash" />
           </Button>
+        </Card.Content>
+        <Card.Content extra>
+          <Label color="teal">{props.resource.disciplineTitle}</Label>
+          <Label color="teal">{props.resource.repository}</Label>
+          <Label color="teal">{props.resource.threadTitle}</Label>
         </Card.Content>
       </Card>
     </>

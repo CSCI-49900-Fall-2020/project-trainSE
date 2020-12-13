@@ -95,6 +95,7 @@ router.post("/resource", auth, async (req, res) => {
     submittedWhen: getTimeStamp(),
     submittedBy: submittedBy,
     likedBy: [],
+    timestamp: Date.now(),
     comments: [],
     searchTerm: "",
   });
@@ -330,49 +331,47 @@ router.post(
   }
 );
 
-
 // @route    POST api/upload/thread
 // @desc     Push a new thread to thread collection (thread sent from threadCreation.js)
 // @access   Private
 router.post("/thread", auth, async (req, res) => {
+  let repositoryTitle = req.body.repository;
+  let threadTitle = req.body.threadTitle;
+  let difficultyLevel = req.body.difficultyLevel;
+  let submittedBy = req.body.submittedBy;
 
- let repositoryTitle = req.body.repository;
- let threadTitle= req.body.threadTitle;
- let difficultyLevel = req.body.difficultyLevel;
- let submittedBy = req.body.submittedBy;
+  let threadLevelArr = "";
+  // Determine which array this thread belongs to
+  switch (difficultyLevel) {
+    case "Beginner":
+      threadLevelArr = "beginnerThreads";
+      break;
+    case "Intermediate":
+      threadLevelArr = "intermediateThreads";
+      break;
+    case "Advanced":
+      threadLevelArr = "advancedThreads";
+      break;
+    default:
+  }
+  //  console.log("thread level array: ", threadLevelArr);
 
-let threadLevelArr = "";
-// Determine which array this thread belongs to
-switch(difficultyLevel) {
-  case "Beginner":
-    threadLevelArr = "beginnerThreads";
-    break;
-  case "Intermediate":
-    threadLevelArr = "intermediateThreads";
-    break;
-  case "Advanced":
-    threadLevelArr = "advancedThreads"; 
-    break;
-  default:
-}
-//  console.log("thread level array: ", threadLevelArr);
-  
-    // add the thread to MongoDB
-    const result = await Thread.findOneAndUpdate(
-      {repository: repositoryTitle},
-      {$push:{beginnerThreads: [threadTitle]}},
-      { useFindAndModify: false }
-    );
-    console.log(result);
-  
-    // // Credit the user who added the new thread
-    const creditUser = await User.findOneAndUpdate(
-      { username: submittedBy },
-      { $push: { openThreads: threadTitle} },
-      { useFindAndModify: false }
-    );
-    console.log(creditUser);
-  
+  // add the thread to MongoDB
+  const result = await Thread.findOneAndUpdate(
+    { repository: repositoryTitle },
+    { $push: { [threadLevelArr]: [threadTitle] } },
+    { useFindAndModify: false }
+  );
+  console.log(result);
+
+  // // Credit the user who added the new thread
+  const creditUser = await User.findOneAndUpdate(
+    { username: submittedBy },
+    { $push: { openThreads: threadTitle } },
+    { useFindAndModify: false }
+  );
+  console.log(creditUser);
+
   // Send a success response to the frontend
   return res.json({ response: "From backend to frontend" });
 });

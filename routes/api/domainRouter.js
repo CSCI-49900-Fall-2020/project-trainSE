@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const auth = require("../../middleware/auth");
 const Domain = require("../../models/DomainModel");
+const Thread = require("../../models/ThreadModel");
 const fetchThreads = require("../../middleware/determineRepo");
 const fetchResources = require("../../middleware/determineResources");
 const fetchOneResource = require("../../middleware/determineResource");
@@ -59,5 +60,77 @@ router.get(
     return res.json({ resource: resource });
   }
 );
+
+// @route    GET api/domain/fetchDropdownRepos/:discipline
+// @desc     Retrieve the repos for a given discipline (mostly for ResourceCreation.js dropdown)
+// @access   Private
+router.get("/fetchDropdownRepos/:discipline", auth, async (req, res) => {
+  const { discipline } = req.params;
+
+  const domainData = await Domain.findOne({ discipline: discipline });
+  // console.log(domainData);
+  const options = [];
+  let rep;
+
+  for (repo of domainData.repositories) {
+    let optionObject = {
+      key: repo.repoLink,
+      text: repo.repository,
+      value: repo.repository,
+    };
+    options.push(optionObject);
+  }
+
+  // console.log(options);
+  return res.json({ repos: options });
+});
+
+// @route    GET api/domain/fetchDropdownRepos/:repository
+// @desc     Retrieve the repos for a given discipline (mostly for ResourceCreation.js dropdown)
+// @access   Private
+router.get("/fetchDropdownThreads/:repository", auth, async (req, res) => {
+  const { repository } = req.params;
+  // console.log(repository);
+  const threads = await Thread.findOne({ repository: repository });
+  console.log("This is the threads: ", threads);
+  const beginnerOptions = [];
+  const intermediateOptions = [];
+  const advancedOptions = [];
+  let thread;
+
+  for (thread of threads.beginnerThreads) {
+    let optionObject = {
+      key: thread,
+      text: thread,
+      value: thread,
+      difficulty: "Beginner",
+    };
+    beginnerOptions.push(optionObject);
+  }
+
+  for (thread of threads.intermediateThreads) {
+    let optionObject = {
+      key: thread,
+      text: thread,
+      value: thread,
+      difficulty: "Intermediate",
+    };
+    intermediateOptions.push(optionObject);
+  }
+
+  for (thread of threads.advancedThreads) {
+    let optionObject = {
+      key: thread,
+      text: thread,
+      value: thread,
+      difficulty: "Advanced",
+    };
+    advancedOptions.push(optionObject);
+  }
+  console.log("Beginner: :", beginnerOptions);
+  console.log("Intermediate: :", intermediateOptions);
+  console.log("Advanced: :", advancedOptions);
+  return res.json({ beginnerOptions, intermediateOptions, advancedOptions });
+});
 
 module.exports = router;

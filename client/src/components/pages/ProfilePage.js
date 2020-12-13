@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Segment,
-  Button,
+  Divider,
   Header,
   Image,
   Grid,
@@ -9,6 +9,7 @@ import {
   Popup,
   Container,
   Label,
+  List,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -19,10 +20,14 @@ import Axios from "axios";
 
 // The ProfilePage component as a functional component
 function ProfilePage({ auth: { user } }) {
+  // -------------------- LOCAL REACT STATE --------------------------------------------------
+
   const [userProfile, setUserProfile] = useState({});
   const [loading, setLoading] = useState(true);
   const [likedResources, setLikedResources] = useState([]);
+  // -------------------- LOCAL REACT STATE --------------------------------------------------
 
+  // -------------------- API CALL --------------------------------------------------
   useEffect(() => {
     async function fetchUser() {
       const res = await Axios.get(`/api/users/getUser/${user._id}`, {
@@ -37,7 +42,9 @@ function ProfilePage({ auth: { user } }) {
 
     fetchUser();
   }, []);
+  // -------------------- API CALL --------------------------------------------------
 
+  // -------------------- EVENT TRIGGERS --------------------------------------------------
   const removeResourceFromProfile = (resource_id) => {
     // console.log(resource_id);
     const removeResource = async () => {
@@ -63,7 +70,82 @@ function ProfilePage({ auth: { user } }) {
 
     removeResource();
   };
+  // -------------------- EVENT TRIGGERS --------------------------------------------------
 
+  // -------------------- CONDITIONAL COMPONENTS --------------------------------------------------
+  // Rendering the column of a user's contributed resources
+  const contributedResourcesColumn = loading ? (
+    <></>
+  ) : (
+    <Grid.Column>
+      <Header as="h4" textAlign="center">
+        Resources
+      </Header>
+      <List>
+        {/* If a user did not contribute a resource, render the segment message */}
+        {/* If a user contributed at least one resource, render the amount of resources */}
+        {userProfile.contributedResources.length == 0 ? (
+          <Segment raised>
+            <Header as="h5" textAlign="center">
+              You did not contribute any resources
+            </Header>
+          </Segment>
+        ) : (
+          userProfile.contributedResources.map((resource) => {
+            return (
+              <List.Item>
+                <List.Icon
+                  name={
+                    resource.resourceType == "Video"
+                      ? "youtube"
+                      : "file alternate"
+                  }
+                  color={resource.resourceType == "Video" ? "red" : "blue"}
+                ></List.Icon>
+                <List.Content>
+                  <List.Header>{resource.resourceTitle}</List.Header>
+                </List.Content>
+              </List.Item>
+            );
+          })
+        )}
+      </List>
+    </Grid.Column>
+  );
+
+  // Rendering the column of a user's opened threads
+  const contributedThreadsColumn = loading ? (
+    <></>
+  ) : (
+    <Grid.Column>
+      <Header as="h4" textAlign="center">
+        Opened Threads
+      </Header>
+      <List>
+        {userProfile.openThreads.length == 0 ? (
+          <Segment raised>
+            <Header as="h5" textAlign="center">
+              You did not open any threads
+            </Header>
+          </Segment>
+        ) : (
+          userProfile.openThreads.map((thread) => {
+            return (
+              <List.Item>
+                <List.Icon name="pencil alternate"></List.Icon>
+                <List.Content>
+                  <List.Header>{thread}</List.Header>
+                </List.Content>
+              </List.Item>
+            );
+          })
+        )}
+      </List>
+    </Grid.Column>
+  );
+  // -------------------- CONDITIONAL COMPONENTS --------------------------------------------------
+
+  // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
       {loading ? (
@@ -256,7 +338,7 @@ function ProfilePage({ auth: { user } }) {
                           inverted
                         />
                       )}
-                      {/* If a user contirbutes 50 resorces: Real MVP Badge */}
+                      {/* If a user contirbutes 50 resources: Real MVP Badge */}
                       {userProfile.contributedResources.length >= 50 ? (
                         <Popup
                           trigger={
@@ -314,7 +396,21 @@ function ProfilePage({ auth: { user } }) {
                       })}
                     </Card.Group>
                   </Segment>
+
                   {/* Contributed Resources and Open Threads section */}
+                  <Header as="h3" style={{ fontSize: "1.5em" }}>
+                    Your Contributions
+                  </Header>
+                  <Segment>
+                    <Grid columns={2} relaxed="very">
+                      {/* Resources Column */}
+                      {contributedResourcesColumn}
+
+                      {/* Threads column */}
+                      {contributedThreadsColumn}
+                    </Grid>
+                    <Divider vertical>And</Divider>
+                  </Segment>
                 </Grid.Column>
               </Grid>
             </Container>

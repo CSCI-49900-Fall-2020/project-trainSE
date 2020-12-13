@@ -19,6 +19,7 @@ const mathematicsSchema = new Schema({
   submittedBy: String,
   likedBy: [],
   // dislikedBy: [],
+  timestamp: Date,
   comments: [],
   searchTerm: String,
 });
