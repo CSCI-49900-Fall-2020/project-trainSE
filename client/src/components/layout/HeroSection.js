@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Image } from "semantic-ui-react";
 import "./HeroSection.css";
 
 export default function HeroSection() {
@@ -10,6 +10,10 @@ export default function HeroSection() {
         An open source hub of tech-related material, approved by YOU and the
         tech community
       </p>
+      <Image 
+       size="small"
+       src="https://clipartstation.com/wp-content/uploads/2018/09/clipart-robots-2.png"
+      />
       <div className="hero-btns">
         <Button size="massive" basic inverted color="grey" href="/register">
           {" "}

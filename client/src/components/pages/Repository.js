@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Grid, Segment, Button } from "semantic-ui-react";
+import { Grid, Button, Header, Container } from "semantic-ui-react";
 import { useRouteMatch, Link } from "react-router-dom";
 // import SideContainer from "../layout/SideContainer";
 import ThreadList from "../layout/ThreadList";
@@ -83,71 +83,51 @@ const Repository = ({ auth: { user } }) => {
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
-      <Segment
-        raised
-        compact
-        textAlign="center"
-        inverted
-        color="teal"
-        size="massive"
-        style={{ margin: "15px auto" }}
+      <Grid
+        style={{
+          backgroundColor: "teal",
+          padding: "45px 0 25px 0",
+          marginBottom: "2%",
+        }}
       >
-        {threads[0].repository} Repository
-        <Button fluid compact style={{ marginTop: "10px" }}>
-          <Link to="/createThread" style={{ color: "black" }}>
-          Open A New Thread?
-          </Link>
-        </Button>
-      </Segment>
-
-      {/* A Grid maintaining three columns */}
-      <Grid columns={3} divided padded style={{ height: "60vh" }}>
-        {/* 1st colmun: Beginner Threads */}
-        <Grid.Column style={{ backgroundColor: "#CCF1D2" }}>
-          <ThreadList level="Beginner" threads={threads[0].beginnerThreads} />
-          <Segment textAlign="center" style={{ margin: "15px auto" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </Segment>
-        </Grid.Column>
-
-        {/* 2nd column: Intermediate Threads */}
-        <Grid.Column style={{ backgroundColor: "#6EC6BA" }}>
-          <ThreadList
-            level="Intermediate"
-            threads={threads[0].intermediateThreads}
-          />
-
-          <Segment textAlign="center" style={{ margin: "15px auto" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </Segment>
-        </Grid.Column>
-
-        {/* 3rd column: Advanced Threads */}
-        <Grid.Column style={{ backgroundColor: "#008080" }}>
-          <ThreadList level="Advanced" threads={threads[0].advancedThreads} />
-          <Segment textAlign="center" style={{ margin: "15px auto" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </Segment>
-        </Grid.Column>
+      {/* heading */}
+        <Container>
+          <Header as="h1" textAlign="Left" inverted>
+            {threads[0].repository} Repository
+          </Header>
+        </Container>
       </Grid>
+
+      <Container>
+        <Grid style={{ margin: "1%" }}>
+          <Button fluid>
+            <Link to="/createThread" style={{ color: "black" }}>
+              Open A New Thread?
+            </Link>
+          </Button>
+        </Grid>
+      </Container>
+      {/* Main content / threads */}
+      <Container>
+      {/* A Grid maintaining three columns */}
+        <Grid columns="equal">
+        {/* 1st colmun: Beginner Threads */}
+          <Grid.Column style={{ backgroundColor: "#CCF1D2", margin: "3% 1%" }}>
+            <ThreadList level="Beginner" threads={threads[0].beginnerThreads} />
+          </Grid.Column>
+        {/* 2nd column: Intermediate Threads */}
+          <Grid.Column style={{ backgroundColor: "#6EC6BA", margin: "3% 1%" }}>
+            <ThreadList
+              level="Intermediate"
+              threads={threads[0].intermediateThreads}
+            />
+          </Grid.Column>
+          {/* 3rd column: Advanced Threads */}
+          <Grid.Column style={{ backgroundColor: "#008080", margin: "3% 1%" }}>
+            <ThreadList level="Advanced" threads={threads[0].advancedThreads} />
+          </Grid.Column>
+        </Grid>
+      </Container>
     </React.Fragment>
   );
 };

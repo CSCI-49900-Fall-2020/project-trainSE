@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Label, Icon } from "semantic-ui-react";
+import { Card, Label, Icon, Grid } from "semantic-ui-react";
 import { Link, useRouteMatch } from "react-router-dom";
 
 // The ResourceItem component as a functional component
@@ -8,7 +8,7 @@ const ResourceItem = (props) => {
   let { url } = useRouteMatch();
   console.log("Resource Item: ", props);
   console.log("Resource Item: ", url);
-  // 
+  //
   //
 
   //
@@ -17,36 +17,44 @@ const ResourceItem = (props) => {
   return (
     <Card raised color="teal">
       <Card.Content textAlign={"left"}>
-        {/* <Label as="a" color="red" ribbon>
-        Overview
-      </Label> */}
         <Card.Header color="black">{props.resource.resourceTitle}</Card.Header>
         <Card.Meta>
           {/* Posted by <strong>TrainSE</strong> 20 min ago */}
-          Posted by <strong>TrainSE</strong> 
+          Posted by <strong>Open REsource</strong>
         </Card.Meta>
-        <Card.Meta style={{padding:"1%"}}>
-        <Icon disable name="tags" />
-        {props.resource.linkType === "Video"?  <Icon color="red" name="youtube" /> : <Icon color="blue" name="file alternate" /> }
-       
+        <Card.Meta style={{ padding: "1% 0 0 0" }}>
+        {/* Resource type Label*/}
+          {props.resource.resourceType === "Video" ? (
+            <Label color="red" size="tiny">
+              <Icon name="youtube" /> Video
+            </Label>
+          ) : (
+            <Label color="blue" size="tiny">
+              <Icon name="file alternate" /> Article
+            </Label>
+          )}
         </Card.Meta>
-        
-        {/* <Card.Description>
-        Nullam quis risus eget urna mollis ornare vel eu leo.
-      </Card.Description> */}
       </Card.Content>
       <Card.Content extra>
-        <Label color="teal">
-          <Icon name="like" color="red" /> {props.resource.likes}
-        </Label>
-        <Label color="teal">
-          <Icon name="comments" /> {props.resource.comments.length}
-        </Label>
-        <Link to={`${url}/resource/${props.resource._id}`}>
-          <Label color="teal">
-            <Icon name="mouse pointer" /> View
-          </Label>
-        </Link>
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <Label color="teal">
+                <Icon name="like" color="red" /> {props.resource.likes}
+              </Label>
+              <Label color="teal">
+                <Icon name="comments" /> {props.resource.comments.length}
+              </Label>
+            </Grid.Column>
+            <Grid.Column>
+              <Link to={`${url}/resource/${props.resource._id}`}>
+                <Label color="teal" style={{ marginLeft: "50%" }}>
+                  <Icon name="mouse pointer" /> View
+                </Label>
+              </Link>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Card.Content>
     </Card>
   );

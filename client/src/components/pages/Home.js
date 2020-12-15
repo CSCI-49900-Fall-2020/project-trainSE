@@ -1,15 +1,14 @@
 import React from "react";
-import "../../App.js";
+// import "../../App.js";
 import HeroSection from "../layout/HeroSection";
 import {
   Segment,
-  Button,
   Header,
   Image,
   Grid,
   Icon,
   Container,
-  Label,
+  Label
 } from "semantic-ui-react";
 // import Footer from "../layout/Footer";
 import { connect } from "react-redux";
@@ -23,10 +22,12 @@ function Home({ isAuthenticated }) {
 
   return (
     <>
+    <Grid style={{backgroundColor:"#00b5ad"}}>
       <HeroSection />
+    </Grid>
 
       {/* Section explaining TrainSE purpose */}
-      <Segment style={{ padding: "8em 0em" }} vertical>
+      <Segment style={{ padding: "8em 0em" }} vertical id="about">
         <Grid container stackable verticalAlign="middle">
           <Grid.Row>
             <Grid.Column width={8}>
@@ -40,7 +41,7 @@ function Home({ isAuthenticated }) {
                 learned in the last two decades. Regardless, one must excavate
                 the depths of the internet and perform a trial and error to find
                 what they're actually looking for. The first search result is
-                sometimes a dense reosurce bogged down by jargon and complex
+                sometimes a dense resource bogged down by jargon and complex
                 phrasing that intimidates beginners. This issue worsens in the
                 tech where merely learning a new framework can be overwhelming
                 due to extraneous tutorials that all teach the same thing. Which
@@ -74,7 +75,7 @@ function Home({ isAuthenticated }) {
       </Segment>
 
       {/* Section explaining site features through icons */}
-      <Segment style={{ padding: "0em" }} vertical inverted>
+      <Segment style={{ padding: "0em" }} vertical inverted id="features">
         <Grid celled="internally" columns="equal" stackable>
           <Grid.Row textAlign="center">
             {/* First column */}
@@ -122,22 +123,29 @@ function Home({ isAuthenticated }) {
       </Segment>
 
       {/* Section explaining the rules and user support */}
-      <Segment style={{ padding: "8em 0em" }} vertical>
+      <Segment style={{ padding: "8em 0em" }} vertical id="csDomains">
         <Container text>
           <Header as="h3" style={{ fontSize: "2em" }}>
             We Support the Following Domains of Computer Science
             <Label color="teal">More to Come!</Label>
           </Header>
-
+          <p>
+          <Label.Group size='huge'>
+          <Label basic>Languages</Label>
+          <Label basic> Mathematics</Label>
+          <Label basic> Databases </Label>
+          <Label basic> Architecture </Label>
+          <Label basic>Algorithms and Data Structures </Label>
+          <Label basic> Artificial intelligence </Label>
+          </Label.Group>
+          </p>      
+{/* 
           <p style={{ fontSize: "1.33em" }}>
             Instead of focusing on content creation and hard work, we have
             learned how to master the art of doing nothing by providing massive
             amounts of whitespace and generic content that can seem massive,
             monolithic and worth your attention.
-          </p>
-          <Button as="a" size="large">
-            Read More
-          </Button>
+          </p> */}
         </Container>
       </Segment>
       {/* <Footer /> */}

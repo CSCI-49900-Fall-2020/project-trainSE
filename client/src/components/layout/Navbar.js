@@ -13,8 +13,6 @@ import {
   Icon,
 } from "semantic-ui-react";
 
-// https://stackoverflow.com/questions/55796665/react-material-ui-router-redirect-button
-
 // The Navbar component as a functional component
 const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
   // auth prop is an alias for the auth global store
@@ -24,11 +22,6 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
   // Render this code of JSX/HTML if the user is logged in
   const authLinks = (
     <>
-      {/* For Narvisha */}
-      {/* <Menu.Item as="a">
-        <Link to="/createResource">Submit A Resource</Link>
-      </Menu.Item> */}
-      {/* For Narvisha */}
       <Dropdown item simple text="Contribute">
         <Dropdown.Menu>
           <Dropdown.Item as="a">
@@ -38,20 +31,9 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
           </Dropdown.Item>
           <Dropdown.Item>
             <Link to="/createThread" style={{ color: "black" }}>
-            Open a Thread
+              Open a Thread
             </Link>
           </Dropdown.Item>
-          {/* <Dropdown.Divider /> */}
-          {/* <Dropdown.Header>Header Item</Dropdown.Header> */}
-          {/* <Dropdown.Item>
-            <i className="dropdown icon" />
-            <span className="text">Submenu</span>
-            <Dropdown.Menu>
-              <Dropdown.Item>List Item</Dropdown.Item>
-              <Dropdown.Item>List Item</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown.Item> */}
-          {/* <Dropdown.Item>List Item</Dropdown.Item> */}
         </Dropdown.Menu>
       </Dropdown>
 
@@ -73,14 +55,25 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
 
   // Render this code of JSX/HTML if the user is not logged in
   const guestLinks = (
-    <Menu.Item position="right">
-      <Button as="a" href="/login">
-        Log in
-      </Button>
-      <Button as="a" style={{ marginLeft: "0.5em" }} href="/register">
-        Sign Up
-      </Button>
-    </Menu.Item>
+    <>
+      <Menu.Item>
+        <a href="#about"> About </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a href="#features"> Features</a>
+      </Menu.Item>
+      <Menu.Item>
+        <a href="#csDomains">CS Domains </a>
+      </Menu.Item>
+      <Menu.Item position="right">
+        <Button as="a" href="/login">
+          Log in
+        </Button>
+        <Button as="a" style={{ marginLeft: "0.5em" }} href="/register">
+          Sign Up
+        </Button>
+      </Menu.Item>
+    </>
   );
 
   // Determine where the logo home button should redirect to based on authentication
@@ -97,7 +90,8 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
             src="https://image.freepik.com/free-vector/cute-robot-cartoon-vector-icon-illustration-techology-robot-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-1474.jpg"
             style={{ marginRight: "1.5em" }}
           />
-          TrainSE
+          {/* TrainSE */}
+          Open REsource
         </Menu.Item>
         {/* Conditionally render parts of the navbar */}
         {!isLoading && <>{isAuthenticated ? authLinks : guestLinks}</>}

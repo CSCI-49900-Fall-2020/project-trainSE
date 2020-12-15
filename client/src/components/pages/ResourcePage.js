@@ -10,6 +10,8 @@ import {
   Icon,
   Comment,
   Button,
+  Grid,
+  Label,
 } from "semantic-ui-react";
 import CommentList from "../layout/CommentList";
 import CommentForm from "../layout/CommentForm";
@@ -148,21 +150,64 @@ const ResourcePage = ({ auth: { user } }) => {
     addToProfileRepo();
   };
   // ----------------------------------------------------------------------------------------------------
+  // Helper function to conditionally render difficulty colors
+  let determineColor = (difficulty) => {
+    if (difficulty === "Beginner") return "green";
+    else if (difficulty === "Intermediate") return "yellow";
+    else if (difficulty === "Advanced") return "red";
+    else return "grey";
+  };
   // The actual HTML/JSX to return after a component is mounted
   return (
     <React.Fragment>
       {/* main section */}
-      {/* <Grid.Column width={9} style={{ backgroundColor: "#e2e6f0" }}> */}
+      <Grid
+        style={{
+          backgroundColor: "teal",
+          padding: "45px 0 25px 0",
+          marginBottom: "2%",
+        }}
+      >
+        {/* Heading */}
+        <Container>
+          <Header as="h1" textAlign="Left" inverted>
+            Resource
+          </Header>
+        </Container>
+      </Grid>
+      {/* Resource Labels */}
+      <Container style={{ marginBottom: "2%" }}>
+        <Grid>
+          {/* Specify the repository this Resource belongs to */}
+          <Label color="blue" size="large" style={{ marginLeft: "2%" }}>
+            {resource.repository}
+          </Label>{" "}
+          <Label color="blue" size="large">
+            {resource.threadTitle}
+          </Label>{" "}
+          {/* Specify the difficulty level of this Resource*/}
+          <Label color={determineColor(resource.difficultyLevel)} size="large">
+            {resource.difficultyLevel}
+          </Label>
+          {/* Specify the type of resource */}
+          {resource.resourceType === "Video" ? (
+            <Label color="red" size="large">
+              <Icon name="youtube" /> Video
+            </Label>
+          ) : (
+            <Label color="blue" size="large">
+              <Icon name="file alternate" /> Article
+            </Label>
+          )}
+        </Grid>
+      </Container>
+
+      {/* Resource information */}
       <Container style={{ paddingTop: "10px" }}>
         <Segment padded style={{ paddingTop: "20px" }}>
           {/* Resource title */}
           <Header as="h1" dividing>
-            {resource.resourceTitle}{" "}
-            {resource.linkType === "Video" ? (
-              <Icon color="red" name="youtube" />
-            ) : (
-              <Icon color="blue" name="file alternate" />
-            )}
+            {resource.resourceTitle}
           </Header>
           {/* Meta data about how long the resource was posted */}
           <Header.Subheader style={{ color: "grey" }}>

@@ -120,31 +120,31 @@ const ThreadPage = ({ auth: { user } }) => {
   return (
     <React.Fragment>
       {/* {console.log("Resources after api call: ", resources)} */}
-        {/* Main Section */}
-          <Container >
-            {/* The main header thread title */}
-            <Grid style={{ backgroundColor: "teal", padding: "45px 0 25px 0" }}>
-            <span>
-              <Header as="h1" textAlign="center" inverted>
-                {threadTitle} Thread
-              </Header>
-            </span>
-            </Grid>
-            <Grid style={{ padding: "1% 0 2% 1%" }}>
-            {/* Specify the repository this thread belongs to */}
-            <Label color="blue" size="large">
-              {repositoryTitle}
-            </Label>{" "}
-            {/* Specify the difficulty level of this thread */}
-            <Label color={determineColor(difficulty)} size="large">
-              {difficulty}
-            </Label>
-            </Grid>
-          </Container>
-
-          {/* Rendering the actual resources */}
-          {/* Conditionally rendering if the reso */}
-          {emptyResources ? loading : populateResources}
+      {/* Main Section */}
+      <Grid style={{ backgroundColor: "teal", padding: "45px 0 25px 0" }}>
+        {/* The main header thread title */}
+        <Container>
+          <Header as="h1" textAlign="Left" inverted>
+            {threadTitle} Thread
+          </Header>
+        </Container>
+      </Grid>
+      {/* Thread Labels  */}
+      <Container>
+        <Grid style={{ margin: "3% 1% 2%" }}>
+          {/* Specify the repository this thread belongs to */}
+          <Label color="blue" size="large">
+            {repositoryTitle}
+          </Label>{" "}
+          {/* Specify the difficulty level of this thread */}
+          <Label color={determineColor(difficulty)} size="large">
+            {difficulty}
+          </Label>
+        </Grid>
+      </Container>
+      {/* Rendering the actual resources */}
+      {/* Conditionally rendering if the reso */}
+      {emptyResources ? loading : populateResources}
     </React.Fragment>
   );
 };
