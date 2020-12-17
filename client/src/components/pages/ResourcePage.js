@@ -48,8 +48,8 @@ const ResourcePage = ({ auth: { user } }) => {
       );
 
       // Testing things
-      console.log("This is res.data: ", res.data);
-      console.log("This is res.data.resource: ", res.data.resource);
+      //   console.log("This is res.data: ", res.data);
+      //   console.log("This is res.data.resource: ", res.data.resource);
 
       setResource(res.data.resource);
       setComments(res.data.resource.comments);
@@ -84,10 +84,10 @@ const ResourcePage = ({ auth: { user } }) => {
         }
       );
       // Console log the response
-      console.log(res);
+      //   console.log(res);
       // Determine if the user already liked the resource before
       liked_already = res.data.likedBefore;
-      console.log("Did the user like this resource before: ", liked_already);
+      //   console.log("Did the user like this resource before: ", liked_already);
       if (liked_already === false) {
         setLikes(likeAmount + 1);
         setIndicateLiked("thumbs up");
@@ -116,7 +116,7 @@ const ResourcePage = ({ auth: { user } }) => {
           headers: { "x-auth-token": localStorage.getItem("token") },
         }
       );
-      console.log(res);
+      //   console.log(res);
       disliked = res.data.ableToDislike;
       if (disliked === true) {
         setLikes(likeAmount - 1);

@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import ProfileLikedResources from "../layout/ProfileLikedResources";
 import Axios from "axios";
-// import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import "./Home.css";
 
 // The ProfilePage component as a functional component
@@ -103,7 +103,11 @@ function ProfilePage({ auth: { user } }) {
                   color={resource.resourceType == "Video" ? "red" : "blue"}
                 ></List.Icon>
                 <List.Content>
-                  <List.Header>{resource.resourceTitle}</List.Header>
+                  <Link
+                    to={`/repository/${resource.disciplineLink}/${resource.repositoryLink}/thread/${resource.threadLink}/resource/${resource._id}`}
+                  >
+                    <List.Header>{resource.resourceTitle}</List.Header>
+                  </Link>
                 </List.Content>
               </List.Item>
             );
@@ -134,7 +138,11 @@ function ProfilePage({ auth: { user } }) {
               <List.Item>
                 <List.Icon name="pencil alternate"></List.Icon>
                 <List.Content>
-                  <List.Header>{thread}</List.Header>
+                  <Link
+                    to={`/repository/${thread.disciplineLink}/${thread.repositoryLink}/thread/${thread.threadLink}`}
+                  >
+                    <List.Header>{thread.threadTitle}</List.Header>
+                  </Link>
                 </List.Content>
               </List.Item>
             );
@@ -375,25 +383,36 @@ function ProfilePage({ auth: { user } }) {
                   <Segment textAlign="center" style={{ margin: "15px auto" }}>
                     {userProfile.briefDescription}
                   </Segment>
+
                   {/* Favorite repository section */}
                   <Header as="h3" style={{ fontSize: "1.5em" }}>
                     Favorite Resources
                   </Header>
                   <Segment raised>
                     <Card.Group>
-                      {likedResources.map((resource) => {
-                        {
-                          /* Use the ProfileLikedResources component to format liked resources */
-                        }
-                        return (
-                          <ProfileLikedResources
-                            removeResourceFromProfile={
-                              removeResourceFromProfile
-                            }
-                            resource={resource}
-                          />
-                        );
-                      })}
+                      {likedResources.length ? (
+                        likedResources.map((resource) => {
+                          {
+                            /* Use the ProfileLikedResources component to format liked resources */
+                          }
+                          return (
+                            <ProfileLikedResources
+                              removeResourceFromProfile={
+                                removeResourceFromProfile
+                              }
+                              resource={resource}
+                            />
+                          );
+                        })
+                      ) : (
+                        <Header
+                          as="h3"
+                          textAlign="center"
+                          style={{ margin: "20px" }}
+                        >
+                          No Liked Resources
+                        </Header>
+                      )}
                     </Card.Group>
                   </Segment>
 

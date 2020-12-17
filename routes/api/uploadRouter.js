@@ -335,6 +335,7 @@ router.post(
 // @desc     Push a new thread to thread collection (thread sent from threadCreation.js)
 // @access   Private
 router.post("/thread", auth, async (req, res) => {
+  let disciplineTitle = req.body.disciplineTitle;
   let repositoryTitle = req.body.repository;
   let threadTitle = req.body.threadTitle;
   let difficultyLevel = req.body.difficultyLevel;
@@ -367,7 +368,16 @@ router.post("/thread", auth, async (req, res) => {
   // // Credit the user who added the new thread
   const creditUser = await User.findOneAndUpdate(
     { username: submittedBy },
-    { $push: { openThreads: threadTitle } },
+    {
+      $push: {
+        openThreads: {
+          threadTitle,
+          repositoryLink: lowercaseDashify(repositoryTitle),
+          threadLink: lowercaseDashify(threadTitle),
+          disciplineLink: lowercaseDashify(disciplineTitle),
+        },
+      },
+    },
     { useFindAndModify: false }
   );
   console.log(creditUser);

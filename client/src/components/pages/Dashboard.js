@@ -82,8 +82,8 @@ const Dashboard = ({ auth: { user } }) => {
 
   // Auxiliary helper data about routing
   let { path, url } = useRouteMatch();
-  console.log("Path: ", path);
-  console.log("URL: ", url);
+  // console.log("Path: ", path);
+  // console.log("URL: ", url);
 
   // The actual HTML/JSX to return after a component is mounted
   return (
@@ -95,23 +95,7 @@ const Dashboard = ({ auth: { user } }) => {
           color="teal"
           style={{ paddingTop: "35px" }}
           textAlign="center"
-        >
-          {/* <Icon
-            size="huge"
-            name="code"
-            style={{ margin: "auto 20px auto 20px" }}
-          />
-          <Icon
-            size="huge"
-            name="code branch"
-            style={{ margin: "auto 20px auto 20px" }}
-          />
-          <Icon
-            size="huge"
-            name="microchip"
-            style={{ margin: "auto 20px auto 20px" }}
-          /> */}
-        </Grid.Column>
+        ></Grid.Column>
 
         {/* Second column dealing with the greeting message */}
         <Grid.Column color="teal" style={{ paddingTop: "35px" }} width={8}>
@@ -128,23 +112,7 @@ const Dashboard = ({ auth: { user } }) => {
           color="teal"
           style={{ paddingTop: "35px" }}
           textAlign="center"
-        >
-          {/* <Icon
-            size="huge"
-            name="keyboard"
-            style={{ margin: "auto 20px auto 20px" }}
-          />
-          <Icon
-            size="huge"
-            name="computer"
-            style={{ margin: "auto 20px auto 20px" }}
-          />
-          <Icon
-            size="huge"
-            name="terminal"
-            style={{ margin: "auto 20px auto 20px" }}
-          /> */}
-        </Grid.Column>
+        ></Grid.Column>
       </Grid>
 
       {/* Rendering the cards */}

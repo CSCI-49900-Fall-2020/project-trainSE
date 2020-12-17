@@ -149,10 +149,10 @@ const ThreadPage = ({ auth: { user } }) => {
 
   // If a choice is made from the dropdown to sort
   const onChangeDropdown = (e, result) => {
-    console.log("This is the triggered event: ", e);
-    console.log("This is the actual values: ", result);
+    // console.log("This is the triggered event: ", e);
+    // console.log("This is the actual values: ", result);
     const { value } = result || e.target;
-    console.log(value);
+    // console.log(value);
 
     // Important article:
     //https://dev.to/ramonak/react-how-to-dynamically-sort-an-array-of-objects-using-the-dropdown-with-react-hooks-195p
@@ -166,33 +166,33 @@ const ThreadPage = ({ auth: { user } }) => {
           return resource2.likes - resource1.likes;
         }
       );
-      console.log(organizedByMostLiked);
+      // console.log(organizedByMostLiked);
       setResources(organizedByMostLiked);
     }
     // If a user clicked on to sort by most recent to oldest
     else if (value === "Recent to Oldest") {
       const organizedByMostRecent = [...resources].sort(
         (resource1, resource2) => {
-          var date1 = new Date(resource1.timestamp)
-          var date2 = new Date(resource2.timestamp)
-          console.log(date1)
-          return date2.getTime() - date1.getTime()
+          var date1 = new Date(resource1.timestamp);
+          var date2 = new Date(resource2.timestamp);
+          // console.log(date1)
+          return date2.getTime() - date1.getTime();
           //return resource1.timestamp.getFullYear() - resource2.timestamp.getFullYear();
         }
       );
-      console.log(organizedByMostRecent);
+      // console.log(organizedByMostRecent);
       setResources(organizedByMostRecent);
     }
     // If a user clicked on to sort by oldest to recent
     else if (value === "Oldest to Recent") {
       const organizedByOldest = [...resources].sort((resource1, resource2) => {
-          var date1 = new Date(resource1.timestamp)
-          var date2 = new Date(resource2.timestamp)
-          console.log(date1)
-          return date1.getTime() - date2.getTime()
+        var date1 = new Date(resource1.timestamp);
+        var date2 = new Date(resource2.timestamp);
+        console.log(date1);
+        return date1.getTime() - date2.getTime();
         //console.log(resource2.timestamp - resource1.timestamp);
       });
-      console.log(organizedByOldest);
+      // console.log(organizedByOldest);
       setResources(organizedByOldest);
     }
 

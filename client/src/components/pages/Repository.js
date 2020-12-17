@@ -70,7 +70,7 @@ const Repository = ({ auth: { user } }) => {
           headers: { "x-auth-token": localStorage.getItem("token") },
         }
       );
-      console.log(res.data.threads);
+      // console.log(res.data.threads);
       // setSectionData(res.data.domains);
       // console.log(res.data.beginnerThreads);
       setThread(res.data.threads);
@@ -90,7 +90,7 @@ const Repository = ({ auth: { user } }) => {
           marginBottom: "2%",
         }}
       >
-      {/* heading */}
+        {/* heading */}
         <Container>
           <Header as="h1" textAlign="Left" inverted>
             {threads[0].repository} Repository
@@ -109,13 +109,13 @@ const Repository = ({ auth: { user } }) => {
       </Container>
       {/* Main content / threads */}
       <Container>
-      {/* A Grid maintaining three columns */}
+        {/* A Grid maintaining three columns */}
         <Grid columns="equal">
-        {/* 1st colmun: Beginner Threads */}
+          {/* 1st colmun: Beginner Threads */}
           <Grid.Column style={{ backgroundColor: "#CCF1D2", margin: "3% 1%" }}>
             <ThreadList level="Beginner" threads={threads[0].beginnerThreads} />
           </Grid.Column>
-        {/* 2nd column: Intermediate Threads */}
+          {/* 2nd column: Intermediate Threads */}
           <Grid.Column style={{ backgroundColor: "#6EC6BA", margin: "3% 1%" }}>
             <ThreadList
               level="Intermediate"

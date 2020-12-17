@@ -59,7 +59,7 @@ const CreateThread = ({ auth: { user } }) => {
   const [thread, setThread] = useState({
     threadTitle: "",
     repository: "",
-    discipline: "",
+    disciplineTitle: "",
     difficultyLevel: "",
     submittedBy: user.username,
   });

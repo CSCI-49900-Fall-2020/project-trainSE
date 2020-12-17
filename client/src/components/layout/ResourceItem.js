@@ -6,12 +6,8 @@ import { Link, useRouteMatch } from "react-router-dom";
 const ResourceItem = (props) => {
   // Auxiliary data to help with routing
   let { url } = useRouteMatch();
-  console.log("Resource Item: ", props);
-  console.log("Resource Item: ", url);
-  //
-  //
-
-  //
+  // console.log("Resource Item: ", props);
+  // console.log("Resource Item: ", url);
 
   // The actual HTML/JSX to return after a component is mounted
   return (
@@ -23,7 +19,7 @@ const ResourceItem = (props) => {
           Posted by <strong>Open REsource</strong>
         </Card.Meta>
         <Card.Meta style={{ padding: "1% 0 0 0" }}>
-        {/* Resource type Label*/}
+          {/* Resource type Label*/}
           {props.resource.resourceType === "Video" ? (
             <Label color="red" size="tiny">
               <Icon name="youtube" /> Video

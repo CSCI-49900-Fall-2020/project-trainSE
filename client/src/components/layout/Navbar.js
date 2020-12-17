@@ -91,7 +91,7 @@ const NavBar = ({ auth: { isAuthenticated, isLoading }, logout }) => {
             style={{ marginRight: "1.5em" }}
           />
           {/* TrainSE */}
-          Open REsource
+          Open reSource
         </Menu.Item>
         {/* Conditionally render parts of the navbar */}
         {!isLoading && <>{isAuthenticated ? authLinks : guestLinks}</>}
