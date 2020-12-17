@@ -15,9 +15,8 @@ Open reSource is a web app that would streamline how a techie moderates their se
 
 ## Main Content Section
 
-Open reSource provides the tech community a means to share and post effective CS resources they’ve stumbled upon during their research. Instead of allowing another programmer to excavate the depths of the Internet to find that hidden gem, a user can easily log onto Open reSource and post material they found extremely helpful to help reduce the research time for other programmers. A user can also explore the newest resources the tech community has collected and quickly begin their learning. Thus, a community is fostered and there is higher accountability for resources to be top tier, digestible, and easily accessible.
-
 ### Problem Recap
+Open reSource provides the tech community a means to share and post effective CS resources they’ve stumbled upon during their research. Instead of allowing another programmer to excavate the depths of the Internet to find that hidden gem, a user can easily log onto Open reSource and post material they found extremely helpful to help reduce the research time for other programmers. A user can also explore the newest resources the tech community has collected and quickly begin their learning. Thus, a community is fostered and there is higher accountability for resources to be top tier, digestible, and easily accessible.
 
 ### General Idea
 
