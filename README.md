@@ -31,6 +31,19 @@ We want to emphasize that there is power in auxiliary learning materials, even i
 
 ### Technical Details
 
+#### Kareem Hussein
+***Choosing a Tech Stack:*** With an array of technologies roaming in the wild, it’s difficult to choose which frameworks and libraries will constitute as the working components of one’s project. Another layer of complexity is added when considering how to configure those components to actually interact and  exchange data with each other. Taking such factors into account, it’s important to choose a tech stack that will simplify and streamline the development process by minimizing the amount of languages a team may have to learn. That’s where Kareem suggested the MERN stack, a notable combination of technologies with an emphasis on one language: JavaScript. On a high level, the MERN stack was appealing because only JavaScript was needed to create server-side and client-side code, thus allowing the team to focus on the implementation instead of juggling several languages and their nuanced syntax. On a lower level, the MERN stack is an acronym for MongoDB, Express.js, React.js, and Node.js. At the database tier, the team wasn’t set on a certain schema for our data, so MongoDB’s flexibility to alter data fields helped to accommodate our ever-changing data format as the project grew in complexity. At the backend tier, Node.js served as our application server that set up the runtime execution environment and liberated JavaScript outside of the browser. Express.js was utilized on top of Node.js to organize our project’s APIs, middleware, routing, and managed HTTPS requests. At the front end tier, we knew we wanted repeated, modular UI components that can be easily reused and incorporated into larger components. Thus, React.js served as our “view” in MVC, while providing minimal local state management for updating our UI when needed. And the interactions between each layer of technology was as simple as setting up a proxy server, utilizing Mongoose connect middleware, or configuring environment variables. In short, the MERN stack proved to be a helpful end-to-end framework for the creation of a functional full stack web application.
+
+***Redux and Global State Management:*** 
+
+#### Olenka Quispe Huanca
+
+#### Narvisha Sajjad
+
+#### Ingmar Fjolla
+
+#### Ismail El Baghdadi
+
 ## Conclusions and Further Work
 
 ## References
