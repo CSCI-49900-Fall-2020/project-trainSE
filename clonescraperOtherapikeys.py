@@ -13,8 +13,8 @@ mydb = client['trainSEDB']
 #print(client.list_database_names())
 
 #searchenginestuff
-my_api_key = "AIzaSyA8ipaAKobz5-EYwY1rUHsL5cIgTsD2h5Q"
-my_cse_id = "6748c9bbbc3e0e2da"
+my_api_key = "AIzaSyBi-mpG2ukWabhNfoMd-UAwSX3AfZRDD28"
+my_cse_id = "3a76448f784c4928f"
 
 
 #initial google search function, returns top 20 results
@@ -96,10 +96,10 @@ def main():
     #discipline_title = input("enter the disciple title")
 
     
-    collection_name= "databases"
-    difficulty_level = "Advanced"
-    repository_name = "MongoDB"
-    discipline_title = "Databases"
+    collection_name= "architectures"
+    difficulty_level = "Beginner"
+    repository_name = "x86"
+    discipline_title = "Architecture"
         
     #collection = mydb[collection_name]
     #print(collection)
