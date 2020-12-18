@@ -67,7 +67,9 @@ HESA. “Higher Education Student Statistics: UK, 2016/17 - Subjects Studied | H
 Huilgol, Purva. “Quick Introduction to Bag-of-Words (BoW) and TF-IDF for Creating Features from Text.” *Analytics Vidhya*, 25 June 2020, www.analyticsvidhya.com/blog/2020/02/quick-introduction-bag-of-words-bow-tf-idf.
 
 Larson, Quincy. “The 2020 Stack Overflow Developer Survey – 65,000 Devs Share Their Salaries, Top Programming Languages, and More.” *FreeCodeCamp.Org*, Free Code Camp, 29 May 2020, www.freecodecamp.org/news/stack-overflow-developer-survey-2020-programming-language-framework-salary-data.
-Lieb, David. “Cognitive Overhead, Or Why Your Product Isn’t As Simple As You Think.” Tech Crunch, 20 Apr. 2013, techcrunch.com/2013/04/20/cognitive-overhead.
+Lieb, David.
+
+“Cognitive Overhead, Or Why Your Product Isn’t As Simple As You Think.” Tech Crunch, 20 Apr. 2013, https://techcrunch.com/2013/04/20/cognitive-overhead/.
 
 SchermCo. “#56 - Open-Source in Education — The Tech-Inspired Solution to Transforming Schools and Communities.” *SchermCo*, SchermCo, 5 Mar. 2020,https://scherm.co/blog/56-open-source-in-education-the-tech-inspired-solution-to-transforming-schools-and-communities/.
 
