@@ -7,7 +7,7 @@
 - Ingmar Fjolla
 - Olenka Quispe Huanca
 - Ismail El Baghdadi
-- [Group Authored Details](https://github.com/CSCI-49900-Fall-2020/project-trainSE/wiki)
+- [Group Authored Details](https://github.com/CSCI-49900-Fall-2020/project-trainSE/wiki/Group-Authored)
 
 ## Introduction
 
