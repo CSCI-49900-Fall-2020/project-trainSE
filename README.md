@@ -62,5 +62,6 @@ In retrospect, we would have liked to explore different avenues with this projec
 ## References
 
 ## Archived Assignments
-[Project Proposal](https://github.com/CSCI-49900-Fall-2020/project-trainSE/wiki/Project-Proposal)
-[Group Authored](https://github.com/CSCI-49900-Fall-2020/project-trainSE/wiki/Group-Authored)
+- [Project Proposal](https://github.com/CSCI-49900-Fall-2020/project-trainSE/wiki/Project-Proposal)
+
+- [Group Authored](https://github.com/CSCI-49900-Fall-2020/project-trainSE/wiki/Group-Authored)
