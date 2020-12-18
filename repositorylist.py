@@ -1,3 +1,21 @@
+##################################################
+## Responsible for querying repositories
+## so not have to manually type in
+## did it another way anyway
+###############################################
+##################################################
+## 
+## Copyright: Not Applicable (Steal from me)
+## Credits: God and the python docs
+## License: 
+## Version: 1.0.0
+## Mmaintainer: None Required
+## 
+##################################################
+
+
+
+
 import pymongo
 from pprint import pprint
 import ssl; print(getattr(ssl, 'HAS_SNI', False))

@@ -1,3 +1,21 @@
+##################################################
+## Responsible for acquiring initial resources
+##A clone and an attempt to bypass the google Query limit for the day
+## worked initially but now both say i've reached query limit regardless
+##of time passed. Maybe google will limit IP for a week idk
+###############################################
+##################################################
+## 
+## Copyright: Not Applicable (Steal from me)
+## Credits: God and the python docs
+## License: 
+## Version: 1.0.0
+## Mmaintainer: None Required
+## 
+##################################################
+
+
+
 from googleapiclient.discovery import build
 import json
 from pprint import pprint
