@@ -61,11 +61,16 @@ In retrospect, we would have liked to explore different avenues with this projec
 
 ## References
 Franek, Rob. “Top 10 College Majors.” The Princeton Review, Princeton Review, www.princetonreview.com/college-advice/top-ten-college-majors. Accessed 18 Dec. 2020.
+
 HESA. “Higher Education Student Statistics: UK, 2016/17 - Subjects Studied | HESA.” HESA, HESA, 11 Jan. 2018, www.hesa.ac.uk/news/11-01-2018/sfr247-higher-education-student-statistics/subjects.
+
 Huilgol, Purva. “Quick Introduction to Bag-of-Words (BoW) and TF-IDF for Creating Features from Text.” Analytics Vidhya, 25 June 2020, www.analyticsvidhya.com/blog/2020/02/quick-introduction-bag-of-words-bow-tf-idf.
+
 Larson, Quincy. “The 2020 Stack Overflow Developer Survey – 65,000 Devs Share Their Salaries, Top Programming Languages, and More.” FreeCodeCamp.Org, Free Code Camp, 29 May 2020, www.freecodecamp.org/news/stack-overflow-developer-survey-2020-programming-language-framework-salary-data.
 Lieb, David. “Cognitive Overhead, Or Why Your Product Isn’t As Simple As You Think.” Tech Crunch, 20 Apr. 2013, techcrunch.com/2013/04/20/cognitive-overhead.
+
 SchermCo. “#56 - Open-Source in Education — The Tech-Inspired Solution to Transforming Schools and Communities.” SchermCo, SchermCo, 5 Mar. 2020, scherm.co/blog/56-open-source-in-education-the-tech-inspired-solution-to-transforming-schools-and-communities.
+
 Segaran, Toby. “Document Filtering.” Programming Collective Intelligence: Building Smart Web 2.0 Applications, O’Reilly Media, 2007, pp. 117–40.
 
 
