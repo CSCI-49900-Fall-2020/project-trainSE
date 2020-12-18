@@ -1,6 +1,7 @@
 # Open reSource Final Written Report
 
 ## Abstract
+In an era where information is readily available, we are greeted with the issue of information overload and choice paralysis. End users are privy to brute forcing a web page of links, with no intention of looking on the next page of results. There lacks a platform where tech learners can filter out the billions of results after a search query on Google. Hence, Open reSource is a web app that intends to provide auxiliary learning materials when traditional resources are inadequate. The app presents users with the most general disciplines of Computer Science until they funnel their way down to a repository, thread, and the particular resource. Furthermore, the demand for this platform is evident in our testing where 92.8% of participants found the web app helpful in their endeavors, with over half stating that the list of topics and resources are more beginner-friendly and useful compared to ordinary searching. In brief, Open reSource’s main goal is to optimize one’s time to learn over the time it takes to research decent material on popular search engines.
 
 ## Introduction
 
