@@ -69,10 +69,7 @@ Huilgol, Purva. “Quick Introduction to Bag-of-Words (BoW) and TF-IDF for Creat
 Larson, Quincy. “The 2020 Stack Overflow Developer Survey – 65,000 Devs Share Their Salaries, Top Programming Languages, and More.” *FreeCodeCamp.Org*, Free Code Camp, 29 May 2020, www.freecodecamp.org/news/stack-overflow-developer-survey-2020-programming-language-framework-salary-data.
 Lieb, David. “Cognitive Overhead, Or Why Your Product Isn’t As Simple As You Think.” Tech Crunch, 20 Apr. 2013, techcrunch.com/2013/04/20/cognitive-overhead.
 
-SchermCo. “#56 - Open-Source in Education — The Tech-Inspired Solution to Transforming Schools and Communities.” *SchermCo*, SchermCo, 5 Mar. 2020,http://scherm.co/blog/56-open-source-in-education-the-tech-inspired-solution-to-transforming-schools-and-communities/.
-
-SchermCo. “#56 - Open-Source in Education — The Tech-Inspired Solution to Transforming Schools and Communities.” SchermCo, SchermCo, 5 Mar. 2020, http://scherm.co/blog/56-open-source-in-education-the-tech-inspired-solution-to-transforming-schools-and-communities/.
-
+SchermCo. “#56 - Open-Source in Education — The Tech-Inspired Solution to Transforming Schools and Communities.” *SchermCo*, SchermCo, 5 Mar. 2020,https://scherm.co/blog/56-open-source-in-education-the-tech-inspired-solution-to-transforming-schools-and-communities/.
 
 Segaran, Toby. “Document Filtering.” *Programming Collective Intelligence:* Building Smart Web 2.0 Applications, O’Reilly Media, 2007, pp. 117–40.
 
